@@ -8,6 +8,7 @@ import AdminProduct from "../../components/AdminProduct/AdminProduct";
 import refundIcon from "../../assets/icons/icon-refund.png";
 import reviewIcon from "../../assets/icons/icon-review.png";
 import voucherIcon from "../../assets/icons/icon-voucher.png";
+import ReturnPage from "../ReturnPage/ReturnPage";
 
 const AdminPage = () => {
   const renderPage = (key) => {
@@ -16,8 +17,8 @@ const AdminPage = () => {
         return <AdminUser />;
       case "product":
         return <AdminProduct />;
-      case "refund":
-        return <AdminProduct />;
+      case "order":
+        return <ReturnPage />;
       case "review":
         return <AdminProduct />;
       case "voucher":
@@ -30,20 +31,20 @@ const AdminPage = () => {
     getItem("Quản lý người dùng", "user", <UserOutlined />),
     getItem("Quản lý sản phẩm", "product", <AppstoreOutlined />),
     getItem(
-      "Quản lý bảo hành",
-      "refund",
+      "Quản lý đơn hàng",
+      "order",
       <img src={refundIcon} alt="icon-refund" style={{ width: 14 }} />
     ),
-    getItem(
-      "Quản lý đánh giá",
-      "review",
-      <img src={reviewIcon} alt="icon-review" style={{ width: 14 }} />
-    ),
-    getItem(
-      "Quản lý khuyến mãi",
-      "voucher",
-      <img src={voucherIcon} alt="icon-voucher" style={{ width: 14 }} />
-    ),
+    // getItem(
+    //   "Quản lý đánh giá",
+    //   "review",
+    //   <img src={reviewIcon} alt="icon-review" style={{ width: 14 }} />
+    // ),
+    // getItem(
+    //   "Quản lý khuyến mãi",
+    //   "voucher",
+    //   <img src={voucherIcon} alt="icon-voucher" style={{ width: 14 }} />
+    // ),
   ];
   // const rootSubmenuKeys = ["user", "product"];
   const [keySelected, setKeySelected] = useState("");
