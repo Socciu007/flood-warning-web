@@ -1,0 +1,139 @@
+
+  
+  ul {
+    padding: 0;
+    list-style: none;
+  }
+  
+  // button {
+  //   border: none;
+  //   &:focus,
+  //   &:active {
+  //     box-shadow: 0 0 0 1px !important;
+  //   }
+  // }
+  .d-flex {
+    display: flex;
+  }
+  
+  .row-align-center {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .label-float {
+    position: relative;
+    padding-top: 20px;
+  }
+  
+  .label-float input {
+    border: 0;
+    outline: none;
+    transition: all 0.2s ease-out;
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    border-radius: 0;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 23px;
+    color: #173294;
+    padding: 0;
+    // margin-top: 10px;
+  }
+  
+  .label-float input::placeholder {
+    color: transparent;
+  }
+  
+  .label-float label {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 10px;
+    transition: all 0.2s ease-out;
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    opacity: 0.5;
+  }
+  // .label-float input:required:invalid + label {
+  //   color: red;
+  // }
+  // .label-float input:focus:required:invalid {
+  //   border-bottom: 2px solid red;
+  // }
+  // .label-float input:required:invalid + label:before {
+  //   content: "*";
+  // }
+  
+  .label-float input:focus + label,
+  .label-float input:not(:placeholder-shown) + label {
+    margin-top: 0;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    color: #173294;
+    opacity: 0.3;
+  }
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    transition: all 0.2s;
+  }
+  .ant-spin-container {
+      background: url("../../assets/pictures/background.png") center/cover;
+
+  }
+  .proxy-policy {
+    max-width: 100%;
+    width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+    min-height: 90vh;
+  
+    .policy-content {
+      padding: 5% 5%;
+    }
+    @media (min-width: 576px) {
+      padding: 20px 2% 20px;
+      .policy-content {
+        padding: 6% 8%;
+      }
+    }
+    @media (min-width: 992px) {
+      & {
+        padding: 10px 0 20px;
+        padding-top: 30px;
+        padding-bottom: 35px;
+      }
+    }
+    .policy-content {
+      line-height: 1.8;
+      text-align: justify;
+      background-color: white;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      position: relative;
+      z-index: 3;
+      text-decoration: none;
+      overflow: hidden;
+      width: 100%;
+      display: block;
+      outline: none;
+      -webkit-box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.1);
+      box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.1);
+      ul {
+        list-style-type: disc;
+        padding-left: 22px;
+      }
+      a{
+        &:hover{
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  

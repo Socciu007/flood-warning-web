@@ -1,0 +1,170 @@
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
+
+
+body {
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%;
+}
+@font-face {
+  font-family: 'GoogleSans';
+  font-style: normal;
+  font-weight: normal;
+  src: local('GoogleSans'), url('./assets/fonts/GoogleSansTTF/GoogleSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'GoogleSans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('GoogleSans'), url('./assets/fonts/GoogleSansTTF/GoogleSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'GoogleSansMedium';
+  font-style: normal;
+  font-weight: 600;
+  src: local('GoogleSans'), url('./assets/fonts/GoogleSansTTF/GoogleSans-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'GoogleSansBold';
+  font-style: normal;
+  font-weight: 700;
+  src: local('GoogleSans'), url('./assets/fonts/GoogleSansTTF/GoogleSans-Bold.ttf') format('truetype');
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'GoogleSans';
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+.auth-input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(42, 134, 255, 0.5);
+}
+input,
+button,
+textarea,
+select {
+  outline: none;
+}
+input::placeholder {
+  font-family: 'GoogleSans', sans-serif;
+}
+select {
+  font-family: 'GoogleSans', sans-serif;
+}
+td {
+  font-weight: 400;
+  font-size: 15px;
+  color: #01162b;
+}
+label {
+  color: #e7f3ff;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+td,
+label,
+th {
+  word-wrap: break-word;
+  text-align: left;
+  font-family: 'GoogleSans', sans-serif;
+}
+.blur {
+  width: 100%;
+  height: 100%;
+  background-color: #4d4d4d;
+  opacity: 0.85;
+  position: absolute;
+  z-index: 10;
+  left: 0;
+}
+/* $mobile-width: 600px;
+$tablet-width: 1024px;
+
+@mixin center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @content;
+}
+@mixin mobile {
+  @media only screen and (max-width: $mobile-width) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media only screen and (max-width: $tablet-width) {
+    @content;
+  }
+} */
+.fs-95 {
+  font-size: 95%;
+}
+.fs-90 {
+  font-size: 90%;
+}
+.row-align-center {
+  display: flex;
+  align-items: center;
+}
+.flex-1 {
+  flex: 1;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.popup-overlay {
+  z-index: 1080 !important;
+}
+.banner-sale {
+  text-align: center;
+  background: linear-gradient(90deg, #ed3600, #ffd325);
+  overflow: hidden;
+  display: inline-block;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  img {
+    width: 100%;
+    max-width: 1400px;
+    max-height: 70px;
+    object-fit: contain;
+  }
+}
+:root {
+  --font-color-para: #01162b;
+  --bg-input: #f5f5f5;
+  --font-color-btn: #fff;
+  --bg-color-btnSave: #2a86ff;
+}

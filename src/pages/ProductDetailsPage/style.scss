@@ -1,0 +1,78 @@
+.layout-product-details-page {
+    padding: 0px 4.5rem;
+    // background: #FFF;
+    height: 100vh;
+    h5 {
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 37px;
+    }
+    .ant-row {
+        padding: 0 24px;
+        background-color: #F2F8FF;
+        border-radius: 8px;
+        box-shadow: rgba(8, 35, 106, 0.25) 0px 4px 10px 0px;
+        .ant-col.ant-col-10 {
+            margin: 32px 0;
+            border-right: 1px solid rgb(229, 229, 229);
+            padding-right: 10px;
+            .slick-slider {
+                border-radius: 8px;
+                box-shadow: rgba(8, 35, 106, 0.25) 0px 4px 10px 0px;
+                .slick-list {
+                    border-radius: 8px;
+                }
+                .slick-arrow.slick-prev::before {
+                    font-size: 40px;
+                    color: #89867fa6;
+                }
+                .slick-arrow.slick-next::before {
+                    font-size: 40px;
+                    color: #89867fa6;
+                }
+            }
+            .ant-row-option {
+                display: flex;
+                justify-content: center;
+                margin-top: 10px;
+                flex-wrap: nowrap;
+                padding: 10px 20px;
+                background: #FEFBF2;
+                .ant-col.ant-col-8 {
+                    display: grid;
+                    place-content: center;
+                    place-items: center;
+                    cursor: pointer;
+                    p {
+                        color: #01162B;
+                        font-size: 15px;
+                        line-height: 27.5px;
+                        font-weight: 400;
+                    }
+                }
+            }
+        }
+        .ant-col.ant-col-14 {
+            margin: 32px 0;
+            padding-left: 10px;
+           .wrapper-quantity {
+            margin: 6px 0 20px;
+              padding: 10px 0;
+              border-top: 1px solid #e5e5e5;
+              border-bottom: 1px solid #e5e5e5;
+              &__number {
+                font-size: 15px;
+                line-height: 30px;
+              }
+           }
+           .wrapper-button {
+                display: flex; 
+                align-items: center;
+                gap: 12px;
+                button {
+                    box-shadow: rgba(8, 35, 106, 0.25) 0px 4px 10px 0px;
+                }
+           }
+        }
+    }
+}

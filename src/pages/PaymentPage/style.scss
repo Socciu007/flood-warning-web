@@ -1,0 +1,157 @@
+.layout-order-page {
+    background: url("./../../assets/pictures/background.png") center/cover;
+    width: 100%;
+    height: 100%;
+    &__nav {
+        height: 100vh;
+        width: 1270px;
+        margin: 0 auto;
+        h5 {
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 37px;
+        }
+    }
+    &__content {
+        display: flex;
+        &__wrapper-left {
+            width: 910px;
+            &__header {
+                box-shadow: 0px 4px 10px 0px rgba(8, 35, 106, 0.25);
+                background: rgb(255, 255, 255);
+                padding: 5px 16px;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+                span {
+                    color: rgb(36, 36, 36);
+                    font-weight: 400;
+                    font-size: 15px;
+                };
+                h4 {
+                    font-weight: 700;
+                    font-size: 15px;
+                    line-height: 30px;
+                };
+                margin-bottom: 4px;
+            }
+            .wrapper-header {
+                box-shadow: 0px 4px 10px 0px rgba(8, 35, 106, 0.25);
+                background: rgb(255, 255, 255);
+                padding: 9px 16px;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                span {
+                    color: rgb(36, 36, 36);
+                    font-weight: 400;
+                    font-size: 15px;
+                    
+                }
+                span > label.ant-checkbox-wrapper {
+                    margin-right: 5px;
+                }
+                &__col {
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+            }
+            &__list-order {
+                &__item-order {
+                    display: flex;
+                    align-items: center;
+                    padding: 9px 16px;
+                    background: #fff;
+                    box-shadow: 0px 4px 10px 0px rgba(8, 35, 106, 0.25);
+                    margin-top: 12px;
+                    border-radius: 8px;
+                    .wrapper-checkbox {
+                        width: 390px;
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+                        img {
+                            width: 77px;
+                            height: 79px;
+                            object-fit: cover;
+                        }
+                        .wrapper-name-order {
+                            width: 260px;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                        }
+                    }
+                    .wrapper-price-count-remove {
+                        flex: 1;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        .count-order {
+                            display: flex;
+                            align-items: center;
+                            width: 55px;
+                            border: 1px solid #ccc;
+                            border-radius: 4px;
+                            .ant-input-number.ant-input-number-sm {
+                                font-size: 15px;
+                            }
+                        }
+                        span {
+                            color: rgb(255, 66, 78);
+                            font-size: 15px;
+                            font-weight: 400;
+                        }
+                    }
+                }
+            }
+        }
+        &__wrapper-right {
+            width: 320px;
+            margin-left: 20px;
+            display: flex ;
+            flex-direction: column; 
+            gap: 10px; 
+            align-items: center;
+            .wrapper-right {
+                box-shadow: 0px 4px 10px 0px rgba(8, 35, 106, 0.25);
+                background: #fff;
+                border-radius: 8px;
+                width: 100%;
+            }
+            .wrapper-info {
+                padding: 17px 20px;
+                border-bottom: 1px solid #f5f5f5;
+                background: #fff;
+                border-top-right-radius: 6px;
+                border-top-left-radius: 6px;
+                width: 100%;
+                span {
+                    font-size: 15px;
+                    font-weight: 400;
+                    line-height: 27.5px;
+                }
+                &__price-total {
+                    line-height: 27.5px;
+                    font-size: 15px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+            
+            }
+            .wrapper-total {
+                font-size: 15px;
+                display: flex;
+                align-items: flex-start; 
+                justify-content: space-between;
+                padding: 17px 20px;
+                background: #fff ;
+                border-bottom-right-radius: 6px;
+                border-bottom-left-radius: 6px;
+            }
+        }
+    }
+}
