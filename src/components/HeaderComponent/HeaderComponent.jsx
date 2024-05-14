@@ -26,10 +26,10 @@ import notiIcon from "../../assets/icons/icon-notification.png";
 import logoutIcon from "../../assets/icons/icon-logout.png";
 import ButtonInputSearch from "../ButtonInputSearch/ButtonInputSearch";
 import * as UserService from "../../services/UserService";
+import * as StoreService from "../../services/StoreService";
 import { resetUser } from "../../redux/slices/userSlice";
 import { searchProduct } from "../../redux/slices/productSlice";
 import Loading from "../LoadingComponent/Loading";
-import InputComponent from "../InputComponent/InputComponent";
 import ButtonComponent from "../ButtonComponent/ButtonComponent";
 import bannerGoTech from "../../assets/pictures/gotech-banner-big-sale.png";
 import usaIcon from "../../assets/icons/icon-usa.png";
@@ -39,6 +39,10 @@ import upIcon from "../../assets/icons/icon-up.svg";
 import downIcon from "../../assets/icons/icon-down.svg";
 import i18n from "../../i18n/index";
 import { useTranslation } from "react-i18next";
+import * as messages from "../../components/Message/Message";
+import { getBase64 } from "../../utils";
+import InputForm from "../InputForm/InputForm";
+import { useMutationHooks } from "../../hooks/useMutationHook";
 
 const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
   const navigate = useNavigate();
@@ -55,6 +59,16 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
   const user = useSelector((state) => state.user);
   const order = useSelector((state) => state.order);
 
+  const [initStore, setInitStore] = useState({
+    description: "",
+    email: "",
+    logo: "",
+    name: "",
+    user: "",
+    code: "",
+    isCheckConditon: false,
+  });
+
   useEffect(() => {
     setLoading(true);
     setUserName(user?.name);
@@ -62,6 +76,49 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     setLoading(false);
   }, [user?.name, user?.avatar]);
 
+  const handleChangeLogo = async ({ fileList }) => {
+    const file = fileList[0];
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    console.log("image", file.preview);
+    setInitStore({ ...initStore, logo: file.preview });
+  };
+
+  const handleChangeNameStore = (value) => {
+    setInitStore({ ...initStore, name: value });
+  };
+
+  const handleChangeEmailStore = (value) => {
+    setInitStore({ ...initStore, email: value });
+  };
+
+  const handleCheck = (event) => {
+    setInitStore({ ...initStore, isCheckConditon: event.target.checked });
+  };
+
+  const handleSendOTP = async () => {
+    if (initStore.isCheckConditon) {
+      const res = await StoreService.createCode(initStore);
+      return res;
+    }
+  };
+
+  const mutation = useMutationHooks((data, access_token) =>
+    StoreService.createStore(data, access_token)
+  );
+  const { data, isPending, isSuccess, isError } = mutation;
+  useEffect(() => {
+    if (isSuccess && data?.status === "OK") {
+      messages.success();
+      handleNavigateLogin();
+    } else if (isError) {
+      messages.error();
+    }
+  }, [isSuccess, isError, data]);
+  const handleSignUpStore = () => {
+    mutation.mutateAsync(initStore);
+  };
   const handleNavigateLogin = () => {
     navigate("/sign-in");
   };
@@ -377,12 +434,18 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
         <div>
           <div className="col-shop">
             <div className="col-shop__name">{t("Shop Name")}:</div>
-            <InputComponent bordered={"none"} />
+            <InputForm
+              bordered={"none"}
+              type="text"
+              value={initStore.name}
+              onChange={handleChangeNameStore}
+            />
           </div>
           <div className="col-shop" style={{ alignItems: "flex-start" }}>
             <div className="col-shop__name">Logo:</div>
             <Upload
-              // onChange={handleOnChangeAvatar}
+              onChange={handleChangeLogo}
+              maxCount={1}
               listType="picture-card"
             >
               <div>
@@ -393,11 +456,16 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
           </div>
           <div className="col-shop">
             <div className="col-shop__name">Email:</div>
-            <InputComponent placeholder={"Nhập email"}></InputComponent>
+            <InputForm
+              type="text"
+              placeholder={"Nhập email"}
+              value={initStore.email}
+              onChange={handleChangeEmailStore}
+            ></InputForm>
           </div>
           <div className="verify">
             <span className="checkbox">
-              <input type="checkbox"></input>
+              <input type="checkbox" onChange={handleCheck}></input>
             </span>
             <span>
               {t("By signing up, you have read and agreed to")}{" "}
@@ -413,6 +481,7 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
           <ButtonComponent
             textButton={t("Send OTP via Email")}
             styleButton={{ background: "#2A86FF" }}
+            onClick={handleSendOTP}
           />
           <div className="more-shop">
             <img
