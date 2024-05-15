@@ -43,12 +43,14 @@ import * as messages from "../../components/Message/Message";
 import { getBase64 } from "../../utils";
 import InputForm from "../InputForm/InputForm";
 import { useMutationHooks } from "../../hooks/useMutationHook";
+import { updateStore } from "../../redux/slices/storeSlice";
 
 const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
   const [isModalOpen, setIsOpenModal] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isPopupLanguageOpen, setIsPopupLanguageOpen] = useState(false);
@@ -81,7 +83,6 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
-    console.log("image", file.preview);
     setInitStore({ ...initStore, logo: file.preview });
   };
 
@@ -97,30 +98,50 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     setInitStore({ ...initStore, isCheckConditon: event.target.checked });
   };
 
+  const handleChangeCode = (value) => {
+    setInitStore({ ...initStore, code: value, user: user?.id });
+  };
+
   const handleSendOTP = async () => {
-    if (initStore.isCheckConditon) {
+    const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    const isCheckEmail = reg.test(initStore.email);
+    if (initStore.isCheckConditon && isCheckEmail) {
       const res = await StoreService.createCode(initStore);
+      setIsSignUp(true);
       return res;
     }
   };
 
-  const mutation = useMutationHooks((data, access_token) =>
-    StoreService.createStore(data, access_token)
-  );
-  const { data, isPending, isSuccess, isError } = mutation;
+  const updateUser = async () => {
+    await UserService.updateUser(user?.id, { ...user, role: "seller" });
+  };
+
+  const mutation = useMutationHooks((data) => {
+    const { store, token } = data;
+    StoreService.createStore(store, token);
+  });
+  const { data, isSuccess, isError } = mutation;
   useEffect(() => {
     if (isSuccess && data?.status === "OK") {
       messages.success();
-      handleNavigateLogin();
+      dispatch(updateStore({ ...initStore }));
+      updateUser();
+      handleNavigateStore();
     } else if (isError) {
       messages.error();
     }
-  }, [isSuccess, isError, data]);
+  }, [data, isSuccess, isError]);
   const handleSignUpStore = () => {
-    mutation.mutateAsync(initStore);
+    const store = initStore;
+    const token = user?.access_token;
+    mutation.mutateAsync({ store, token });
+    setIsOpenModal(false);
   };
   const handleNavigateLogin = () => {
     navigate("/sign-in");
+  };
+  const handleNavigateStore = () => {
+    navigate("/system/admin");
   };
   const handleNavigateOrder = () => {
     navigate("/order");
@@ -431,75 +452,95 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
         // closeIcon={false}
         // onOk={handleDeleteUser}
       >
-        <div>
-          <div className="col-shop">
-            <div className="col-shop__name">{t("Shop Name")}:</div>
-            <InputForm
-              bordered={"none"}
-              type="text"
-              value={initStore.name}
-              onChange={handleChangeNameStore}
+        {isSignUp ? (
+          <>
+            <div className="col-shop">
+              <div className="col-shop__name">Mã OTP:</div>
+              <InputForm
+                type="text"
+                placeholder={"Nhập OTP từ gmail"}
+                value={initStore.code}
+                onChange={handleChangeCode}
+              ></InputForm>
+            </div>
+            <ButtonComponent
+              textButton={t("Sign up")}
+              styleButton={{ background: "#2A86FF" }}
+              onClick={handleSignUpStore}
             />
+          </>
+        ) : (
+          <div>
+            <div className="col-shop">
+              <div className="col-shop__name">{t("Shop Name")}:</div>
+              <InputForm
+                bordered={"none"}
+                type="text"
+                value={initStore.name}
+                onChange={handleChangeNameStore}
+              />
+            </div>
+            <div className="col-shop" style={{ alignItems: "flex-start" }}>
+              <div className="col-shop__name">Logo:</div>
+              <Upload
+                onChange={handleChangeLogo}
+                maxCount={1}
+                listType="picture-card"
+              >
+                <div>
+                  <PlusOutlined />
+                  <div style={{ marginTop: 8 }}>{t("Upload")}</div>
+                </div>
+              </Upload>
+            </div>
+            <div className="col-shop">
+              <div className="col-shop__name">Email:</div>
+              <InputForm
+                type="text"
+                placeholder={"Nhập email"}
+                value={initStore.email}
+                onChange={handleChangeEmailStore}
+              ></InputForm>
+            </div>
+            <div className="verify">
+              <span className="checkbox">
+                <input type="checkbox" onChange={handleCheck}></input>
+              </span>
+              <span>
+                {t("By signing up, you have read and agreed to")}{" "}
+                <p onClick={() => navigate("/term-of-services")}>
+                  {t("the Terms, Conditions")}
+                </p>{" "}
+                {t("and")}{" "}
+                <p onClick={() => navigate("/privacy-policy")}>
+                  {t("Privacy Policy of Go Tech")}
+                </p>
+              </span>
+            </div>
+
+            <ButtonComponent
+              textButton={t("Send OTP via Email")}
+              styleButton={{ background: "#2A86FF" }}
+              onClick={handleSendOTP}
+            />
+            <div className="more-shop">
+              <img
+                src={mallIcon}
+                alt="icon-mall"
+                style={{ height: 18, width: 18 }}
+              ></img>
+              <div>{t("Register GoMall Store")}</div>
+            </div>
+            <div className="more-shop">
+              <img
+                src={globalIcon}
+                alt="icon-global"
+                style={{ height: 18, width: 18 }}
+              ></img>
+              <div>{t("Register International Store")}</div>
+            </div>
           </div>
-          <div className="col-shop" style={{ alignItems: "flex-start" }}>
-            <div className="col-shop__name">Logo:</div>
-            <Upload
-              onChange={handleChangeLogo}
-              maxCount={1}
-              listType="picture-card"
-            >
-              <div>
-                <PlusOutlined />
-                <div style={{ marginTop: 8 }}>{t("Upload")}</div>
-              </div>
-            </Upload>
-          </div>
-          <div className="col-shop">
-            <div className="col-shop__name">Email:</div>
-            <InputForm
-              type="text"
-              placeholder={"Nhập email"}
-              value={initStore.email}
-              onChange={handleChangeEmailStore}
-            ></InputForm>
-          </div>
-          <div className="verify">
-            <span className="checkbox">
-              <input type="checkbox" onChange={handleCheck}></input>
-            </span>
-            <span>
-              {t("By signing up, you have read and agreed to")}{" "}
-              <p onClick={() => navigate("/term-of-services")}>
-                {t("the Terms, Conditions")}
-              </p>{" "}
-              {t("and")}{" "}
-              <p onClick={() => navigate("/privacy-policy")}>
-                {t("Privacy Policy of Go Tech")}
-              </p>
-            </span>
-          </div>
-          <ButtonComponent
-            textButton={t("Send OTP via Email")}
-            styleButton={{ background: "#2A86FF" }}
-            onClick={handleSendOTP}
-          />
-          <div className="more-shop">
-            <img
-              src={mallIcon}
-              alt="icon-mall"
-              style={{ height: 18, width: 18 }}
-            ></img>
-            <div>{t("Register GoMall Store")}</div>
-          </div>
-          <div className="more-shop">
-            <img
-              src={globalIcon}
-              alt="icon-global"
-              style={{ height: 18, width: 18 }}
-            ></img>
-            <div>{t("Register International Store")}</div>
-          </div>
-        </div>
+        )}
       </PopupSignupShop>
     </div>
   );
