@@ -11,15 +11,18 @@ import {
   WrapperProduct,
   WrapperStyleContent,
 } from "./style";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import * as OrderService from "../../services/OrderService";
 import { useQuery } from "@tanstack/react-query";
 import { orderContant } from "../../contant";
 import { convertPrice } from "../../utils";
 import { useMemo } from "react";
 import Loading from "../../components/LoadingComponent/Loading";
+import { useTranslation } from "react-i18next";
 
 const DetailsOrderPage = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const params = useParams();
   const location = useLocation();
   const { state } = location;
@@ -43,12 +46,33 @@ const DetailsOrderPage = () => {
     }, 0);
     return result;
   }, [data]);
+  console.log(data);
+
+  const handlePage = (url) => {
+    if (url === "/my-orders") {
+      navigate("/my-orders");
+    } else {
+      navigate("/");
+    }
+  };
 
   return (
     <Loading isLoading={isLoading}>
       <div style={{ width: "100%", height: "100vh", background: "#f5f5fa" }}>
         <div style={{ width: "1270px", margin: "0 auto", height: "1270px" }}>
-          <h4>Chi tiết đơn hàng</h4>
+          <h5 style={{ lineHeight: "37px", fontSize: "15px" }}>
+            <span style={{ cursor: "pointer" }} onClick={() => handlePage("/")}>
+              {t("Home")}
+            </span>{" "}
+            -{" "}
+            <span
+              style={{ cursor: "pointer" }}
+              onClick={() => handlePage("/my-orders")}
+            >
+              {t("My orders")}
+            </span>{" "}
+            - {t("Order details")}
+          </h5>
           <WrapperHeaderUser>
             <WrapperInfoUser>
               <WrapperLabel>Địa chỉ người nhận</WrapperLabel>
@@ -128,7 +152,7 @@ const DetailsOrderPage = () => {
                         height: "70px",
                       }}
                     >
-                      Điện thoại
+                      {order?.name}
                     </div>
                   </WrapperNameProduct>
                   <WrapperItem>{convertPrice(order?.price)}</WrapperItem>
