@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Badge, Col, Popover, Upload } from "antd";
+import { Badge, Col, Popover, Upload, message } from "antd";
 import {
   UserOutlined,
   CaretDownOutlined,
@@ -58,6 +58,7 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
   const [userName, setUserName] = useState("");
   const [userAvatar, setUserAvatar] = useState("");
   const [search, setSearch] = useState("");
+  const [error, setError] = useState({});
   const user = useSelector((state) => state.user);
   const order = useSelector((state) => state.order);
 
@@ -103,32 +104,43 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
   };
 
   const handleSendOTP = async () => {
-    const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-    const isCheckEmail = reg.test(initStore.email);
-    if (initStore.isCheckConditon && isCheckEmail) {
+    if (!initStore.isCheckConditon) {
+      setError({
+        message: "You need to check the terms and policies",
+        status: "ERR",
+      });
+    }
+    if (initStore.isCheckConditon) {
       const res = await StoreService.createCode(initStore);
-      setIsSignUp(true);
-      return res;
+      if (res.status === "OK") {
+        setIsSignUp(true);
+      } else {
+        setError(res);
+      }
     }
   };
 
-  const updateUser = async () => {
-    await UserService.updateUser(user?.id, { ...user, role: "seller" });
+  const updateUser = async (user) => {
+    const res = await UserService.updateUser(user?.id, {
+      ...user,
+      role: "seller",
+    });
+    return res;
   };
 
-  const mutation = useMutationHooks((data) => {
+  const mutation = useMutationHooks(async (data) => {
     const { store, token } = data;
-    StoreService.createStore(store, token);
+    return await StoreService.createStore(store, token);
   });
   const { data, isSuccess, isError } = mutation;
   useEffect(() => {
     if (isSuccess && data?.status === "OK") {
-      messages.success();
+      messages.success("Sign up success");
       dispatch(updateStore({ ...initStore }));
-      updateUser();
+      updateUser(user);
       handleNavigateStore();
     } else if (isError) {
-      messages.error();
+      messages.error("Error sign up");
     }
   }, [data, isSuccess, isError]);
   const handleSignUpStore = () => {
@@ -136,12 +148,13 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     const token = user?.access_token;
     mutation.mutateAsync({ store, token });
     setIsOpenModal(false);
+    setIsSignUp(false);
   };
   const handleNavigateLogin = () => {
     navigate("/sign-in");
   };
   const handleNavigateStore = () => {
-    navigate("/system/admin");
+    navigate("/store");
   };
   const handleNavigateOrder = () => {
     navigate("/order");
@@ -171,7 +184,7 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     if (type === "profile") {
       navigate("/profile-user");
     } else if (type === "admin") {
-      navigate("/system/admin");
+      navigate("/store");
     } else if (type === "my-orders") {
       navigate("/my-orders", {
         state: {
@@ -198,14 +211,22 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
       <WrapperContentPopup onClick={() => handleClickNavigate("my-orders")}>
         {t("My orders")}
       </WrapperContentPopup>
-      <WrapperContentPopup
-        onClick={() => {
-          setIsOpenModal(true);
-          setIsPopupOpen(false);
-        }}
-      >
-        {t("Sell with Go Tech")}
-      </WrapperContentPopup>
+      {user?.role === "seller" ? (
+        <>
+          <WrapperContentPopup onClick={() => handleClickNavigate("admin")}>
+            {t("My shop")}
+          </WrapperContentPopup>
+        </>
+      ) : (
+        <WrapperContentPopup
+          onClick={() => {
+            setIsOpenModal(true);
+            setIsPopupOpen(false);
+          }}
+        >
+          {t("Sell with Go Tech")}
+        </WrapperContentPopup>
+      )}
       <WrapperContentPopup onClick={() => handleClickNavigate()}>
         {t("Log out")}
       </WrapperContentPopup>
@@ -250,7 +271,6 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     // dispatch(searchProduct(search));
   };
   const handleSearch = () => {
-    // console.log("search", search);
     dispatch(searchProduct(search));
   };
   return (
@@ -517,6 +537,12 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
                 </p>
               </span>
             </div>
+
+            {error.status === "ERR" && (
+              <div style={{ color: "red", fontSize: "15px" }}>
+                {error.message}
+              </div>
+            )}
 
             <ButtonComponent
               textButton={t("Send OTP via Email")}

@@ -10,7 +10,6 @@ export const createCode = async (data) => {
   return res.data;
 };
 export const createStore = async (data, access_token) => {
-  console.log(data, access_token);
   const res = await axiosJWT.post(
     `${process.env.REACT_APP_API_KEY}/store/create-store`,
     data,

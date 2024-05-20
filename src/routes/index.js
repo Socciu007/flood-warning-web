@@ -103,10 +103,10 @@ export const route = [
     isShowHeader: true,
   },
   {
-    path: "/system/admin",
+    path: "/store",
     page: AdminPage,
     isShowHeader: false,
-    // isPrivate: true
+    isPrivate: true,
   },
   {
     path: "*",
