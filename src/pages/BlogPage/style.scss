@@ -2,14 +2,25 @@
     color: #173294;
     background: url("./../../assets/pictures/background.png") center/cover;
     .blog-wrap {
+        align-items: center;
         max-width: 1400px;
         margin-left: auto;
         margin-right: auto;
         padding: 0 120px 0 180px;
-        padding-top: 40px;
+        padding-top: 30px;
         margin-bottom: 60px;
         display: flex;
         flex-direction: column;
+        .ant-btn {
+            width: 200px;
+            margin-bottom: 10px;
+            background-color: #fb16ff57;
+            font-size: 18px;
+            padding: 0;
+        }
+        .ant-btn:hover {
+            background-color: #fb16ff57;
+        }
     }
     .header-wrap {
         display: flex;
@@ -45,6 +56,7 @@
         word-wrap: break-word;
     }
     .search-wrap {
+        width: 100%;
         height: 50px;
         margin-bottom: 24px; 
         justify-content: flex-start;
