@@ -111,7 +111,7 @@ const SignInPage = () => {
               onClick={handleSignIn}
               styleButton={{ background: "rgb(255, 57, 69)" }}
               size={40}
-              textButton="Đăng nhập"
+              textButton={"Đăng nhập"}
             ></ButtonComponent>
           </Loading>
           <p>

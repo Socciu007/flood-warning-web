@@ -6,8 +6,8 @@ import HeaderComponent from "../../components/HeaderComponent/HeaderComponent";
 import AdminUser from "../../components/AdminUser/AdminUser";
 import AdminProduct from "../../components/AdminProduct/AdminProduct";
 import refundIcon from "../../assets/icons/icon-refund.png";
-import reviewIcon from "../../assets/icons/icon-review.png";
-import voucherIcon from "../../assets/icons/icon-voucher.png";
+// import reviewIcon from "../../assets/icons/icon-review.png";
+// import voucherIcon from "../../assets/icons/icon-voucher.png";
 import ReturnPage from "../ReturnPage/ReturnPage";
 
 const AdminPage = () => {

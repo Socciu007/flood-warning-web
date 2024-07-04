@@ -39,17 +39,17 @@ const FooterComponent = () => {
         </div>
         <div class="support">
           <div class="supportItem">
-            <a href="https://www.youtube.com" target="_blank">
+            <a href="https://www.youtube.com" target="_blank" rel="noreferrer">
               <img src={youtubeIcon} alt="youtube" />
             </a>
           </div>
           <div class="supportItem">
-            <a href="https://www.facebook.com" target="_blank">
+            <a href="https://www.facebook.com" target="_blank" rel="noreferrer">
               <img src={facebookIcon} alt="facebook" />
             </a>
           </div>
           <div class="supportItem">
-            <a href="https://twitter.com" target="_blank">
+            <a href="https://twitter.com" target="_blank" rel="noreferrer">
               <img src={twitterIcon} alt="twister" />
             </a>
           </div>

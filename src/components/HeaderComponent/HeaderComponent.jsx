@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Badge, Col, Popover, Upload, message } from "antd";
+import { Badge, Col, Popover, Upload } from "antd";
 import {
   UserOutlined,
   CaretDownOutlined,
@@ -129,26 +129,25 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
   };
 
   const mutation = useMutationHooks(async (data) => {
-    const { store, token } = data;
-    return await StoreService.createStore(store, token);
+    return await StoreService.createStore({ ...data });
   });
   const { data, isSuccess, isError } = mutation;
+
   useEffect(() => {
     if (isSuccess && data?.status === "OK") {
-      messages.success("Sign up success");
       dispatch(updateStore({ ...initStore }));
       updateUser(user);
       handleNavigateStore();
+      messages.success("Sign up successfully!");
     } else if (isError) {
-      messages.error("Error sign up");
+      messages.error("Error sign up. Please again!");
     }
   }, [data, isSuccess, isError]);
+
   const handleSignUpStore = () => {
-    const store = initStore;
-    const token = user?.access_token;
-    mutation.mutateAsync({ store, token });
     setIsOpenModal(false);
     setIsSignUp(false);
+    mutation.mutateAsync(initStore);
   };
   const handleNavigateLogin = () => {
     navigate("/sign-in");
@@ -166,6 +165,7 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     setLoading(true);
     await UserService.logoutUser();
     dispatch(resetUser());
+    navigate("/sign-in");
     setLoading(false);
   };
 

@@ -31,9 +31,9 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const mutation = useMutationHooks((data) => {
+  const mutation = useMutationHooks(async (data) => {
     const { id, ...rests } = data;
-    UserService.updateUser(id, rests);
+    return await UserService.updateUser(id, rests);
   });
   const { data, isPending, isSuccess, isError } = mutation;
 
@@ -47,21 +47,18 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      message.success();
       handleGetDetailsUser(user?.id, user?.access_token);
+      message.success();
     } else if (isError) {
       message.error();
     }
-  }, [isSuccess, isError]);
+  }, [data, isSuccess, isError]);
 
   const handleGetDetailsUser = async (id, token) => {
     const res = await UserService.getDatailsUser(id, token);
-    dispatch(
-      updateUser({
-        ...res?.data,
-        access_token: token,
-      })
-    );
+    dispatch(updateUser({ ...res?.data, access_token: token }));
+    // const res = await UserService.getDatailsUser(id, token);
+    // dispatch(updateUser({ ...res?.data, access_token: token }));
   };
 
   const handleOnChangeEmail = (value) => {
@@ -81,7 +78,6 @@ const ProfilePage = () => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
-    console.log("image", file.preview);
     setAvatar(file.preview);
   };
   const handleUpdate = () => {
@@ -250,7 +246,7 @@ const ProfilePage = () => {
                 fontSize: "14px",
                 fontWeight: "600",
               }}
-            ></ButtonComponent>
+            />
           </WrapperInput>
         </WrapperContentProfile>
       </Loading>

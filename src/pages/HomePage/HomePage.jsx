@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import TypeProduct from "../../components/TypeProduct/TypeProduct";
 import {
   WrapperButton,
@@ -28,7 +28,7 @@ const HomePage = () => {
   const { t } = useTranslation();
   const searchProduct = useSelector((state) => state?.product?.search);
   const searchDebounce = useDebounceHooks(searchProduct, 500);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(20);
   const [typeProduct, setTypeProduct] = useState([]);
 
   //get all product
@@ -46,17 +46,14 @@ const HomePage = () => {
     }
   };
 
-  const {
-    data: products,
-    isLoading,
-    isPreviousData,
-  } = useQuery({
+  const { data: products, isLoading } = useQuery({
     queryKey: ["products", limit, searchDebounce],
     queryFn: fetchProductAll,
     retry: 3,
     retryDelay: 1000,
     keepPreviousData: true,
   });
+
   useEffect(() => {
     fetchGetAllTypeProduct();
   }, []);
@@ -117,7 +114,7 @@ const HomePage = () => {
                   textButton={t("More")}
                   type="outline"
                   styleButton={{
-                    background: "#fff",
+                    // background: "#fff",
                     cursor: `${
                       products?.total === products?.data?.length ||
                       products?.totalPage === 1
@@ -133,7 +130,7 @@ const HomePage = () => {
                     products?.total === products?.data?.length ||
                     products?.totalPage === 1
                   }
-                  onClick={() => setLimit((prev) => prev + 5)}
+                  onClick={() => setLimit((prev) => prev + 10)}
                 ></WrapperButtonMore>
               </WrapperButton>
             </WrapperContainer>

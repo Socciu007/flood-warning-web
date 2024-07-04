@@ -43,6 +43,7 @@ const BlogPage = () => {
 
   useEffect(() => {
     if (isSuccess && data?.status === "OK") {
+      getAllBlogs();
       messages.success("Create blog success");
     } else if (isError) {
       messages.error("Error create blog");

@@ -34,6 +34,7 @@ const AdminUser = () => {
     phone: "",
     isAdmin: false,
     address: "",
+    role: "",
   });
   const [form] = Form.useForm();
 
@@ -65,6 +66,7 @@ const AdminUser = () => {
         phone: res?.data?.phone,
         isAdmin: res?.data?.isAdmin,
         address: res?.data?.address,
+        role: res?.data?.role,
       });
     }
   };
@@ -242,6 +244,11 @@ const AdminUser = () => {
       dataIndex: "phone",
       sorter: (a, b) => a.phone - b.phone,
       ...getColumnSearchProps("phone"),
+    },
+    {
+      title: "Role",
+      dataIndex: "role",
+      ...getColumnSearchProps("role"),
     },
     {
       title: "Admin",
@@ -442,6 +449,19 @@ const AdminUser = () => {
                 name="address"
               />
             </Form.Item>
+
+            <Form.Item
+              label="Role"
+              name="role"
+              rules={[{ required: true, message: "Please input your role!" }]}
+            >
+              <InputComponent
+                value={stateUserDetails.role}
+                onChange={handleOnchangeDetails}
+                name="role"
+              />
+            </Form.Item>
+
             <Form.Item label="Admin" name="isAdmin">
               <Select
                 name="isAdmin"

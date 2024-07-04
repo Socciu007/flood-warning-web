@@ -1,7 +1,5 @@
 import axios from "axios";
 
-const axiosJWT = axios.create();
-
 export const createCode = async (data) => {
   const res = await axios.post(
     `${process.env.REACT_APP_API_KEY}/store/create-code`,
@@ -9,15 +7,10 @@ export const createCode = async (data) => {
   );
   return res.data;
 };
-export const createStore = async (data, access_token) => {
-  const res = await axiosJWT.post(
+export const createStore = async (data) => {
+  const res = await axios.post(
     `${process.env.REACT_APP_API_KEY}/store/create-store`,
-    data,
-    {
-      headers: {
-        token: `Bearer ${access_token}`,
-      },
-    }
+    data
   );
   return res.data;
 };
