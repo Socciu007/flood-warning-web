@@ -1,7 +1,7 @@
 import HomePage from "../pages/HomePage/HomePage";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
-
+import RegisterPage from "../pages/RegisterPage/RegisterPage";
 
 export const route = [
   {
@@ -12,6 +12,10 @@ export const route = [
   {
     path: "/login",
     page: LoginPage,
+  },
+  {
+    path: "/register",
+    page: RegisterPage,
   },
   {
     path: "*",

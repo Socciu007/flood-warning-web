@@ -1,8 +1,10 @@
-import React from 'react'
+import React from "react";
 import { Form, Input, Button } from "antd";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const onFinish = (values) => {
     console.log("Success:", values);
   };
@@ -10,40 +12,44 @@ const LoginPage = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2 className='login-title'>HỆ THỐNG PHÒNG CHỐNG THIÊN TAI</h2>
+        <h2 className="login-title">{t("DISASTER PREVENTION SYSTEM")}</h2>
         <Form
           name="login"
           className="login-form"
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          layout='vertical'
+          layout="vertical"
         >
           <Form.Item
-            name="username"
-            rules={[{ required: true, message: "Vui lòng nhập tài khoản!" }]}
+            name="email"
+            rules={[{ required: true, message: t("Please enter your email!") }]}
+            className="float-label-input"
           >
-            <Input placeholder="Tài khoản" />
+            <Input placeholder={t("Email")} />
           </Form.Item>
 
           <Form.Item
             name="password"
-            rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
+            rules={[
+              { required: true, message: t("Please enter your password!") },
+            ]}
           >
-            <Input.Password placeholder="Mật khẩu" />
+            <Input.Password placeholder={t("Password")} />
           </Form.Item>
 
           <Form.Item>
             <Button type="primary" htmlType="submit" className="login-button">
-              ĐĂNG NHẬP
+              {t("Login")}
             </Button>
           </Form.Item>
         </Form>
-        <a href="#" className="sso-login">
-          Đăng nhập SSO
-        </a>
+        <div className="login-link">
+          <a href="#">{t("Forgot your password?")}</a>
+          <a href="/register">{t("Register a new account")}</a>
+        </div>
       </div>
     </div>
   );
 };
 
-export default LoginPage
+export default LoginPage;
