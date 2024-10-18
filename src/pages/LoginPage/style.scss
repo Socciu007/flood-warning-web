@@ -1,0 +1,100 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url("../../assets/pictures/background.png") no-repeat center
+    center/cover;
+  .login-box {
+    position: relative;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 430px;
+    padding-top: 45px;
+    .login-title {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 10px 40px;
+      border-radius: 10px;
+      text-align: center;
+      color: #fff;
+      margin-bottom: 20px;
+      font-size: 18px;
+      line-height: 1.5em;
+      font-weight: bold;
+      white-space: nowrap;
+      background: linear-gradient(60deg, #0099ff, #00d5ef);
+      box-shadow: 0 4px 20px 0 rgba(35, 35, 35, 0.14),
+        0 7px 10px -5px rgba(156, 39, 176, 0.4);
+    }
+    .login-form {
+      width: 300px;
+      margin: 0 auto;
+      .ant-form-item {
+        margin-bottom: 10px;
+      }
+
+      .ant-input,
+      .ant-input-password {
+        border: none;
+        border-bottom: 1px solid #d9d9d9;
+        border-radius: 0;
+        padding: 10px 0 2px 0;
+        font-size: 16px;
+
+        &:focus {
+          box-shadow: none;
+          // border-bottom-color: #1890ff;
+        }
+      }
+
+      .ant-input-password {
+        .ant-input {
+          border-bottom: none;
+        }
+      }
+
+      .ant-form-item-explain {
+        margin-top: 5px;
+      }
+
+      .ant-btn {
+        height: 40px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 4px;
+        background-color: #1890ff;
+        border-color: #1890ff;
+        &:hover,
+        &:focus {
+          background-color: #40a9ff;
+          border-color: #40a9ff;
+        }
+      }
+    }
+  }
+
+  .ant-form-item-label > label {
+    color: #333;
+  }
+
+  .login-button {
+    width: 100%;
+  }
+
+  .sso-login {
+    display: block;
+    margin-top: 10px;
+    color: #8a8a8a;
+    text-decoration: none;
+  }
+  .sso-login:hover {
+    color: #007bff;
+    text-decoration: underline;
+  }
+}

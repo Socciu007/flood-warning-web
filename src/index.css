@@ -1,6 +1,5 @@
-@import "slick-carousel/slick/slick.css";
-@import "slick-carousel/slick/slick-theme.css";
-
+/* @import "slick-carousel/slick/slick.css"; */
+/* @import "slick-carousel/slick/slick-theme.css"; */
 
 body {
   margin: 0;
@@ -12,31 +11,37 @@ html {
   font-size: 62.5%;
 }
 @font-face {
-  font-family: 'GoogleSans';
+  font-family: "GoogleSans";
   font-style: normal;
   font-weight: normal;
-  src: local('GoogleSans'), url('./assets/fonts/GoogleSansTTF/GoogleSans-Regular.ttf') format('truetype');
+  src: local("GoogleSans"),
+    url("./assets/fonts/GoogleSansTTF/GoogleSans-Regular.ttf")
+      format("truetype");
 }
 
 @font-face {
-  font-family: 'GoogleSans';
+  font-family: "GoogleSans";
   font-style: normal;
   font-weight: 300;
-  src: local('GoogleSans'), url('./assets/fonts/GoogleSansTTF/GoogleSans-Regular.ttf') format('truetype');
+  src: local("GoogleSans"),
+    url("./assets/fonts/GoogleSansTTF/GoogleSans-Regular.ttf")
+      format("truetype");
 }
 
 @font-face {
-  font-family: 'GoogleSansMedium';
+  font-family: "GoogleSansMedium";
   font-style: normal;
   font-weight: 600;
-  src: local('GoogleSans'), url('./assets/fonts/GoogleSansTTF/GoogleSans-Medium.ttf') format('truetype');
+  src: local("GoogleSans"),
+    url("./assets/fonts/GoogleSansTTF/GoogleSans-Medium.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'GoogleSansBold';
+  font-family: "GoogleSansBold";
   font-style: normal;
   font-weight: 700;
-  src: local('GoogleSans'), url('./assets/fonts/GoogleSansTTF/GoogleSans-Bold.ttf') format('truetype');
+  src: local("GoogleSans"),
+    url("./assets/fonts/GoogleSansTTF/GoogleSans-Bold.ttf") format("truetype");
 }
 
 *,
@@ -48,7 +53,7 @@ html {
 * {
   margin: 0;
   padding: 0;
-  font-family: 'GoogleSans';
+  font-family: "GoogleSans";
 }
 
 img,
@@ -70,10 +75,10 @@ select {
   outline: none;
 }
 input::placeholder {
-  font-family: 'GoogleSans', sans-serif;
+  font-family: "GoogleSans", sans-serif;
 }
 select {
-  font-family: 'GoogleSans', sans-serif;
+  font-family: "GoogleSans", sans-serif;
 }
 td {
   font-weight: 400;
@@ -96,7 +101,7 @@ label,
 th {
   word-wrap: break-word;
   text-align: left;
-  font-family: 'GoogleSans', sans-serif;
+  font-family: "GoogleSans", sans-serif;
 }
 .blur {
   width: 100%;
