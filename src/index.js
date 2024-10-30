@@ -12,7 +12,7 @@ const queryClient = new QueryClient()
 root.render(
   // Provide the client to your App
   <QueryClientProvider client={queryClient}>
-      <App />
+    <App />
     <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>
 );

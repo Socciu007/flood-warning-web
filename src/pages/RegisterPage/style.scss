@@ -41,5 +41,14 @@
         color: #1890ff;
       }
     }
+
+    .ant-pro-form-group-container {
+      display: flex !important;
+      gap: 10px !important;
+      .ant-space-item {
+        flex: 1;
+        width: 100px;
+      }
+    }
   }
 }

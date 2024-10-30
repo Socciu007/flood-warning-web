@@ -1,5 +1,10 @@
-import React from "react";
-import { Form, Input, Button, Select } from "antd";
+import React, { useEffect, useState } from "react";
+import {
+  ProForm,
+  ProFormDependency,
+  ProFormSelect,
+  ProFormText,
+} from "@ant-design/pro-components";
 import {
   UserOutlined,
   MailOutlined,
@@ -10,14 +15,24 @@ import {
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import "./style.scss";
-
-const { Option } = Select;
+import { getAllRegion } from "../../services/serviceRegion";
 
 const RegisterPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [regions, setRegions] = useState([]);
 
-  const onFinish = (values) => {
+  // Get all regions
+  const fetchAllRegion = async () => {
+    const res = await getAllRegion();
+    setRegions(res.data);
+  };
+
+  useEffect(() => {
+    fetchAllRegion();
+  }, [regions]);
+
+  const handleRegister = (values) => {
     console.log("Received values of form: ", values);
     // Xử lý logic đăng ký ở đây
   };
@@ -27,55 +42,70 @@ const RegisterPage = () => {
       <div className="register-box">
         <h2>{t("REGISTER")}</h2>
         <p>{t("Welcome to the Disaster Prevention System")}</p>
-        <Form name="register" onFinish={onFinish} layout="vertical">
-          <Form.Item
+        <ProForm
+          onFinish={handleRegister}
+          submitter={{
+            searchConfig: {
+              submitText: t("Register"),
+            },
+            submitButtonProps: { style: { width: "100%" } },
+            resetButtonProps: false,
+          }}
+          initialValues={{ username: "", email: "", phone: "", address: "", password: "", confirmPassword: "", role: "", province: "", name: "" }}
+        >
+          <ProFormText
             name="username"
+            placeholder={t("Username")}
+            fieldProps={{ prefix: <UserOutlined /> }}
             rules={[
               { required: true, message: t("Please enter your username!") },
             ]}
-          >
-            <Input prefix={<UserOutlined />} placeholder={t("Username")} />
-          </Form.Item>
-          <Form.Item
+          />
+          <ProFormText
             name="email"
+            fieldProps={{
+              prefix: <MailOutlined />,
+            }}
+            placeholder={t("Email")}
             rules={[
               { required: true, message: t("Please enter your email!") },
               { type: "email", message: t("Please enter a valid email!") },
             ]}
-          >
-            <Input prefix={<MailOutlined />} placeholder={t("Email")} />
-          </Form.Item>
-          <Form.Item
+          />
+          <ProFormText
             name="phone"
+            fieldProps={{
+              prefix: <PhoneOutlined />,
+            }}
+            placeholder={t("Phone number")}
             rules={[
               { required: true, message: t("Please enter your phone number!") },
             ]}
-          >
-            <Input prefix={<PhoneOutlined />} placeholder={t("Phone number")} />
-          </Form.Item>
-          <Form.Item
+          />
+          <ProFormText
             name="address"
-            rules={[{ required: true, message: t("Please enter your address!") }]}
-          >
-            <Input
-              prefix={<HomeOutlined />}
-              placeholder={t("Address")}
-              autoSize={{ minRows: 2, maxRows: 6 }}
-            />
-          </Form.Item>
-          <Form.Item
+            fieldProps={{prefix: <HomeOutlined />}}
+            placeholder={t("Address")}
+            rules={[
+              { required: true, message: t("Please enter your address!") },
+            ]}
+          />
+          <ProFormText.Password
             name="password"
+            fieldProps={{
+              prefix: <LockOutlined />,
+            }}
+            placeholder={t("Password")}
             rules={[
               { required: true, message: t("Please enter your password!") },
             ]}
-          >
-            <Input.Password
-              prefix={<LockOutlined />}
-              placeholder={t("Password")}
-            />
-          </Form.Item>
-          <Form.Item
+          />
+          <ProFormText.Password
             name="confirmPassword"
+            fieldProps={{
+              prefix: <LockOutlined />,
+            }}
+            placeholder={t("Confirm password")}
             dependencies={["password"]}
             rules={[
               {
@@ -91,31 +121,69 @@ const RegisterPage = () => {
                 },
               }),
             ]}
-          >
-            <Input.Password
-              prefix={<LockOutlined />}
-              placeholder={t("Confirm password")}
-            />
-          </Form.Item>
-          <Form.Item
+          />
+          <ProFormSelect
             name="role"
+            placeholder={t("Select role")}
             rules={[{ required: true, message: t("Please select your role!") }]}
-          >
-            <Select placeholder={t("Select role")}>
-              <Option value="user">{t("Government")}</Option>
-              <Option value="admin">{t("User")}</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="register-button"
-            >
-              {t("Register")}
-            </Button>
-          </Form.Item>
-        </Form>
+            options={[
+              { label: t("User"), value: "user" },
+              { label: t("Manager"), value: "manager" },
+              { label: t("Expert"), value: "expert" },
+            ]}
+          />
+          <ProForm.Group>
+            <ProFormDependency name={["role"]}>
+              {({ role }) => {
+                const uniqueProvinces = [
+                  ...new Set(regions.map((region) => ({ province: region.province }))),
+                ];
+                
+                const options = uniqueProvinces.map((region) => ({
+                  label: region.province,
+                  value: region.province,
+                }));
+                return role === "manager" ? (
+                  <ProFormSelect
+                    name="province"
+                    placeholder={t("Select province")}
+                    options={options}
+                    rules={[
+                      {
+                        required: true,
+                        message: t("Please select province!"),
+                      },
+                    ]}
+                  />
+                ) : null;
+              }}
+            </ProFormDependency>
+            <ProFormDependency name={["role", "province"]}>
+              {({ role, province }) => {
+                const areasInProvince = regions
+                  .filter((region) => region.province === province)
+                  .map((region) => ({ area: region.name }));
+                const options = areasInProvince.map((area) => ({
+                  label: area.area,
+                  value: area.area,
+                }));
+                return role === "manager" ? (
+                  <ProFormSelect
+                    name="name"
+                    placeholder={t("Select management area")}
+                    options={options}
+                    rules={[
+                      {
+                        required: true,
+                        message: t("Please select management area!"),
+                      },
+                    ]}
+                  />
+                ) : null;
+              }}
+            </ProFormDependency>
+          </ProForm.Group>
+        </ProForm>
         <div className="login-link">
           {t("Already have an account?")}{" "}
           <a onClick={() => navigate("/login")}>{t("Login")}</a>

@@ -19,8 +19,13 @@
     "Please enter your username!": "Vui lòng nhập tên đăng nhập!",
     "Please enter a valid email!": "Vui lòng nhập email hợp lệ!",
     "Select role": "Chọn vai trò",
-    "Government": "Chính phủ",
     "User": "Người dân",
+    "Manager": "Người quản lý",
+    "Expert": "Chuyên gia",
     "Address": "Địa chỉ",
-    "Please enter your address!": "Vui lòng nhập địa chỉ!"
+    "Please enter your address!": "Vui lòng nhập địa chỉ!",
+    "Select province": "Chọn tỉnh",
+    "Please select province!": "Vui lòng chọn tỉnh!",
+    "Select management area": "Chọn khu vực quản lý",
+    "Please select management area!": "Vui lòng chọn khu vực quản lý!"
 }
