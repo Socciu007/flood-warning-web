@@ -1,0 +1,80 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  // background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  max-width: 1280px;
+  margin: 0 auto;
+
+  .navbar-left {
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+
+      img {
+        height: 30px;
+        width: auto;
+      }
+
+      span {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: white;
+      }
+    }
+  }
+
+  .navbar-right {
+    .ant-btn-link {
+      color: white;
+      font-size: 14px;
+
+      &:hover {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .anticon {
+        font-size: 12px;
+      }
+    }
+    .ant-space-item {
+      font-size: 14px;
+      .ant-select {
+        width: 90px !important;
+        .ant-select-selector {
+          border: none;
+          background-color: transparent;
+          color: white;
+          img {
+            width: 15px;
+            height: 15px;
+          }
+        }
+        .ant-select-selector:active,
+        .ant-select-selector:focus,
+        .ant-select-selector:hover {
+          border: none !important;
+        }
+      }
+      .ant-select:active,
+      .ant-select:focus,
+      .ant-select:hover {
+        border: none !important;
+      }
+    }
+  }
+}
+
+.ant-select-item-option-content {
+  .ant-space-item {
+    font-size: 14px;
+    img {
+      width: 15px;
+      height: 15px;
+    }
+  }
+}

@@ -1,0 +1,79 @@
+.home-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  
+  .home-container {
+    .home-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2rem 20px;
+      margin-top: 2rem;
+
+      .home-title {
+        color: white !important;
+        font-size: 48px !important;
+        margin-bottom: 16px !important;
+      }
+
+      .home-description {
+        color: rgba(255, 255, 255, 0.85) !important;
+        font-size: 18px;
+        max-width: 600px;
+        margin-bottom: 32px;
+        text-align: center;
+      }
+
+      .search-section {
+        width: 100%;
+        max-width: 600px;
+        margin-bottom: 2rem;
+
+        .search-input {
+          .ant-input {
+            height: 50px;
+            font-size: 16px;
+          }
+          
+          .ant-input-search-button {
+            height: 50px;
+            width: 60px;
+          }
+        }
+      }
+
+      .search-results {
+        width: 100%;
+        max-width: 600px;
+        margin-bottom: 2rem;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+
+        .ant-list-item {
+          padding: 1rem;
+          
+          &:hover {
+            background: rgba(0, 0, 0, 0.02);
+          }
+
+          .ant-list-item-meta-title {
+            margin-bottom: 4px;
+            
+            a {
+              color: #1890ff;
+              
+              &:hover {
+                color: #40a9ff;
+              }
+            }
+          }
+        }
+      }
+
+      .action-buttons {
+        margin-top: 2rem;
+      }
+    }
+  }
+}
