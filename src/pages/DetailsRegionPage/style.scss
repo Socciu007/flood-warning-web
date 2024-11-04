@@ -1,0 +1,43 @@
+.details-region-page {
+  .details-region-container {
+    .tab-container {
+      padding-top: 60px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      display: block;
+      overflow-y: auto;
+      width: 100%;
+      max-width: 250px;
+      padding-right: 1.5rem;
+      padding-left: 1.5rem;
+
+      .tab-button {
+        padding: 10px 20px;
+        border: none;
+        background: #f0f0f0;
+        cursor: pointer;
+
+        &.active {
+          border-bottom: 1px solid #007bff;
+        }
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+  .details-region-map {
+    height: 100vh;
+    margin-left: 250px;
+    .map-container {
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .leaflet-container {
+      height: 100vh !important;
+    }
+  }
+}

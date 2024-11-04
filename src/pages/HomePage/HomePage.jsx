@@ -4,11 +4,13 @@ import { Typography, Input, Card, List, Avatar } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import NavbarComponent from "../../components/NavbarComponent/NavbarComponent";
 import "./style.scss";
+import { useTranslation } from "react-i18next";
 
 const { Title, Paragraph } = Typography;
 const { Search } = Input;
 
 const HomePage = () => {
+  const { t } = useTranslation();
   // Mock data cho danh sách tìm kiếm
   const searchResults = [
     {
@@ -35,7 +37,7 @@ const HomePage = () => {
       <PageContainer className="home-container" ghost>
         <div className="home-content">
           <Title level={1} className="home-title">
-            Welcome!
+            {t("Welcome!")}
           </Title>
 
           <Paragraph className="home-description">
@@ -43,33 +45,36 @@ const HomePage = () => {
             project for free.
           </Paragraph>
 
-          {/* Phần tìm kiếm */}
-          <div className="search-section">
-            <Search
-              placeholder="Tìm kiếm..."
-              allowClear
-              enterButton={<SearchOutlined />}
-              size="large"
-              onSearch={onSearch}
-              className="search-input"
-            />
-          </div>
+          {/* Vùng tìm kiếm và kết quả */}
+          <Card className="search-container">
+            {/* Phần tìm kiếm */}
+            <div className="search-section">
+              <Search
+                placeholder="Tìm kiếm..."
+                allowClear
+                prefix={<SearchOutlined style={{ color: "#bfbfbf" }} />}
+                enterButton={t("Search")}
+                onSearch={onSearch}
+                className="search-input"
+              />
+            </div>
 
-          {/* Danh sách kết quả tìm kiếm */}
-          <Card className="search-results">
-            <List
-              itemLayout="horizontal"
-              dataSource={searchResults}
-              renderItem={(item) => (
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={<Avatar src={item.avatar} />}
-                    title={<a href="#">{item.title}</a>}
-                    description={item.description}
-                  />
-                </List.Item>
-              )}
-            />
+            {/* Danh sách kết quả tìm kiếm */}
+            <div className="search-results">
+              <List
+                itemLayout="horizontal"
+                dataSource={searchResults}
+                renderItem={(item) => (
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<Avatar src={item.avatar} />}
+                      title={<a href="#">{item.title}</a>}
+                      description={item.description}
+                    />
+                  </List.Item>
+                )}
+              />
+            </div>
           </Card>
         </div>
       </PageContainer>

@@ -2,7 +2,7 @@ import HomePage from "../pages/HomePage/HomePage";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
-
+import DetailsRegionPage from "../pages/DetailsRegionPage/DetailsRegionPage";
 export const route = [
   {
     path: "/",
@@ -16,6 +16,10 @@ export const route = [
   {
     path: "/register",
     page: RegisterPage,
+  },
+  {
+    path: "/region",
+    page: DetailsRegionPage,
   },
   {
     path: "*",

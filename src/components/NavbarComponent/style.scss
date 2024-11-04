@@ -3,10 +3,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  // background: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(90deg, #0095ff 0%, #00bfff 50%, #87cefa 100%);
   backdrop-filter: blur(10px);
-  max-width: 1280px;
-  margin: 0 auto;
+  // max-width: 1280px;
+  // margin: 0 auto;
 
   .navbar-left {
     .logo {
@@ -53,17 +53,22 @@
             width: 15px;
             height: 15px;
           }
+          &:active,
+          &:focus,
+          &:hover {
+            border: none !important;
+            box-shadow: none !important;
+          }
         }
-        .ant-select-selector:active,
-        .ant-select-selector:focus,
-        .ant-select-selector:hover {
-          border: none !important;
+        &.ant-select-focused {
+          .ant-select-selector {
+            border: none !important;
+            box-shadow: none !important;
+          }
         }
-      }
-      .ant-select:active,
-      .ant-select:focus,
-      .ant-select:hover {
-        border: none !important;
+        .ant-select-arrow {
+          color: white;
+        }
       }
     }
   }
