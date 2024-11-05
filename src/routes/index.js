@@ -3,6 +3,9 @@ import LoginPage from "../pages/LoginPage/LoginPage";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
 import DetailsRegionPage from "../pages/DetailsRegionPage/DetailsRegionPage";
+import ManagerPage from "../pages/ManagerPage/ManagerPage";
+
+// Define routes for the application. Each route should have a path, a page component, and an optional isShowHeader property.
 export const route = [
   {
     path: "/",
@@ -20,6 +23,10 @@ export const route = [
   {
     path: "/region",
     page: DetailsRegionPage,
+  },
+  {
+    path: "/manager",
+    page: ManagerPage,
   },
   {
     path: "*",

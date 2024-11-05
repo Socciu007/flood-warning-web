@@ -1,0 +1,48 @@
+.manager-page {
+  .header {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+    background: linear-gradient(87deg, #11cdef 0, #1171ef 100%);
+  }
+
+  .card-stats {
+    .card-body {
+      padding: 1rem;
+    }
+
+    .icon {
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+
+      i {
+        font-size: 1.5rem;
+        color: #fff;
+      }
+    }
+  }
+
+  .bg-danger {
+    background-color: #f5365c;
+  }
+
+  .bg-warning {
+    background-color: #fb6340;
+  }
+
+  .bg-yellow {
+    background-color: #ffd600;
+  }
+
+  .bg-info {
+    background-color: #11cdef;
+  }
+
+  .container-fluid {
+    padding-right: 39px;
+    padding-left: 39px;
+  }
+}

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "./style.scss";
 import NavbarComponent from "../../components/NavbarComponent/NavbarComponent";
-import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
+import { CodepenOutlined, AreaChartOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
+import { MapContainer, TileLayer, Marker, Popup, Circle, ZoomControl } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 delete L.Icon.Default.prototype._getIconUrl;
@@ -13,6 +15,7 @@ L.Icon.Default.mergeOptions({
 
 const DetailsRegionPage = () => {
   const [activeTab, setActiveTab] = useState("information");
+  const { t } = useTranslation();
 
   // Tọa độ trung tâm Cát Hải, Hải Phòng
   const position = [20.7884, 106.8983];
@@ -26,7 +29,8 @@ const DetailsRegionPage = () => {
             className={`tab-button ${activeTab === "forecast" ? "active" : ""}`}
             onClick={() => setActiveTab("forecast")}
           >
-            Forecast
+            <AreaChartOutlined />
+            {t("Forecast")}
           </button>
           <button
             className={`tab-button ${
@@ -34,7 +38,8 @@ const DetailsRegionPage = () => {
             }`}
             onClick={() => setActiveTab("information")}
           >
-            Information
+            <CodepenOutlined />
+            {t("Information")}
           </button>
         </div>
         <div className="details-region-map">
@@ -42,7 +47,9 @@ const DetailsRegionPage = () => {
             center={position}
             zoom={13}
             style={{ height: "500px", width: "100%" }}
+            zoomControl={false}
           >
+            <ZoomControl position="bottomleft" />
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -50,10 +57,10 @@ const DetailsRegionPage = () => {
             <Marker position={position}>
               <Popup>Cát Hải, Hải Phòng</Popup>
             </Marker>
-            <Circle 
+            <Circle
               center={position}
               radius={500}
-              pathOptions={{ color: 'red', fillColor: 'red', fillOpacity: 0.2 }}
+              pathOptions={{ color: "red", fillColor: "red", fillOpacity: 0.2 }}
             >
               <Popup>Khu vực ảnh hưởng</Popup>
             </Circle>
