@@ -16,6 +16,8 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import "./style.scss";
 import { getAllRegion } from "../../services/serviceRegion";
+import { registerUser } from "../../services/serviceUser";
+import { message } from "antd";
 
 const RegisterPage = () => {
   const { t } = useTranslation();
@@ -30,11 +32,16 @@ const RegisterPage = () => {
 
   useEffect(() => {
     fetchAllRegion();
-  }, [regions]);
+  }, []);
 
-  const handleRegister = (values) => {
-    console.log("Received values of form: ", values);
-    // Xử lý logic đăng ký ở đây
+  const handleRegister = async (values) => {
+    const res = await registerUser(values);
+    if (res.data) {
+      message.success(t("Register account successfully!"));
+      navigate("/login");
+    } else {
+      message.error(t("Register account failed, please try again!"));
+    }
   };
 
   return (
@@ -51,7 +58,17 @@ const RegisterPage = () => {
             submitButtonProps: { style: { width: "100%" } },
             resetButtonProps: false,
           }}
-          initialValues={{ username: "", email: "", phone: "", address: "", password: "", confirmPassword: "", role: "", province: "", name: "" }}
+          initialValues={{
+            username: "",
+            email: "",
+            phone: "",
+            address: "",
+            password: "",
+            confirmPassword: "",
+            role: "",
+            province: "",
+            nameRegion: "",
+          }}
         >
           <ProFormText
             name="username"
@@ -79,12 +96,15 @@ const RegisterPage = () => {
             }}
             placeholder={t("Phone number")}
             rules={[
-              { required: true, message: t("Please enter your phone number!") },
+              {
+                required: true,
+                message: t("Please enter your phone number!"),
+              },
             ]}
           />
           <ProFormText
             name="address"
-            fieldProps={{prefix: <HomeOutlined />}}
+            fieldProps={{ prefix: <HomeOutlined /> }}
             placeholder={t("Address")}
             rules={[
               { required: true, message: t("Please enter your address!") },
@@ -136,13 +156,12 @@ const RegisterPage = () => {
             <ProFormDependency name={["role"]}>
               {({ role }) => {
                 const uniqueProvinces = [
-                  ...new Set(regions.map((region) => ({ province: region.province }))),
-                ];
-                
-                const options = uniqueProvinces.map((region) => ({
-                  label: region.province,
-                  value: region.province,
-                }));
+                  ...new Set(regions.map((region) => region.province)),
+                ]
+                  .sort()
+                  .map((province) => ({ label: province, value: province }));
+
+                const options = uniqueProvinces;
                 return role === "manager" ? (
                   <ProFormSelect
                     name="province"
@@ -169,7 +188,7 @@ const RegisterPage = () => {
                 }));
                 return role === "manager" ? (
                   <ProFormSelect
-                    name="name"
+                    name="nameRegion"
                     placeholder={t("Select management area")}
                     options={options}
                     rules={[

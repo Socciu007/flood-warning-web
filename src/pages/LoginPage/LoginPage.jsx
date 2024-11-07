@@ -1,12 +1,49 @@
-import React from "react";
-import { Form, Input, Button } from "antd";
+import React, { useEffect } from "react";
+import { Form, Input, Button, message } from "antd";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import "./style.scss";
+import { loginUser } from "../../services/serviceUser";
+import { setUser } from "../../redux/slices/userSlice.ts";
+import storageService from "../../services/storage.service";
 
 const LoginPage = () => {
   const { t } = useTranslation();
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isAuthenticated,currentUser } = useSelector((state) => state.user);
+  console.log("currentUser", currentUser);
+
+  useEffect(() => {
+    if (isAuthenticated || currentUser) {
+      navigate("/");
+    }
+  }, [isAuthenticated, currentUser, navigate]);
+
+  // Handle login
+  const handleLogin = async (values) => {
+    const res = await loginUser(values);
+
+
+    if (res.data) {
+      // Set access token and user to local storage
+      storageService.set("accessToken", res.data.accessToken);
+      storageService.set("user", JSON.stringify(res.data.user));
+
+      // Update user state
+      dispatch(
+        setUser({
+          ...res.data.user,
+          accessToken: res.data.accessToken,
+          refreshToken: res.data.refreshToken,
+        })
+      );
+      message.success(t("Login successfully!"));
+      navigate("/");
+    } else {
+      message.error(t("Login failed, please try again!"));
+    }
   };
 
   return (
@@ -16,8 +53,8 @@ const LoginPage = () => {
         <Form
           name="login"
           className="login-form"
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
+          initialValues={{ email: "", password: "" }}
+          onFinish={handleLogin}
           layout="vertical"
         >
           <Form.Item

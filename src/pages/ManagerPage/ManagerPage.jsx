@@ -1,7 +1,6 @@
 import React from "react";
 import {
   DashboardFilled,
-  BarChartOutlined,
   UnorderedListOutlined,
 } from "@ant-design/icons";
 import NavbarComponent from "../../components/NavbarComponent/NavbarComponent";

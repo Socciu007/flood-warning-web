@@ -33,5 +33,7 @@
     "Profile": "Tài khoản",
     "Home": "Trang chủ",
     "Information": "Thông tin",
-    "Forecast": "Dự báo"
+    "Forecast": "Dự báo",
+    "Register account successfully!": "Đăng ký tài khoản thành công!",
+    "Register account failed, please try again!": "Đăng ký tài khoản thất bại, vui lòng thử lại!"
 }
