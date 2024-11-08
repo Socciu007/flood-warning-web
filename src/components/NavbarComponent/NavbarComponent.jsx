@@ -1,5 +1,5 @@
-import React from "react";
-import { Button, Select, Space } from "antd";
+import React, { useState } from "react";
+import { Button, Select, Space, Popover } from "antd";
 import {
   HomeFilled,
   UserOutlined,
@@ -10,17 +10,27 @@ import { Link } from "react-router-dom";
 import "./style.scss";
 import storageService from "../../services/storage.service";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import i18n from "../../i18n";
 import viFlag from "../../assets/icons/icon-vietnam.png";
 import engFlag from "../../assets/icons/icon-usa.png";
 
 const NavbarComponent = () => {
   const { t } = useTranslation();
+  const { currentUser, isAuthenticated } = useSelector((state) => state.user);
+  const [isOpenProfile, setIsOpenProfile] = useState(false);
+
+  console.log("currentUser", currentUser);
 
   // Handle change language
   const handleChangeLanguage = (value) => {
     i18n.changeLanguage(value);
     storageService.set("language", value);
+  };
+
+  // Handle open profile
+  const handleOpenProfile = (open) => {
+    setIsOpenProfile(open);
   };
 
   return (
@@ -40,23 +50,42 @@ const NavbarComponent = () => {
             </Button>
           </Link>
 
-          <Link to="/register">
-            <Button type="link" icon={<UserAddOutlined />}>
-              {t("Register")}
-            </Button>
-          </Link>
+          {!isAuthenticated && (
+            <Link to="/register">
+              <Button type="link" icon={<UserAddOutlined />}>
+                {t("Register")}
+              </Button>
+            </Link>
+          )}
 
-          <Link to="/login">
-            <Button type="link" icon={<KeyOutlined />}>
-              {t("Login")}
-            </Button>
-          </Link>
+          {!isAuthenticated && (
+            <Link to="/login">
+              <Button type="link" icon={<KeyOutlined />}>
+                {t("Login")}
+              </Button>
+            </Link>
+          )}
 
-          <Link to="/profile">
-            <Button type="link" icon={<UserOutlined />}>
-              {t("Profile")}
-            </Button>
-          </Link>
+          {isAuthenticated && (
+            <Popover
+              placement="bottomLeft"
+              title={false}
+              trigger="click"
+              open={isOpenProfile}
+              arrow={false}
+              onOpenChange={handleOpenProfile}
+              content={
+                <div className="profile-popover">
+                  <p>{t("User profile")}</p>
+                  <p>{t("Logout")}</p>
+                </div>
+              }
+            >
+              <Button type="link" icon={<UserOutlined />}>
+                {currentUser.username || currentUser.email.split("@")[0]}
+              </Button>
+            </Popover>
+          )}
 
           <Select
             defaultValue={"eng"}
