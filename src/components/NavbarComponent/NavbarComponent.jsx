@@ -44,7 +44,7 @@ const NavbarComponent = () => {
 
       <div className="navbar-right">
         <Space size="middle">
-          <Link to="/dashboard">
+          <Link to="/">
             <Button type="link" icon={<HomeFilled />}>
               {t("Home")}
             </Button>

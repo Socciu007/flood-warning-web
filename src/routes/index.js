@@ -27,6 +27,8 @@ export const route = [
   {
     path: "/manager",
     page: ManagerPage,
+    isPrivate: true,
+    role: "manager",
   },
   {
     path: "*",

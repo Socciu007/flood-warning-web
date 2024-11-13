@@ -8,8 +8,30 @@ import { useTranslation } from "react-i18next";
 import "./style.scss";
 import locationIcon from "../../assets/icons/icon-location.svg";
 import userIcon from "../../assets/icons/icon-user.svg";
+// import { useDispatch, useSelector } from "react-redux";
+// import { setUser } from "../../redux/slices/userSlice.ts";
+// import storageService from "../../services/storage.service";
+// import { useEffect } from "react";
+
 const ManagerPage = () => {
   const { t } = useTranslation();
+  // const dispatch = useDispatch();
+  // const { currentUser } = useSelector((state) => state.user);
+
+  // useEffect(() => {
+  //   // Thêm effect này để khôi phục thông tin user từ localStorage
+  //   const savedUser = storageService.get("user");
+  //   const savedToken = storageService.get("accessToken");
+
+  //   if (savedUser && savedToken && !currentUser) {
+  //     dispatch(
+  //       setUser({
+  //         ...JSON.parse(savedUser),
+  //         accessToken: savedToken,
+  //       })
+  //     );
+  //   }
+  // }, []);
 
   return (
     <div className="manager-page">

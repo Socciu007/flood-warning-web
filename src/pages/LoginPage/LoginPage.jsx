@@ -25,7 +25,6 @@ const LoginPage = () => {
   const handleLogin = async (values) => {
     const res = await loginUser(values);
 
-
     if (res.data) {
       // Set access token and user to local storage
       storageService.set("accessToken", res.data.accessToken);
