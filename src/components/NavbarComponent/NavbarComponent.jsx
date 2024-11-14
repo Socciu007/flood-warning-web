@@ -6,20 +6,23 @@ import {
   KeyOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./style.scss";
 import storageService from "../../services/storage.service";
+import { clearUser } from "../../redux/slices/userSlice.ts";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import i18n from "../../i18n";
 import viFlag from "../../assets/icons/icon-vietnam.png";
 import engFlag from "../../assets/icons/icon-usa.png";
+import { logoutUser } from "../../services/serviceUser";
 
 const NavbarComponent = () => {
   const { t } = useTranslation();
   const { currentUser, isAuthenticated } = useSelector((state) => state.user);
   const [isOpenProfile, setIsOpenProfile] = useState(false);
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   console.log("currentUser", currentUser);
 
   // Handle change language
@@ -31,6 +34,13 @@ const NavbarComponent = () => {
   // Handle open profile
   const handleOpenProfile = (open) => {
     setIsOpenProfile(open);
+  };
+
+  // Handle logout
+  const handleLogout = async () => {
+    dispatch(clearUser());
+    await logoutUser();
+    navigate("/login");
   };
 
   return (
@@ -77,7 +87,7 @@ const NavbarComponent = () => {
               content={
                 <div className="profile-popover">
                   <p>{t("User profile")}</p>
-                  <p>{t("Logout")}</p>
+                  <p onClick={handleLogout}>{t("Logout")}</p>
                 </div>
               }
             >

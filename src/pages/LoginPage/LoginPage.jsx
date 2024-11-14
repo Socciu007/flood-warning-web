@@ -1,36 +1,53 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, message } from "antd";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import "./style.scss";
 import { loginUser } from "../../services/serviceUser";
+import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
+// import { useMutationHooks } from "../../hooks/useMutationHook";
 import { setUser } from "../../redux/slices/userSlice.ts";
+// import { jwtDecode } from "jwt-decode";
 import storageService from "../../services/storage.service";
 
 const LoginPage = () => {
   const { t } = useTranslation();
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
-  const { isAuthenticated,currentUser } = useSelector((state) => state.user);
-  console.log("currentUser", currentUser);
 
-  useEffect(() => {
-    if (isAuthenticated || currentUser) {
-      navigate("/");
-    }
-  }, [isAuthenticated, currentUser, navigate]);
+  // Fetch user info
+  // const fetchUserInfo = async (userId, accessToken) => {
+  //   const res = await getUserInfo(userId, accessToken);
+  //   const refreshToken = storageService.get("refreshToken");
+  //   if (res.data) {
+  //     dispatch(
+  //       setUser({
+  //         ...res.data,
+  //         accessToken: accessToken,
+  //         refreshToken: refreshToken,
+  //       })
+  //     );
+  //   }
+  // };
 
   // Handle login
   const handleLogin = async (values) => {
+    setIsLoading(true);
     const res = await loginUser(values);
 
     if (res.data) {
-      // Set access token and user to local storage
+      if (location?.state) {
+        navigate(location?.state);
+      } else {
+        navigate("/");
+      }
       storageService.set("accessToken", res.data.accessToken);
+      storageService.set("refreshToken", res.data.refreshToken);
       storageService.set("user", JSON.stringify(res.data.user));
 
-      // Update user state
       dispatch(
         setUser({
           ...res.data.user,
@@ -38,10 +55,11 @@ const LoginPage = () => {
           refreshToken: res.data.refreshToken,
         })
       );
+      setIsLoading(false);
       message.success(t("Login successfully!"));
-      navigate("/");
     } else {
       message.error(t("Login failed, please try again!"));
+      setIsLoading(false);
     }
   };
 
@@ -73,11 +91,13 @@ const LoginPage = () => {
             <Input.Password placeholder={t("Password")} />
           </Form.Item>
 
-          <Form.Item>
-            <Button type="primary" htmlType="submit" className="login-button">
-              {t("Login")}
-            </Button>
-          </Form.Item>
+          <LoadingComponent isLoading={isLoading}>
+            <Form.Item>
+              <Button type="primary" htmlType="submit" className="login-button">
+                {t("Login")}
+              </Button>
+            </Form.Item>
+          </LoadingComponent>
         </Form>
         <div className="login-link">
           <a href="#">{t("Forgot your password?")}</a>
