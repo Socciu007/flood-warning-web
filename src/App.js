@@ -18,6 +18,7 @@ function App() {
   useEffect(() => {
     setIsLoading(true);
     const { accessToken, decodedUser } = handleDecodedUser();
+    console.log("decodedUser", decodedUser);
     if (decodedUser?.id) {
       fetchUserInfo(decodedUser?.id, accessToken);
     }
@@ -30,9 +31,11 @@ function App() {
         const currentTime = new Date();
         const accessToken = storageService.get("accessToken");
         const refreshToken = storageService.get("refreshToken");
-
+        console.log("accessToken", accessToken);
+        
         if (accessToken) {
           const decodedToken = jwtDecode(accessToken);
+          console.log("decodedToken.exp", decodedToken.exp);
           
           if (decodedToken.exp < currentTime.getTime() / 1000) {
             if (refreshToken) {
@@ -60,7 +63,7 @@ function App() {
         return Promise.reject(error);
       }
     );
-  }, [dispatch]);
+  }, []);
 
   // Handle decoded user from token
   const handleDecodedUser = () => {

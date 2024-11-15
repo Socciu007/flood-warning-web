@@ -39,6 +39,9 @@ const NavbarComponent = () => {
   // Handle logout
   const handleLogout = async () => {
     dispatch(clearUser());
+    storageService.remove("accessToken");
+    storageService.remove("refreshToken");
+    storageService.remove("user");    
     await logoutUser();
     navigate("/login");
   };

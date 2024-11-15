@@ -1,9 +1,11 @@
 import axios from "axios";
 
+const api = axios.create();
+
 // Register user
 export const registerUser = async (userData) => {
   try {
-    const res = await axios.post(`${process.env.REACT_APP_API_KEY}/users/create-user`, userData);
+    const res = await axios.post(`${process.env.REACT_APP_API_KEY}/api/users/create-user`, userData);
     return res.data;
   } catch (error) {
     console.log("Error registering user: ", error);
@@ -14,7 +16,7 @@ export const registerUser = async (userData) => {
 // Login user
 export const loginUser = async (userData) => {
   try {
-    const res = await axios.post(`${process.env.REACT_APP_API_KEY}/users/login`, userData);
+    const res = await api.post(`${process.env.REACT_APP_API_KEY}/api/users/login`, userData);
     return res.data;
   } catch (error) {
     console.log("Error logging in: ", error);
@@ -25,7 +27,7 @@ export const loginUser = async (userData) => {
 // Logout user
 export const logoutUser = async () => {
   try {
-    const res = await axios.post(`${process.env.REACT_APP_API_KEY}/users/logout`);
+    const res = await api.post(`${process.env.REACT_APP_API_KEY}/api/users/logout`);
     return res.data;
   } catch (error) {
     console.log("Error logging out: ", error);
@@ -36,7 +38,7 @@ export const logoutUser = async () => {
 // Get information user
 export const getUserInfo = async (userId, accessToken) => {
   try {
-    const res = await axios.get(`${process.env.REACT_APP_API_KEY}/users/${userId}`, {
+    const res = await axios.get(`${process.env.REACT_APP_API_KEY}/api/users/${userId}`, {
       headers: {
         token: `Bearer ${accessToken}`,
       },
@@ -51,7 +53,7 @@ export const getUserInfo = async (userId, accessToken) => {
 // Refresh token
 export const handleRefreshToken = async () => {
   try {
-    const res = await axios.post(`${process.env.REACT_APP_API_KEY}/users/refresh-token`, {}, 
+    const res = await axios.post(`${process.env.REACT_APP_API_KEY}/api/users/refresh-token`, {},
       {
         headers: {
           'Content-Type': 'application/json'

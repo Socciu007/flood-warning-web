@@ -17,6 +17,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const [form] = Form.useForm();
 
   // Fetch user info
   // const fetchUserInfo = async (userId, accessToken) => {
@@ -39,6 +40,7 @@ const LoginPage = () => {
     const res = await loginUser(values);
 
     if (res.data) {
+      form.resetFields();
       if (location?.state) {
         navigate(location?.state);
       } else {
@@ -68,6 +70,7 @@ const LoginPage = () => {
       <div className="login-box">
         <h2 className="login-title">{t("DISASTER PREVENTION SYSTEM")}</h2>
         <Form
+          form={form}
           name="login"
           className="login-form"
           initialValues={{ email: "", password: "" }}
