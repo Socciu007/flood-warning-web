@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Form, Input, Button, message } from "antd";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -17,22 +17,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  const [form] = Form.useForm();
-
-  // Fetch user info
-  // const fetchUserInfo = async (userId, accessToken) => {
-  //   const res = await getUserInfo(userId, accessToken);
-  //   const refreshToken = storageService.get("refreshToken");
-  //   if (res.data) {
-  //     dispatch(
-  //       setUser({
-  //         ...res.data,
-  //         accessToken: accessToken,
-  //         refreshToken: refreshToken,
-  //       })
-  //     );
-  //   }
-  // };
+  const formRef = useRef(null);
 
   // Handle login
   const handleLogin = async (values) => {
@@ -40,15 +25,20 @@ const LoginPage = () => {
     const res = await loginUser(values);
 
     if (res.data) {
-      form.resetFields();
+      const accountLogin = res.data.user;
+      formRef.current.resetFields();
       if (location?.state) {
         navigate(location?.state);
+      } else if (accountLogin.role === "manager") {
+        navigate("/manager");
+      } else if (accountLogin.role === "admin") {
+        navigate("/admin");
       } else {
         navigate("/");
       }
       storageService.set("accessToken", res.data.accessToken);
       storageService.set("refreshToken", res.data.refreshToken);
-      storageService.set("user", JSON.stringify(res.data.user));
+      storageService.set("user", JSON.stringify(accountLogin));
 
       dispatch(
         setUser({
@@ -68,9 +58,11 @@ const LoginPage = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2 className="login-title">{t("DISASTER PREVENTION SYSTEM")}</h2>
+        <h2 className="login-title">
+          {t("AQUACULTURE AND MANGROVES WARNING SYSTEM")}
+        </h2>
         <Form
-          form={form}
+          ref={formRef}
           name="login"
           className="login-form"
           initialValues={{ email: "", password: "" }}

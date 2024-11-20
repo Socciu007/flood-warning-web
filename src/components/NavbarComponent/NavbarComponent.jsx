@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Select, Space, Popover } from "antd";
+import { Button, Select, Space, Popover, Badge } from "antd";
 import {
   HomeFilled,
   UserOutlined,
@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import i18n from "../../i18n";
 import viFlag from "../../assets/icons/icon-vietnam.png";
 import engFlag from "../../assets/icons/icon-usa.png";
+import alertIcon from "../../assets/icons/icon-alert.svg";
 import { logoutUser } from "../../services/serviceUser";
 
 const NavbarComponent = () => {
@@ -23,7 +24,6 @@ const NavbarComponent = () => {
   const [isOpenProfile, setIsOpenProfile] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log("currentUser", currentUser);
 
   // Handle change language
   const handleChangeLanguage = (value) => {
@@ -41,7 +41,7 @@ const NavbarComponent = () => {
     dispatch(clearUser());
     storageService.remove("accessToken");
     storageService.remove("refreshToken");
-    storageService.remove("user");    
+    storageService.remove("user");
     await logoutUser();
     navigate("/login");
   };
@@ -76,6 +76,21 @@ const NavbarComponent = () => {
               <Button type="link" icon={<KeyOutlined />}>
                 {t("Login")}
               </Button>
+            </Link>
+          )}
+
+          {isAuthenticated && (
+            <Link to="/">
+              <div className="notice-container">
+                <Badge dot={true}>
+                  <img
+                    src={alertIcon}
+                    style={{ width: 14, height: 14 }}
+                    alt="Alert"
+                  />
+                </Badge>
+                <span>{t("Notice")}</span>
+              </div>
             </Link>
           )}
 

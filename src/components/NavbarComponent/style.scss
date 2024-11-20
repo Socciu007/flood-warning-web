@@ -3,11 +3,15 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background: linear-gradient(90deg, #0095ff 0%, #00bfff 50%, #87cefa 100%);
-  backdrop-filter: blur(10px);
+  background: #dab26c;
   // max-width: 1280px;
   // margin: 0 auto;
-
+  position: fixed;
+  inset-block-start: 0;
+  width: 100%;
+  z-index: 100;
+  inset-inline-end: 0;
+  height: 56px;
   .navbar-left {
     .logo {
       display: flex;
@@ -69,6 +73,15 @@
         .ant-select-arrow {
           color: white;
         }
+      }
+      .notice-container {
+        color: white;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 32px;
+        padding: 4px 15px;
       }
     }
   }

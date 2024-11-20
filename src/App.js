@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { route } from "./routes";
 import DefaultComponent from "./components/DefaultComponent/DefaultComponent";
 import { useSelector, useDispatch } from "react-redux";
@@ -32,15 +32,15 @@ function App() {
         const accessToken = storageService.get("accessToken");
         const refreshToken = storageService.get("refreshToken");
         console.log("accessToken", accessToken);
-        
+
         if (accessToken) {
           const decodedToken = jwtDecode(accessToken);
           console.log("decodedToken.exp", decodedToken.exp);
-          
+
           if (decodedToken.exp < currentTime.getTime() / 1000) {
             if (refreshToken) {
               const decodedRefreshToken = jwtDecode(refreshToken);
-              
+
               if (decodedRefreshToken.exp > currentTime.getTime() / 1000) {
                 const response = await handleRefreshToken(refreshToken);
                 if (response?.accessToken) {
@@ -89,6 +89,8 @@ function App() {
       );
     }
   };
+  console.log("isAuthenticated", isAuthenticated);
+  console.log("currentUser", currentUser);
   return (
     <div style={{ height: "100vh" }}>
       <LoadingComponent isLoading={isLoading} >
@@ -96,21 +98,21 @@ function App() {
           <Routes>
             {route.map((route) => {
               const Page = route.page;
-              const isCheckAuth = !route.isPrivate ||
-                (isAuthenticated && currentUser?.role === route.role);
+              // const isCheckAuth = !route.isPrivate ||
+              //   (isAuthenticated && currentUser?.role === route.role);
               const Layout = route.isShowHeader ? DefaultComponent : Fragment;
               return (
                 <Route
                   key={route.path}
                   path={route.path}
                   element={
-                    isCheckAuth ? (
-                      <Layout>
-                        <Page />
-                      </Layout>
-                    ) : (
-                      <Navigate to="/" replace />
-                    )
+                    // isCheckAuth ? (
+                    <Layout>
+                      <Page />
+                    </Layout>
+                    // ) : (
+                    //   <Navigate to="/" replace />
+                    // )
                   }
                 />
               );

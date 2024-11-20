@@ -1,0 +1,27 @@
+.card-component {
+  background: #fff;
+  cursor: default;
+  .card-component-title {
+    color: #000;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    .card-component-count {
+      font-weight: 700;
+    }
+  }
+  .card-component-extra {
+    display: flex;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    img {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}

@@ -23,7 +23,8 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'no-unused-vars': 'warn',
     'no-undef': 'off',
-    indent: ['warn', 2]
+    indent: ['off'],
+    semi: ['off']
   },
   settings: {
     react: {

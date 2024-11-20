@@ -1,5 +1,5 @@
 {
-    "DISASTER PREVENTION SYSTEM": "HỆ THỐNG PHÒNG CHỐNG THIÊN TAI",
+    "AQUACULTURE AND MANGROVES WARNING SYSTEM": "HỆ THỐNG CẢNH BÁO NUÔI TRỒNG THỦY SẢN VÀ RỪNG NGẬP MẶN",
     "Email": "Email",
     "Password": "Mật khẩu",
     "Please enter your email!": "Vui lòng nhập email!",
@@ -19,7 +19,7 @@
     "Please enter your username!": "Vui lòng nhập tên đăng nhập!",
     "Please enter a valid email!": "Vui lòng nhập email hợp lệ!",
     "Select role": "Chọn vai trò",
-    "User": "Người dân",
+    "User": "Người dùng",
     "Manager": "Người quản lý",
     "Expert": "Chuyên gia",
     "Address": "Địa chỉ",
@@ -35,5 +35,9 @@
     "Information": "Thông tin",
     "Forecast": "Dự báo",
     "Register account successfully!": "Đăng ký tài khoản thành công!",
-    "Register account failed, please try again!": "Đăng ký tài khoản thất bại, vui lòng thử lại!"
+    "Register account failed, please try again!": "Đăng ký tài khoản thất bại, vui lòng thử lại!",
+    "Login failed, please try again!": "Đăng nhập thất bại, vui lòng thử lại!",
+    "Username": "Tên người dùng",
+    "Logout": "Đăng xuất",
+    "Notice": "Thông báo"
 }

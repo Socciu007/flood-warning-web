@@ -5,6 +5,8 @@ body {
   margin: 0;
   box-sizing: border-box;
   padding: 0;
+  background: url("./assets/pictures/background.png") no-repeat center
+    center/cover;
 }
 
 html {
