@@ -18,7 +18,7 @@ function App() {
   useEffect(() => {
     setIsLoading(true);
     const { accessToken, decodedUser } = handleDecodedUser();
-    console.log("decodedUser", decodedUser);
+    // console.log("decodedUser", decodedUser);
     if (decodedUser?.id) {
       fetchUserInfo(decodedUser?.id, accessToken);
     }
@@ -89,8 +89,8 @@ function App() {
       );
     }
   };
-  console.log("isAuthenticated", isAuthenticated);
-  console.log("currentUser", currentUser);
+  // console.log("isAuthenticated", isAuthenticated);
+  // console.log("currentUser", currentUser);
   return (
     <div style={{ height: "100vh" }}>
       <LoadingComponent isLoading={isLoading} >

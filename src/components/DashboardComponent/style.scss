@@ -23,5 +23,25 @@
   }
   .dashboard-component-table {
     flex: 1;
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    .table-main {
+      flex: 3;
+    }
+
+    .right-dashboard-component {
+      flex: 1;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+
+      &-title {
+        h3 {
+          margin: 0;
+          font-size: 18px;
+        }
+      }
+    }
   }
 }

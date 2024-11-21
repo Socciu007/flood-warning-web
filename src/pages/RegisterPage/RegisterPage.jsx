@@ -48,7 +48,7 @@ const RegisterPage = () => {
     <div className="register-container">
       <div className="register-box">
         <h2>{t("REGISTER")}</h2>
-        <p>{t("Welcome to the Disaster Prevention System")}</p>
+        <p>{t("Welcome to the AquaGuardian")}</p>
         <ProForm
           onFinish={handleRegister}
           submitter={{
@@ -144,12 +144,14 @@ const RegisterPage = () => {
           />
           <ProFormSelect
             name="role"
-            placeholder={t("Select role")}
+            // placeholder={t("Select role")}
+            fieldProps={{
+              placeholder: `${t("Select role")}`,
+            }}
             rules={[{ required: true, message: t("Please select your role!") }]}
             options={[
-              { label: t("User"), value: "user" },
+              { label: t("Citizen"), value: "user" },
               { label: t("Manager"), value: "manager" },
-              { label: t("Expert"), value: "expert" },
             ]}
           />
           <ProForm.Group>
@@ -166,6 +168,9 @@ const RegisterPage = () => {
                   <ProFormSelect
                     name="province"
                     placeholder={t("Select province")}
+                    fieldProps={{
+                      placeholder: `${t("Select province")}`,
+                    }}
                     options={options}
                     rules={[
                       {
@@ -190,6 +195,9 @@ const RegisterPage = () => {
                   <ProFormSelect
                     name="nameRegion"
                     placeholder={t("Select management area")}
+                    fieldProps={{
+                      placeholder: `${t("Select management area")}`,
+                    }}
                     options={options}
                     rules={[
                       {

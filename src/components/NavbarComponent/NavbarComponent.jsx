@@ -16,6 +16,7 @@ import i18n from "../../i18n";
 import viFlag from "../../assets/icons/icon-vietnam.png";
 import engFlag from "../../assets/icons/icon-usa.png";
 import alertIcon from "../../assets/icons/icon-alert.svg";
+import logoIcon from "../../assets/icons/icon-logo.svg";
 import { logoutUser } from "../../services/serviceUser";
 
 const NavbarComponent = () => {
@@ -50,8 +51,10 @@ const NavbarComponent = () => {
     <nav className="navbar">
       <div className="navbar-left">
         <Link to="/" className="logo">
-          <img src="#" alt="Argon" />
-          <span>argon</span>
+          <img src={logoIcon} alt="EcoVigil" />
+          <span style={{ fontWeight: "700", fontSize: "18px" }}>
+            AquaGuardian
+          </span>
         </Link>
       </div>
 
