@@ -29,13 +29,13 @@
       margin-top: 2rem;
 
       .home-title {
-        color: white !important;
+        color: #555 !important;
         font-size: 48px !important;
         margin-bottom: 16px !important;
       }
 
       .home-description {
-        color: rgba(255, 255, 255, 0.85) !important;
+        color: #555 !important;
         font-size: 14px;
         max-width: 600px;
         margin-bottom: 32px;
@@ -43,62 +43,105 @@
       }
 
       .search-container {
+        // max-height: 352px;
         width: 100%;
         max-width: 428px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 4px 10px rgba(27.63, 7.97, 106.25, 0.25);
         border-radius: 8px;
         transition: all 0.3s ease;
-        .ant-card-body {
-          padding: 14px 24px;
+        .search-title {
+          font-size: 18px;
+          font-weight: 700;
+          text-align: center;
         }
-        .search-section {
+        .search-home {
           width: 100%;
-          max-width: 600px;
-          margin-bottom: 14px;
-          .search-input {
-            .ant-input {
-              font-size: 14px;
+          margin: 0 !important;
+          .ant-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            gap: 10px;
+            .ant-col {
+              flex: none;
+              .ant-col.ant-form-item-label {
+                display: none;
+              }
+              padding-left: 0px !important;
+              padding-right: 0px !important;
             }
-          }
-          .ant-input-outlined:focus,
-          .ant-input-outlined:hover,
-          .ant-input-outlined:active,
-          .ant-input-outlined:focus-within {
-            border-color: #d9d9d9;
-            box-shadow: none;
+            .ant-pro-query-filter-row-split {
+              width: 75%;
+            }
+            .ant-btn-color-default.ant-btn-variant-outlined {
+              display: none;
+            }
           }
         }
-
-        .search-results {
-          // width: 100%;
-          // max-width: 600px;
-          margin-bottom: 2rem;
-          background: rgba(255, 255, 255, 0.9);
-
-          .ant-list-item {
-            padding: 1rem;
-
-            &:hover {
-              background: rgba(0, 0, 0, 0.02);
+        .search-list {
+          height: 270px;
+          .ant-pro-card-body {
+            // padding: 0px !important;
+            .ant-pro-table-list-toolbar-container {
+              padding-top: 0 !important;
             }
-
-            .ant-list-item-meta-title {
-              margin-bottom: 4px;
-
-              a {
-                color: #1890ff;
-
-                &:hover {
-                  color: #40a9ff;
+            .ant-list-item-meta {
+              align-items: center;
+              gap: 10px;
+              .ant-list-item-meta-avatar {
+                margin-right: 0 !important;
+              }
+              .ant-list-item-meta-content {
+                margin: 0;
+                width: 100%;
+                .ant-list-item-meta-title {
+                  margin-bottom: 0 !important;
+                }
+                .ant-pro-list-row-title {
+                  font-weight: 500;
                 }
               }
             }
           }
-        }
-      }
+          .ant-pro-card:nth-child(2) {
+            height: calc(100% - 70px);
+            .ant-pro-card-body {
+              padding-bottom: 0 !important;
+            }
+            .ant-list {
+              max-height: calc(100% - 34px);
+              overflow-y: auto;
 
-      .action-buttons {
-        margin-top: 2rem;
+              ul.ant-list-items {
+                li {
+                  padding: 9px 0;
+                }
+              }
+
+              &::-webkit-scrollbar {
+                width: 6px;
+              }
+
+              &::-webkit-scrollbar-track {
+                background: #f1f1f1;
+                border-radius: 3px;
+              }
+
+              &::-webkit-scrollbar-thumb {
+                background: #888;
+                border-radius: 3px;
+
+                &:hover {
+                  background: #555;
+                }
+              }
+            }
+          }
+          .ant-pro-table-list-toolbar-left {
+            max-width: 100%;
+          }
+        }
       }
     }
   }

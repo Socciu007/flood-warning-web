@@ -38,5 +38,14 @@
     "Login failed, please try again!": "Đăng nhập thất bại, vui lòng thử lại!",
     "Username": "Tên người dùng",
     "Logout": "Đăng xuất",
-    "Notice": "Thông báo"
+    "Notice": "Thông báo",
+    "Total users": "Tổng số người dùng",
+    "Total areas": "Tổng số khu vực",
+    "Total exams": "Tổng số bài kiểm tra",
+    "Roster of regions:": "Danh sách khu vực:",
+    "Explore data on your area.": "Khám phá khu vực của bạn.",
+    "Search": "Tìm kiếm",
+    "Reset": "Làm mới",
+    "No data found": "Không tìm thấy dữ liệu",
+    "Search region...": "Tìm kiếm khu vực..."
 }

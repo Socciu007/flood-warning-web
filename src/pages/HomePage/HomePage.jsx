@@ -1,39 +1,20 @@
 import React from "react";
-import { PageContainer } from "@ant-design/pro-components";
-import { Typography, Input, Card, List, Avatar } from "antd";
+import { PageContainer, ProList } from "@ant-design/pro-components";
+import { Typography, Card } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import NavbarComponent from "../../components/NavbarComponent/NavbarComponent";
 import "./style.scss";
 import { useTranslation } from "react-i18next";
-
+import { getAllRegion, getRegionById } from "../../services/serviceRegion";
+import iconPlace from "../../assets/icons/icon-place.svg";
 const { Title, Paragraph } = Typography;
-const { Search } = Input;
 
 const HomePage = () => {
   const { t } = useTranslation();
-  // Mock data cho danh sách tìm kiếm
-  const searchResults = [
-    {
-      title: "Kết quả 1",
-      description: "Mô tả chi tiết về kết quả 1",
-      avatar: "https://xsgames.co/randomusers/avatar.php?g=pixel&key=1",
-    },
-    {
-      title: "Kết quả 2",
-      description: "Mô tả chi tiết về kết quả 2",
-      avatar: "https://xsgames.co/randomusers/avatar.php?g=pixel&key=2",
-    },
-    // Thêm các kết quả khác...
-  ];
-
-  const onSearch = (value) => {
-    console.log("Tìm kiếm:", value);
-  };
 
   return (
     <div className="home-page">
       <NavbarComponent />
-
       <PageContainer className="home-container" ghost>
         <div className="home-content">
           <Title level={1} className="home-title">
@@ -47,34 +28,66 @@ const HomePage = () => {
 
           {/* Vùng tìm kiếm và kết quả */}
           <Card className="search-container">
-            {/* Phần tìm kiếm */}
-            <div className="search-section">
-              <Search
-                placeholder="Tìm kiếm..."
-                allowClear
-                prefix={<SearchOutlined style={{ color: "#bfbfbf" }} />}
-                enterButton={t("Search")}
-                onSearch={onSearch}
-                className="search-input"
-              />
-            </div>
+            <h3 className="search-title">{t("Explore data on your area.")}</h3>
+            <ProList
+              search={{
+                searchText: t("Search"),
+                resetText: t("Reset"),
+                className: "search-home",
+              }}
+              rowKey="id"
+              headerTitle={t("Roster of regions:")}
+              request={async (params = {}) => {
+                const { area } = params;
+                const dataRes = await getAllRegion();
+                const formattedRegions = dataRes.data.map((region) => ({
+                  area: `${region.name}, ${region.province}`,
+                  id: region._id,
+                }));
 
-            {/* Danh sách kết quả tìm kiếm */}
-            <div className="search-results">
-              <List
-                itemLayout="horizontal"
-                dataSource={searchResults}
-                renderItem={(item) => (
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={<Avatar src={item.avatar} />}
-                      title={<a href="#">{item.title}</a>}
-                      description={item.description}
+                // Filter data by search keyword
+                const filteredData = area
+                  ? formattedRegions.filter((item) =>
+                      item.area.toLowerCase().includes(area.toLowerCase())
+                    )
+                  : formattedRegions;
+                return {
+                  data: filteredData,
+                  success: true,
+                  total: filteredData.length,
+                };
+              }}
+              metas={{
+                title: {
+                  dataIndex: "area",
+                  render: (_, record) => <div>{record.area}</div>,
+                  fieldProps: {
+                    placeholder: t("Search region..."),
+                    prefix: <SearchOutlined style={{ color: "#bfbfbf" }} />,
+                  },
+                },
+                avatar: {
+                  render: () => (
+                    <img
+                      height={14}
+                      width={14}
+                      src={iconPlace}
+                      alt="icon-place"
                     />
-                  </List.Item>
-                )}
-              />
-            </div>
+                  ),
+                  search: false,
+                },
+              }}
+              onItem={(record) => {
+                return {
+                  onClick: async () => {
+                    const dataRes = await getRegionById(record.id);
+                    console.log("Clicked item:", dataRes);
+                  },
+                };
+              }}
+              className="search-list"
+            />
           </Card>
         </div>
       </PageContainer>
