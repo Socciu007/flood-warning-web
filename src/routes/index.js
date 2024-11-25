@@ -21,7 +21,7 @@ export const route = [
     page: RegisterPage,
   },
   {
-    path: "/region",
+    path: "/area/:slug/:id",
     page: DetailsRegionPage,
   },
   {

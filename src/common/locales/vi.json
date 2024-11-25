@@ -1,5 +1,5 @@
 {
-    "AQUACULTURE AND MANGROVES WARNING SYSTEM": "HỆ THỐNG CẢNH BÁO NUÔI TRỒNG THỦY SẢN VÀ RỪNG NGẬP MẶN",
+    "AquaGuardian system.": "Hệ thống AquaGuardian.",
     "Email": "Email",
     "Password": "Mật khẩu",
     "Please enter your email!": "Vui lòng nhập email!",
@@ -42,10 +42,13 @@
     "Total users": "Tổng số người dùng",
     "Total areas": "Tổng số khu vực",
     "Total exams": "Tổng số bài kiểm tra",
-    "Roster of regions:": "Danh sách khu vực:",
+    "List of areas:": "Danh sách khu vực:",
     "Explore data on your area.": "Khám phá khu vực của bạn.",
     "Search": "Tìm kiếm",
     "Reset": "Làm mới",
     "No data found": "Không tìm thấy dữ liệu",
-    "Search region...": "Tìm kiếm khu vực..."
+    "Search area...": "Tìm kiếm khu vực...",
+    "Welcome to AquaGuardian": "Chào mừng đến với AquaGuardian",
+    "Welcome!": "Chào mừng!",
+    "Together, let's build sustainable aquaculture and save mangroves. Explore now": "Cùng nhau xây dựng ngành nuôi trồng bền vững và cứu sống rừng ngập mặn. Khám phá ngay"
 }

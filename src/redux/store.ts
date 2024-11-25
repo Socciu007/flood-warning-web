@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import userReducer from './slices/userSlice.ts';
+import areaReducer from './slices/areaSlice.ts';
 import storage from 'redux-persist/lib/storage';
 import {
   FLUSH,
@@ -20,6 +21,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   user: userReducer,
+  farmArea: areaReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

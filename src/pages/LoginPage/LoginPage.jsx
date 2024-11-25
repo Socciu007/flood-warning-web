@@ -58,9 +58,7 @@ const LoginPage = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2 className="login-title">
-          {t("AQUACULTURE AND MANGROVES WARNING SYSTEM")}
-        </h2>
+        <h2 className="login-title">{t("AquaGuardian system.")}</h2>
         <Form
           ref={formRef}
           name="login"

@@ -18,7 +18,7 @@ const language = storageService.get("language");
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: language && language !== "" ? language : "vie",
+  lng: language && language !== "" ? language : "eng",
   keySeparator: false,
   interpolation: {
     escapeValue: false,

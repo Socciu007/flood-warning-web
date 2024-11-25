@@ -1,16 +1,31 @@
 import React from "react";
 import { PageContainer, ProList } from "@ant-design/pro-components";
-import { Typography, Card } from "antd";
+import { Typography, Card, Empty } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import NavbarComponent from "../../components/NavbarComponent/NavbarComponent";
 import "./style.scss";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setFarmAreaDetail } from "../../redux/slices/areaSlice.ts";
 import { useTranslation } from "react-i18next";
 import { getAllRegion, getRegionById } from "../../services/serviceRegion";
 import iconPlace from "../../assets/icons/icon-place.svg";
+import { convertToSlug } from "../../utils";
 const { Title, Paragraph } = Typography;
 
 const HomePage = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // Handle click item in search list
+  const handleClickItem = async (record) => {
+    const res = await getRegionById(record.id);
+    if (res.data) {
+      dispatch(setFarmAreaDetail(res.data[0]));
+      navigate(`/area/${convertToSlug(record.area)}/${record.id}`);
+    }
+  };
 
   return (
     <div className="home-page">
@@ -22,11 +37,11 @@ const HomePage = () => {
           </Title>
 
           <Paragraph className="home-description">
-            Use these awesome forms to login or create new account in your
-            project for free.
+            {t(
+              "Together, let's build sustainable aquaculture and save mangroves. Explore now"
+            )}
           </Paragraph>
 
-          {/* Vùng tìm kiếm và kết quả */}
           <Card className="search-container">
             <h3 className="search-title">{t("Explore data on your area.")}</h3>
             <ProList
@@ -35,8 +50,16 @@ const HomePage = () => {
                 resetText: t("Reset"),
                 className: "search-home",
               }}
+              locale={{
+                emptyText: (
+                  <Empty
+                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                    description={t("No area found!")}
+                  />
+                ),
+              }}
               rowKey="id"
-              headerTitle={t("Roster of regions:")}
+              headerTitle={t("List of areas:")}
               request={async (params = {}) => {
                 const { area } = params;
                 const dataRes = await getAllRegion();
@@ -62,7 +85,7 @@ const HomePage = () => {
                   dataIndex: "area",
                   render: (_, record) => <div>{record.area}</div>,
                   fieldProps: {
-                    placeholder: t("Search region..."),
+                    placeholder: t("Search area..."),
                     prefix: <SearchOutlined style={{ color: "#bfbfbf" }} />,
                   },
                 },
@@ -80,10 +103,7 @@ const HomePage = () => {
               }}
               onItem={(record) => {
                 return {
-                  onClick: async () => {
-                    const dataRes = await getRegionById(record.id);
-                    console.log("Clicked item:", dataRes);
-                  },
+                  onClick: async () => await handleClickItem(record),
                 };
               }}
               className="search-list"
