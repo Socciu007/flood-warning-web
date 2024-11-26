@@ -67,3 +67,32 @@ export const handleRefreshToken = async () => {
     return false;
   }
 };
+
+// Favorited area
+export const favoritedArea = async (data, accessToken) => {
+  try {
+    const res = await axios.post(`${process.env.REACT_APP_API_KEY}/api/users/favorited-area`, data, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.log("Error getting favorited area: ", error);
+    return false;
+  }
+};
+
+// Get favorited area by userID and areaID
+export const getFavoritedArea = async (data, accessToken) => {
+  try {
+    const res = await axios.post(`${process.env.REACT_APP_API_KEY}/api/users/get-favorited-area`, data, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    return { success: false, error: error?.response?.data };
+  }
+};

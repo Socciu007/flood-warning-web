@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setFarmAreaDetail } from "../../redux/slices/areaSlice.ts";
 import { useTranslation } from "react-i18next";
-import { getAllRegion, getRegionById } from "../../services/serviceRegion";
+import { getAllRegion, getRegionById } from "../../services/serviceArea.js";
 import iconPlace from "../../assets/icons/icon-place.svg";
 import { convertToSlug } from "../../utils";
 const { Title, Paragraph } = Typography;

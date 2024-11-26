@@ -23,10 +23,8 @@ const LoginPage = () => {
   const handleLogin = async (values) => {
     setIsLoading(true);
     const res = await loginUser(values);
-
     if (res.data) {
       const accountLogin = res.data.user;
-      formRef.current.resetFields();
       if (location?.state) {
         navigate(location?.state);
       } else if (accountLogin.role === "manager") {

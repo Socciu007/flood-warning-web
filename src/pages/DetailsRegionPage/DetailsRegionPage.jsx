@@ -3,9 +3,16 @@ import "./style.scss";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import NavbarComponent from "../../components/NavbarComponent/NavbarComponent";
-import { getRegionById } from "../../services/serviceRegion";
+import { getRegionById } from "../../services/serviceArea.js";
+import { getFavoritedArea, favoritedArea } from "../../services/serviceUser";
 import { setFarmAreaDetail } from "../../redux/slices/areaSlice.ts";
-import { CodepenOutlined, AreaChartOutlined, StarOutlined } from "@ant-design/icons";
+import { message } from "antd";
+import { useTranslation } from "react-i18next";
+import {
+  CodepenOutlined,
+  AreaChartOutlined,
+  StarFilled,
+} from "@ant-design/icons";
 import {
   MapContainer,
   TileLayer,
@@ -25,10 +32,29 @@ L.Icon.Default.mergeOptions({
 
 const DetailsRegionPage = () => {
   const [activeTab, setActiveTab] = useState("information");
+  const [isFavorite, setIsFavorite] = useState();
   const { t } = useTranslation();
   const { id } = useParams();
   const dispatch = useDispatch();
   const { farmAreaDetail } = useSelector((state) => state.farmArea);
+  const { currentUser } = useSelector((state) => state.user);
+
+  // Get favorited area
+  const getFavoriteArea = async (data, accessToken) => {
+    const res = await getFavoritedArea(data, accessToken);
+    if (res?.data && !!res?.data?.length) {
+      setIsFavorite(res?.data[0]?.status);
+    } else {
+      setIsFavorite(false);
+    }
+  };
+
+  useEffect(() => {
+    getFavoriteArea(
+      { userId: currentUser?._id, regionId: id },
+      currentUser?.accessToken
+    );
+  }, [currentUser, id]);
 
   useEffect(() => {
     const fetchDataArea = async () => {
@@ -39,6 +65,26 @@ const DetailsRegionPage = () => {
     };
     fetchDataArea();
   }, [id, farmAreaDetail, dispatch]);
+
+  useEffect(() => {
+    const addFavoriteArea = async () => {
+      await favoritedArea(
+        { userId: currentUser?._id, regionId: id, status: isFavorite },
+        currentUser?.accessToken
+      );
+    };
+    addFavoriteArea();
+  }, [isFavorite]);
+
+  // Handle favorite
+  const handleFavorite = () => {
+    setIsFavorite((prev) => !prev);
+    if (!isFavorite) {
+      message.info(t("Added to favorites!"));
+    } else {
+      message.info(t("Removed favorite area!"));
+    }
+  };
 
   const position = [farmAreaDetail?.latitude, farmAreaDetail?.longitude];
   return (
@@ -61,6 +107,7 @@ const DetailsRegionPage = () => {
               className={`tab-button ${
                 activeTab === "information" ? "active" : ""
               }`}
+              style={{ flex: 1 }}
               onClick={() => setActiveTab("information")}
             >
               <CodepenOutlined />
@@ -71,12 +118,19 @@ const DetailsRegionPage = () => {
             {activeTab === "forecast" && <div>Forecast</div>}
             {activeTab === "information" && (
               <div className="information-container">
-                <p className="information-title">{`${farmAreaDetail?.name}, ${farmAreaDetail?.province}`}</p>
+                <div className="information-title-container">
+                  <p className="information-title">{`${farmAreaDetail?.name}, ${farmAreaDetail?.province}`}</p>
+                  <StarFilled
+                    style={{ color: isFavorite ? "#FFD700" : "#000" }}
+                    height={14}
+                    width={14}
+                    onClick={handleFavorite}
+                  />
+                </div>
                 <div className="information-farm-container">
                   {farmAreaDetail?.farmAreas.map((farm) => (
                     <div className="information-farm-item" key={farm._id}>
                       <p className="information-farm-name">{farm.name}</p>
-                      <StarOutlined height={14} width={14} />
                     </div>
                   ))}
                 </div>

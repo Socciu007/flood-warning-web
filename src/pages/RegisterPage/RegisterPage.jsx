@@ -15,7 +15,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import "./style.scss";
-import { getAllRegion } from "../../services/serviceRegion";
+import { getAllRegion } from "../../services/serviceArea";
 import { registerUser } from "../../services/serviceUser";
 import { message } from "antd";
 
