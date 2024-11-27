@@ -1,0 +1,30 @@
+.delete-modal {
+  .ant-modal-content {
+    height: 130px;
+    .ant-modal-close {
+      border-radius: 50%;
+    }
+    .ant-modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      height: calc(100% - 36px);
+      align-items: end;
+    }
+  }
+}
+
+.exam-modal {
+  .modal-form {
+    .ant-space {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0 10px !important;
+    }
+    .auto-send-mail {
+      .ant-form-item-control-input-content {
+        display: inherit;
+        justify-content: end;
+      }
+    }
+  }
+}

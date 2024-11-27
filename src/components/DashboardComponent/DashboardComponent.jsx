@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, Children } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./style.scss";
 import { useTranslation } from "react-i18next";
 import CardComponent from "../CardComponent/CardComponent";
@@ -20,10 +20,13 @@ import {
   updateFarmArea,
   deleteFarmArea,
 } from "../../services/serviceFarmArea";
-import { ModalForm, ProForm, ProFormText } from "@ant-design/pro-components";
+import { ProForm, ProFormMoney } from "@ant-design/pro-components";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import { message, Tooltip } from "antd";
+import { message, Tooltip, Checkbox, Form } from "antd";
+import ModalFormComponent from "../ModalFormComponent/ModalFormComponent";
+import { waitTime } from "../../utils";
+import { testAreaFarm } from "../../services/serviceExam";
 
 const DashboardComponent = () => {
   const { t } = useTranslation();
@@ -53,66 +56,174 @@ const DashboardComponent = () => {
   }, [areas]);
 
   const children = (
-    <ProForm.Group>
-      <ProFormText
-        width="xs"
-        name="DO"
-        label="DO(mg/l)"
-        placeholder={false}
-        tooltip={t("Dissolved oxygen")}
-        min={0}
-        fieldProps={{
-          precision: 2,
-        }}
-      />
-      <ProFormText
-        width="xs"
-        name="temperature"
-        label="Temperature(◦C):"
-        placeholder={false}
-      />
-      <ProFormText width="xs" name="pH" label="pH:" placeholder={false} />
-      <ProFormText
-        width="xs"
-        name="salinity"
-        label="Salinity(%.):"
-        placeholder={false}
-      />
-      <ProFormText
-        width="xs"
-        name="alkalinity"
-        label="Alkalinity(mg/l):"
-        placeholder={false}
-      />
-      <ProFormText
-        width="xs"
-        name="clarity"
-        label="Clarity(cm):"
-        placeholder={false}
-      />
-      <ProFormText
-        width="xs"
-        name="amoniac"
-        label="Amoniac(mg/l):"
-        placeholder={false}
-      />
-      <ProFormText width="xs" name="H2S" label="H2S(mg/l):" placeholder={false} />
-      <ProFormText width="xs" name="BOD5" label="BOD5(mg/l):" placeholder={false} />
-      <ProFormText width="xs" name="COD" label="COD(mg/l):" placeholder={false} />
-      <ProFormText
-        width="xs"
-        name="coliform"
-        label="Coliform(MPN/100ml):"
-        placeholder={false}
-      />
-      <ProFormText
-        width="xs"
-        name="suspendedSolids"
-        label="TSS(mg/l):"
-        placeholder={false}
-      />
-    </ProForm.Group>
+    <>
+      <ProForm.Group className="exam-form">
+        <ProFormMoney
+          width="xs"
+          name="DO"
+          label="DO(mg/l)"
+          placeholder={false}
+          tooltip={t("Dissolved oxygen")}
+          initialValue={5}
+          min={0}
+          fieldProps={{
+            precision: 0,
+            moneySymbol: false,
+          }}
+        />
+        <ProFormMoney
+          width="xs"
+          name="temperature"
+          label="Temperature(°C)"
+          tooltip={t("Temperature")}
+          placeholder={false}
+          initialValue={20}
+          fieldProps={{
+            precision: 0,
+            moneySymbol: false,
+          }}
+        />
+        <ProFormMoney
+          width="xs"
+          name="pH"
+          label="pH"
+          tooltip={t("pH")}
+          placeholder={false}
+          initialValue={7.5}
+          fieldProps={{
+            precision: 1,
+            moneySymbol: false,
+          }}
+        />
+        <ProFormMoney
+          width="xs"
+          name="salinity"
+          label="Salinity(‰)"
+          tooltip={t("Salinity")}
+          placeholder={false}
+          initialValue={20}
+          fieldProps={{
+            precision: 0,
+            moneySymbol: false,
+          }}
+        />
+        <ProFormMoney
+          width="xs"
+          name="alkalinity"
+          label="Alkalinity(mg/l)"
+          tooltip={t("Alkalinity")}
+          placeholder={false}
+          initialValue={60}
+          fieldProps={{
+            precision: 0,
+            moneySymbol: false,
+          }}
+        />
+        <ProFormMoney
+          width="xs"
+          name="clarity"
+          label="Clarity(cm)"
+          tooltip={t("Clarity")}
+          placeholder={false}
+          initialValue={20}
+          fieldProps={{
+            precision: 0,
+            moneySymbol: false,
+          }}
+        />
+        <ProFormMoney
+          width="xs"
+          name="ammonia"
+          label="Ammonia(mg/l)"
+          tooltip={t("Ammonia")}
+          placeholder={false}
+          initialValue={0.3}
+          fieldProps={{
+            precision: 1,
+            moneySymbol: false,
+          }}
+        />
+        <ProFormMoney
+          width="xs"
+          name="H2S"
+          label="H2S(mg/l)"
+          tooltip={t("H2S")}
+          placeholder={false}
+          initialValue={0.05}
+          fieldProps={{
+            precision: 2,
+            moneySymbol: false,
+          }}
+        />
+        <ProFormMoney
+          width="xs"
+          name="BOD5"
+          label="BOD5(mg/l)"
+          tooltip={t("BOD5")}
+          placeholder={false}
+          initialValue={50}
+          fieldProps={{
+            precision: 0,
+            moneySymbol: false,
+          }}
+        />
+        <ProFormMoney
+          width="xs"
+          name="COD"
+          label="COD(mg/l)"
+          tooltip={t("COD")}
+          placeholder={false}
+          initialValue={150}
+          fieldProps={{
+            precision: 0,
+            moneySymbol: false,
+          }}
+        />
+        <ProFormMoney
+          width="xs"
+          name="coliform"
+          label="Coliform(MPN/100ml)"
+          tooltip={t("Coliform")}
+          placeholder={false}
+          initialValue={5000}
+          fieldProps={{
+            precision: 0,
+            moneySymbol: false,
+          }}
+        />
+        <ProFormMoney
+          width="xs"
+          name="suspendedSolids"
+          label="TSS(mg/l)"
+          tooltip={t("TSS")}
+          placeholder={false}
+          initialValue={50}
+          fieldProps={{
+            precision: 0,
+            moneySymbol: false,
+          }}
+        />
+      </ProForm.Group>
+      <Form.Item
+        className="auto-send-mail"
+        valuePropName="checked"
+        name="autoSendMail"
+      >
+        <Checkbox>{t("Automatically send results by mail")}</Checkbox>
+      </Form.Item>
+    </>
   );
+
+  // Handle submit modal test area
+  const handleSubmitModal = async (values, farmAreaId) => {
+    await waitTime(1000);
+    const res = await testAreaFarm(
+      { ...values, userId: currentUser._id, farmAreaId },
+      currentUser.accessToken
+    );
+    console.log("res", res);
+    return true;
+  };
 
   // Config columns table
   const columns = [
@@ -175,28 +286,55 @@ const DashboardComponent = () => {
             <EditFilled style={{ color: "#1976D2" }} />
           </Tooltip>
         </a>,
-        <a key="delete" onClick={() => handleDeleteFarm(record.id)}>
-          <Tooltip title={t("Delete")}>
-            <DeleteFilled style={{ color: "#FF6347" }} />
-          </Tooltip>
-        </a>,
-        <ModalForm
-          key="exam"
-          title={t("Please fill in the test indicators")}
+        <ModalFormComponent
+          key="delete"
+          title={t("Are you sure you want to delete this area?")}
           trigger={
-            <a key="exam" onClick={() => console.log("exam")}>
-              <Tooltip title={t("Add examination")}>
-                <FileAddOutlined style={{ color: "#9E9E9E" }} />
+            <a key="delete" onClick={() => {}}>
+              <Tooltip title={t("Delete")}>
+                <DeleteFilled style={{ color: "#FF6347" }} />
               </Tooltip>
             </a>
           }
           submitter={{
-            render: () => {},
+            searchConfig: {
+              submitText: t("Confirm"),
+              resetText: t("Cancel"),
+            },
           }}
-          onFinish={async (values) => {}}
-        >
-          {children}
-        </ModalForm>,
+          props={{
+            width: 450,
+            wrapClassName: "delete-modal",
+          }}
+          handleSubmitModal={() => handleDeleteFarm(record.id)}
+        />,
+        <div key="exam" className="exam-modal">
+          <ModalFormComponent
+            title="Please fill in the test indicators"
+            trigger={
+              <a key="exam" onClick={() => {}}>
+                <Tooltip title={t("Add examination")}>
+                  <FileAddOutlined style={{ color: "#9E9E9E" }} />
+                </Tooltip>
+              </a>
+            }
+            submitter={{
+              searchConfig: {
+                submitText: t("Test Results"),
+                resetText: t("Cancel"),
+              },
+            }}
+            handleSubmitModal={async (values) =>
+              handleSubmitModal(values, record.id)
+            }
+            props={{
+              width: "fit-content",
+              wrapClassName: "exam-modal",
+            }}
+          >
+            {children}
+          </ModalFormComponent>
+        </div>,
       ],
     },
   ];

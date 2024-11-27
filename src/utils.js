@@ -11,6 +11,15 @@ export const convertToSlug = (text) => {
     .replace(/^-+|-+$/g, ''); // Remove hyphens at the beginning and end
 };
 
+// Wait time
+export const waitTime = (time = 100) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, time);
+  });
+};
+
 export const isJsonString = (data) => {
     try {
         JSON.parse(data)
