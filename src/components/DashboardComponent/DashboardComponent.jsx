@@ -27,6 +27,7 @@ import { message, Tooltip, Checkbox, Form } from "antd";
 import ModalFormComponent from "../ModalFormComponent/ModalFormComponent";
 import { waitTime } from "../../utils";
 import { testAreaFarm } from "../../services/serviceExam";
+import { MAX_VERTICAL_CONTENT_RADIUS } from "antd/es/style/placementArrow";
 
 const DashboardComponent = () => {
   const { t } = useTranslation();
@@ -40,6 +41,7 @@ const DashboardComponent = () => {
     queryKey: ["areas"],
     queryFn: () => getAllArea(currentUser._id),
   });
+  console.log("areas", areas);
 
   useEffect(() => {
     if (areas) {
@@ -50,6 +52,7 @@ const DashboardComponent = () => {
         area: area.area,
         nameRegion: area.regionId.name,
         province: area.regionId.province,
+        results: area.exam.percentPos * 100 || null,
       }));
       setDataAreas(formattedAreas);
     }
@@ -240,11 +243,21 @@ const DashboardComponent = () => {
       valueType: "text",
       key: "nameArea",
       className: "table-cell",
+      fieldProps: {
+        style: {
+          width: "100px",
+        },
+      },
     },
     {
       title: t("Type Farm"),
       dataIndex: "typeArea",
-      valueType: "text",
+      valueType: "select",
+      valueEnum: {
+        "Oyster farming": t("Oyster farming"),
+        "Cobia farming": t("Cobia farming"),
+        "Mangrove forest": t("Mangrove forest"),
+      },
       key: "typeArea",
       className: "table-cell",
     },
@@ -254,6 +267,11 @@ const DashboardComponent = () => {
       valueType: "text",
       key: "area",
       className: "table-cell",
+      fieldProps: {
+        style: {
+          width: "100px",
+        },
+      },
     },
     {
       title: t("Name Region"),
@@ -268,6 +286,17 @@ const DashboardComponent = () => {
       key: "province",
       className: "table-cell",
       editable: false,
+    },
+    {
+      title: t("Results"),
+      dataIndex: "results",
+      key: "results",
+      className: "table-cell",
+      editable: false,
+      valueType: () => ({
+        type: "percent",
+        precision: 2,
+      }),
     },
     {
       title: t("Action"),
@@ -320,7 +349,7 @@ const DashboardComponent = () => {
             }
             submitter={{
               searchConfig: {
-                submitText: t("Test Results"),
+                submitText: t("Check"),
                 resetText: t("Cancel"),
               },
             }}
@@ -372,24 +401,24 @@ const DashboardComponent = () => {
     <div className="dashboard-component">
       <div>
         <div className="dashboard-component-title">
-          <h3>{t("DASHBOARD")}</h3>
+          <h3>{t("Dashboard")}</h3>
           <SearchComponent />
         </div>
         <div className="dashboard-component-header">
           <CardComponent
-            title="TOTAL USERS"
+            title={t("Total users")}
             count={5}
             srcImg={iconGroupUser}
             backgroundColor={"#ffd600"}
           />
           <CardComponent
-            title="TOTAL AREAS"
+            title={t("Total areas")}
             count={dataAreas.length}
             srcImg={iconArea}
             backgroundColor={"#f5365c"}
           />
           <CardComponent
-            title="TOTAL EXAMS"
+            title={t("Total exams")}
             count={5}
             srcImg={iconExam}
             backgroundColor={"#fb6340"}
