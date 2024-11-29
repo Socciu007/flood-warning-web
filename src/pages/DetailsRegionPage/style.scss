@@ -74,6 +74,39 @@
             }
           }
         }
+        .forecast-container {
+          .forecast-sub-container {
+            .forecast-form {
+              display: flex;
+              .ant-form-item {
+                width: 168px;
+                margin-bottom: 0;
+                .ant-select-selector {
+                  border-top-right-radius: 0;
+                  border-bottom-right-radius: 0;
+                }
+              }
+              .ant-btn {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+              }
+            }
+            .forecast-chart {
+              width: 100%;
+              margin-top: 10px;
+              .forecast-title {
+                font-size: 14px;
+                // text-align: center;
+                margin: 10px 0px;
+              }
+              .ant-progress {
+                height: 70px;
+                width: 100%;
+                text-align: center;
+              }
+            }
+          }
+        }
       }
     }
   }

@@ -9,3 +9,12 @@ export const testAreaFarm = async (data, accessToken) => {
   });
   return res.data;
 };
+
+// Get exam of farm area
+export const getExamOfFarmArea = async (farmAreaId, accessToken) => {
+  const res = await axios.get(`${process.env.REACT_APP_API_KEY}/api/exams/get-exam/${farmAreaId}`, {
+    headers: { token: `Bearer ${accessToken}` },
+  });
+  return res.data;
+};
+

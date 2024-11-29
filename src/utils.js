@@ -11,6 +11,18 @@ export const convertToSlug = (text) => {
     .replace(/^-+|-+$/g, ''); // Remove hyphens at the beginning and end
 };
 
+// Convert date to string "15:30 25/04/2024" -> "25/04"
+export const formatDateTime = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleString('vi-VN', {
+    hour: '2-digit',
+    minute: '2-digit',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  }).split(" ")[1].slice(0, 5);
+};
+
 // Wait time
 export const waitTime = (time = 100) => {
   return new Promise((resolve) => {
@@ -21,12 +33,12 @@ export const waitTime = (time = 100) => {
 };
 
 export const isJsonString = (data) => {
-    try {
-        JSON.parse(data)
-    } catch (error) {
-        return false;
-    }
-    return true;
+  try {
+    JSON.parse(data)
+  } catch (error) {
+    return false;
+  }
+  return true;
 }
 
 export const getBase64 = (file) =>
@@ -49,27 +61,27 @@ export function getItem(label, key, icon, children, type) {
 
 export const renderOptions = (arr) => {
   let results = []
-  if(arr) {
-      results = arr?.map((opt) => {
-          return {
-              value: opt,
-              label: opt
-          }
-      })
+  if (arr) {
+    results = arr?.map((opt) => {
+      return {
+        value: opt,
+        label: opt
+      }
+    })
   }
   results.push({
-      label: 'Loại sản phẩm khác',
-      value: 'add_type'
+    label: 'Loại sản phẩm khác',
+    value: 'add_type'
   })
   return results
 }
 
 export const convertPrice = (price) => {
   try {
-      const result  = price?.toLocaleString()
-      return `${result} đ`
+    const result = price?.toLocaleString()
+    return `${result} đ`
   } catch (error) {
-      return null
+    return null
   }
 }
 
