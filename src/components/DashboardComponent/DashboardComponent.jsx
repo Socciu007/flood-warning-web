@@ -20,19 +20,21 @@ import {
   updateFarmArea,
   deleteFarmArea,
 } from "../../services/serviceFarmArea";
+import { getListUserPreferred } from "../../services/serviceUser";
+import { getExamOfUser } from "../../services/serviceExam";
 import { ProForm, ProFormMoney } from "@ant-design/pro-components";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import { message, Tooltip, Checkbox, Form } from "antd";
+import { message, Tooltip, Checkbox, Form, List, Avatar } from "antd";
 import ModalFormComponent from "../ModalFormComponent/ModalFormComponent";
 import { waitTime } from "../../utils";
 import { testAreaFarm } from "../../services/serviceExam";
-import { MAX_VERTICAL_CONTENT_RADIUS } from "antd/es/style/placementArrow";
 
 const DashboardComponent = () => {
   const { t } = useTranslation();
   const actionRef = useRef();
   const [dataAreas, setDataAreas] = useState([]);
+  const [typeArea, setTypeArea] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
 
   // Get all areas
@@ -41,7 +43,17 @@ const DashboardComponent = () => {
     queryKey: ["areas"],
     queryFn: () => getAllArea(currentUser._id),
   });
-  console.log("areas", areas);
+  const { data: listUserPreferred } = useQuery({
+    queryKey: ["listUserPreferred"],
+    queryFn: () => getListUserPreferred(
+      { regionId: currentUser.regionId },
+      currentUser.accessToken
+    ),
+  });
+  const { data: examsOfUser } = useQuery({
+    queryKey: ["examsOfUser"],
+    queryFn: () => getExamOfUser(currentUser._id, currentUser.accessToken),
+  });
 
   useEffect(() => {
     if (areas) {
@@ -61,19 +73,21 @@ const DashboardComponent = () => {
   const children = (
     <>
       <ProForm.Group className="exam-form">
-        <ProFormMoney
-          width="xs"
-          name="DO"
-          label="DO(mg/l)"
-          placeholder={false}
-          tooltip={t("Dissolved oxygen")}
-          initialValue={5}
-          min={0}
-          fieldProps={{
-            precision: 0,
-            moneySymbol: false,
-          }}
-        />
+        {(typeArea === "Oyster farming" || typeArea === "Cobia farming") && (
+          <ProFormMoney
+            width="xs"
+            name="DO"
+            label="DO(mg/l)"
+            placeholder={false}
+            tooltip={t("Dissolved oxygen")}
+            initialValue={5}
+            min={0}
+            fieldProps={{
+              precision: 0,
+              moneySymbol: false,
+            }}
+          />
+        )}
         <ProFormMoney
           width="xs"
           name="temperature"
@@ -86,6 +100,19 @@ const DashboardComponent = () => {
             moneySymbol: false,
           }}
         />
+        {typeArea === "Mangrove forest" && (
+          <ProFormMoney
+            width="xs"
+            name="rainfall"
+            label="Rainfall(mm/year)"
+            tooltip={t("Rainfall")}
+            placeholder={false}
+            fieldProps={{
+              precision: 0,
+              moneySymbol: false,
+            }}
+          />
+        )}
         <ProFormMoney
           width="xs"
           name="pH"
@@ -110,34 +137,38 @@ const DashboardComponent = () => {
             moneySymbol: false,
           }}
         />
-        <ProFormMoney
-          width="xs"
-          name="alkalinity"
-          label="Alkalinity(mg/l)"
-          tooltip={t("Alkalinity")}
-          placeholder={false}
-          initialValue={60}
-          fieldProps={{
-            precision: 0,
-            moneySymbol: false,
-          }}
-        />
-        <ProFormMoney
-          width="xs"
-          name="clarity"
-          label="Clarity(cm)"
-          tooltip={t("Clarity")}
-          placeholder={false}
-          initialValue={20}
-          fieldProps={{
-            precision: 0,
-            moneySymbol: false,
-          }}
-        />
+        {(typeArea === "Mangrove forest" || typeArea === "Oyster farming") && (
+          <ProFormMoney
+            width="xs"
+            name="alkalinity"
+            label="Alkalinity(mg/l)"
+            tooltip={t("Alkalinity")}
+            placeholder={false}
+            // initialValue={60}
+            fieldProps={{
+              precision: 0,
+              moneySymbol: false,
+            }}
+          />
+        )}
+        {typeArea === "Oyster farming" && (
+          <ProFormMoney
+            width="xs"
+            name="clarity"
+            label="Clarity(cm)"
+            tooltip={t("Clarity")}
+            placeholder={false}
+            initialValue={20}
+            fieldProps={{
+              precision: 0,
+              moneySymbol: false,
+            }}
+          />
+        )}
         <ProFormMoney
           width="xs"
           name="ammonia"
-          label="Ammonia(mg/l)"
+          label="NH₃(mg/l)"
           tooltip={t("Ammonia")}
           placeholder={false}
           initialValue={0.3}
@@ -146,54 +177,88 @@ const DashboardComponent = () => {
             moneySymbol: false,
           }}
         />
-        <ProFormMoney
-          width="xs"
-          name="H2S"
-          label="H2S(mg/l)"
-          tooltip={t("H2S")}
-          placeholder={false}
-          initialValue={0.05}
-          fieldProps={{
-            precision: 2,
-            moneySymbol: false,
-          }}
-        />
-        <ProFormMoney
-          width="xs"
-          name="BOD5"
-          label="BOD5(mg/l)"
-          tooltip={t("BOD5")}
-          placeholder={false}
-          initialValue={50}
-          fieldProps={{
-            precision: 0,
-            moneySymbol: false,
-          }}
-        />
-        <ProFormMoney
-          width="xs"
-          name="COD"
-          label="COD(mg/l)"
-          tooltip={t("COD")}
-          placeholder={false}
-          initialValue={150}
-          fieldProps={{
-            precision: 0,
-            moneySymbol: false,
-          }}
-        />
-        <ProFormMoney
-          width="xs"
-          name="coliform"
-          label="Coliform(MPN/100ml)"
-          tooltip={t("Coliform")}
-          placeholder={false}
-          initialValue={5000}
-          fieldProps={{
-            precision: 0,
-            moneySymbol: false,
-          }}
-        />
+        {typeArea !== "Cobia farming" && (
+          <ProFormMoney
+            width="xs"
+            name="H2S"
+            label="H₂S(mg/l)"
+            tooltip={t("H2S")}
+            placeholder={false}
+            // initialValue={0.05}
+            fieldProps={{
+              precision: 2,
+              moneySymbol: false,
+            }}
+          />
+        )}
+        {typeArea === "Cobia farming" && (
+          <ProFormMoney
+            width="xs"
+            name="photsPhat"
+            label="Photsphat(mg/l)"
+            tooltip={t("Photsphat")}
+            placeholder={false}
+            fieldProps={{
+              precision: 1,
+              moneySymbol: false,
+            }}
+          />
+        )}
+        {(typeArea === "Oyster farming" || typeArea === "Cobia farming") && (
+          <ProFormMoney
+            width="xs"
+            name="totalCrom"
+            label="Total Crom(mg/l)"
+            tooltip={t("Total Crom")}
+            placeholder={false}
+            fieldProps={{
+              precision: 0,
+              moneySymbol: false,
+            }}
+          />
+        )}
+        {(typeArea === "Mangrove forest" || typeArea === "Oyster farming") && (
+          <ProFormMoney
+            width="xs"
+            name="BOD5"
+            label="BOD₅(mg/l)"
+            tooltip={t("BOD5")}
+            placeholder={false}
+            initialValue={50}
+            fieldProps={{
+              precision: 0,
+              moneySymbol: false,
+            }}
+          />
+        )}
+        {(typeArea === "Mangrove forest" || typeArea === "Oyster farming") && (
+          <ProFormMoney
+            width="xs"
+            name="COD"
+            label="COD(mg/l)"
+            tooltip={t("COD")}
+            placeholder={false}
+            initialValue={150}
+            fieldProps={{
+              precision: 0,
+              moneySymbol: false,
+            }}
+          />
+        )}
+        {typeArea === "Oyster farming" && (
+          <ProFormMoney
+            width="xs"
+            name="coliform"
+            label="Coliform(MPN/100ml)"
+            tooltip={t("Coliform")}
+            placeholder={false}
+            initialValue={5000}
+            fieldProps={{
+              precision: 0,
+              moneySymbol: false,
+            }}
+          />
+        )}
         <ProFormMoney
           width="xs"
           name="suspendedSolids"
@@ -224,7 +289,13 @@ const DashboardComponent = () => {
       { ...values, userId: currentUser._id, farmAreaId },
       currentUser.accessToken
     );
-    console.log("res", res);
+    if (res) {
+      message.success(t("Successful regional forecasting!"));
+      // Refresh data
+      queryClient.invalidateQueries({ queryKey: ["areas"] });
+    } else {
+      message.error(t("Area forecast failed. Try again later!"));
+    }
     return true;
   };
 
@@ -341,7 +412,7 @@ const DashboardComponent = () => {
           <ModalFormComponent
             title="Please fill in the test indicators"
             trigger={
-              <a key="exam" onClick={() => {}}>
+              <a key="exam" onClick={() => setTypeArea(record.typeArea)}>
                 <Tooltip title={t("Add examination")}>
                   <FileAddOutlined style={{ color: "#9E9E9E" }} />
                 </Tooltip>
@@ -407,19 +478,19 @@ const DashboardComponent = () => {
         <div className="dashboard-component-header">
           <CardComponent
             title={t("Total users")}
-            count={5}
+            count={listUserPreferred?.data?.length || 0}
             srcImg={iconGroupUser}
             backgroundColor={"#ffd600"}
           />
           <CardComponent
             title={t("Total areas")}
-            count={dataAreas.length}
+            count={dataAreas.length || 0}
             srcImg={iconArea}
             backgroundColor={"#f5365c"}
           />
           <CardComponent
             title={t("Total exams")}
-            count={5}
+            count={examsOfUser?.length || 0}
             srcImg={iconExam}
             backgroundColor={"#fb6340"}
           />
@@ -469,7 +540,44 @@ const DashboardComponent = () => {
         />
         <div className="right-dashboard-component">
           <div className="right-dashboard-component-title">
-            <h3>{t("TOTAL AREAS")}</h3>
+            <h3>{t("User Preferred")}</h3>
+          </div>
+          <div className="right-dashboard-component-list">
+            <List
+              className="right-dashboard-component-list-item"
+              itemLayout="horizontal"
+              dataSource={listUserPreferred?.data}
+              renderItem={(item) => (
+                <List.Item
+                  // onClick={() => handleSearchCustomer(item?.id, null, null)}
+                  style={{
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <List.Item.Meta
+                    avatar={
+                      <Avatar
+                        src={item?.userInfo?.avatar}
+                        style={{ backgroundColor: "#f56a00" }}
+                      >
+                        {item?.avatar
+                          ? null
+                          : item?.userInfo?.username?.[0]?.toUpperCase() || "A"}
+                      </Avatar>
+                    }
+                    title={
+                      <div className="customer-user-info">
+                        <span>
+                          {item?.userInfo?.username ||
+                            item?.userInfo?.email?.split("@")[0]}
+                        </span>
+                        <span>{item?.userInfo?.email}</span>
+                      </div>
+                    }
+                  />
+                </List.Item>
+              )}
+            />
           </div>
         </div>
       </div>

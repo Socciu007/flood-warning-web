@@ -17,4 +17,3 @@ export const deleteFarmArea = async (id) => {
   const res = await axios.delete(`${process.env.REACT_APP_API_KEY}/api/farm-areas/${id}`);
   return res.data;
 };
-

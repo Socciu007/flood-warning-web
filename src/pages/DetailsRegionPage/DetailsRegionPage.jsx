@@ -120,8 +120,6 @@ const DetailsRegionPage = () => {
     }
   };
 
-  console.log(examOfFarmArea);
-
   // Handle get exam of farm area
   const handleGetExamFarm = async (values) => {
     await getExamFarm(values?.farmAreaId, currentUser?.accessToken);

@@ -82,5 +82,8 @@
     "Update farm area failed!": "Cập nhật khu nuôi thất bại!",
     "Recent forecast chart": "Biểu đồ dự đoán gần đây",
     "Enter the farming area": "Nhập khu nuôi trồng",
-    "Latest predictions": "Dự đoán mới nhất"
+    "Latest predictions": "Dự đoán mới nhất",
+    "Result": "Kết quả",
+    "Successful regional forecasting!": "Dự đoán khu vực thành công!",
+    "Area forecast failed. Try again later!": "Dự đoán khu vực thất bại, vui lòng thử lại sau!"
 }

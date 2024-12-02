@@ -96,3 +96,18 @@ export const getFavoritedArea = async (data, accessToken) => {
     return { success: false, error: error?.response?.data };
   }
 };
+
+// Get list user preferred
+export const getListUserPreferred = async (body,accessToken) => {
+  try {
+    const res = await axios.post(`${process.env.REACT_APP_API_KEY}/api/users/get-list-favorited-area`, body, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.log("Error getting list user preferred: ", error);
+    return false;
+  }
+};

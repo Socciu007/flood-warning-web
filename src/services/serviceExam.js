@@ -18,3 +18,11 @@ export const getExamOfFarmArea = async (farmAreaId, accessToken) => {
   return res.data;
 };
 
+// Get exam of user
+export const getExamOfUser = async (userId, accessToken) => {
+  const res = await axios.get(`${process.env.REACT_APP_API_KEY}/api/exams/get-exam-by-user/${userId}`, {
+    headers: { token: `Bearer ${accessToken}` },
+  });
+  return res.data;
+};
+
