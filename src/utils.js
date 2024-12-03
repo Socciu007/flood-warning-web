@@ -11,7 +11,7 @@ export const convertToSlug = (text) => {
     .replace(/^-+|-+$/g, ''); // Remove hyphens at the beginning and end
 };
 
-// Convert date to string "15:30 25/04/2024" -> "25/04"
+// Convert date to string "15:30 25/04/2024"
 export const formatDateTime = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleString('vi-VN', {
@@ -20,7 +20,7 @@ export const formatDateTime = (dateString) => {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric'
-  }).split(" ")[1].slice(0, 5);
+  });
 };
 
 // Wait time
@@ -41,6 +41,7 @@ export const isJsonString = (data) => {
   return true;
 }
 
+// Get base64 from image
 export const getBase64 = (file) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();

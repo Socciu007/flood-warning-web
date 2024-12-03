@@ -96,3 +96,48 @@
     }
   }
 }
+
+.profile-popover {
+  p {
+    cursor: pointer;
+    margin: 0;
+    padding: 5px;
+    border-radius: 4px;
+  }
+  p:hover {
+    color: rgba(0, 0, 0, 0.54);
+    background-color: #f8f8f8;
+  }
+}
+
+.profile-modal {
+  .ant-space {
+    flex-direction: column;
+    gap: 8px !important;
+    width: 100%;
+    .ant-space-item {
+      width: 100%;
+      .ant-form-item {
+        width: 100%;
+        margin-bottom: 0;
+        .ant-row {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 8px;
+          .ant-form-item-label {
+            padding: 0;
+            flex: 2;
+          }
+          .ant-form-item-control {
+            .ant-btn {
+              background: transparent;
+              border: none;
+            }
+            flex: 8;
+          }
+        }
+      }
+    }
+  }
+}

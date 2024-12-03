@@ -128,7 +128,9 @@ const DetailsRegionPage = () => {
 
   const position = [farmAreaDetail?.latitude, farmAreaDetail?.longitude];
   const data = {
-    labels: examOfFarmArea?.map((item) => formatDateTime(item?.updatedAt)), // Labels for chart
+    labels: examOfFarmArea?.map((item) =>
+      formatDateTime(item?.updatedAt).split(" ")[1].slice(0, 5)
+    ), // Labels for chart
     datasets: [
       {
         data: examOfFarmArea

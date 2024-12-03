@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, Select, Space, Popover, Badge } from "antd";
+import React, { useState, useEffect } from "react";
+import { Button, Select, Space, Popover, Badge, message } from "antd";
 import {
   HomeFilled,
   UserOutlined,
@@ -9,22 +9,41 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import "./style.scss";
 import storageService from "../../services/storage.service";
-import { clearUser } from "../../redux/slices/userSlice.ts";
+import { clearUser, setUser } from "../../redux/slices/userSlice.ts";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import { getAlerts } from "../../services/serviceNotifications";
 import i18n from "../../i18n";
 import viFlag from "../../assets/icons/icon-vietnam.png";
 import engFlag from "../../assets/icons/icon-usa.png";
 import alertIcon from "../../assets/icons/icon-alert.svg";
 import logoIcon from "../../assets/icons/icon-logo.svg";
 import { logoutUser } from "../../services/serviceUser";
-
+import ModalFormComponent from "../ModalFormComponent/ModalFormComponent";
+import FormFillUser from "../ChildrenComponent/FormFillUser.jsx";
+import { getBase64 } from "../../utils";
+import { updateUserProfile } from "../../services/serviceUser";
 const NavbarComponent = () => {
   const { t } = useTranslation();
   const { currentUser, isAuthenticated } = useSelector((state) => state.user);
   const [isOpenProfile, setIsOpenProfile] = useState(false);
+  const [isRecentAlert, setIsRecentAlert] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Get all alerts
+  const { data: alerts } = useQuery({
+    queryKey: ["alerts"],
+    queryFn: () => getAlerts(currentUser._id),
+  });
+
+  useEffect(() => {
+    if (alerts && alerts.length > 0) {
+      const hasUnread = alerts.some((alert) => alert.status === "unread");
+      setIsRecentAlert(hasUnread);
+    }
+  }, [alerts]);
 
   // Handle change language
   const handleChangeLanguage = (value) => {
@@ -46,6 +65,46 @@ const NavbarComponent = () => {
     await logoutUser();
     navigate("/login");
   };
+
+  // Handle update user
+  const handleUpdateUser = async (values) => {
+    values.avatar = values?.avatar
+      ? await getBase64(values?.avatar[0]?.originFileObj)
+      : currentUser.avatar;
+    const res = await updateUserProfile(currentUser._id, values);
+    if (res.data) {
+      message.success(t("Update user profile successfully"));
+      dispatch(setUser(res.data));
+    } else {
+      message.error(t("Update user profile failed"));
+    }
+    return true;
+  };
+
+  const content = (
+    <div className="profile-popover">
+      <ModalFormComponent
+        title="User profile"
+        trigger={
+          <p onClick={() => setIsOpenProfile(false)}>{t("User profile")}</p>
+        }
+        submitter={{
+          searchConfig: {
+            submitText: t("Save"),
+            resetText: t("Close"),
+          },
+        }}
+        handleSubmitModal={(values) => handleUpdateUser(values)}
+        props={{
+          width: "470px",
+          wrapClassName: "profile-modal",
+        }}
+      >
+        <FormFillUser />
+      </ModalFormComponent>
+      <p onClick={handleLogout}>{t("Logout")}</p>
+    </div>
+  );
 
   return (
     <nav className="navbar">
@@ -83,9 +142,9 @@ const NavbarComponent = () => {
           )}
 
           {isAuthenticated && (
-            <Link to="/">
+            <Link to="/notifications">
               <div className="notice-container">
-                <Badge dot={true}>
+                <Badge dot={isRecentAlert}>
                   <img
                     src={alertIcon}
                     style={{ width: 14, height: 14 }}
@@ -105,12 +164,7 @@ const NavbarComponent = () => {
               open={isOpenProfile}
               arrow={false}
               onOpenChange={handleOpenProfile}
-              content={
-                <div className="profile-popover">
-                  <p>{t("User profile")}</p>
-                  <p onClick={handleLogout}>{t("Logout")}</p>
-                </div>
-              }
+              content={content}
             >
               <Button type="link" icon={<UserOutlined />}>
                 {currentUser.username || currentUser.email.split("@")[0]}

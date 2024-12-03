@@ -98,7 +98,7 @@ export const getFavoritedArea = async (data, accessToken) => {
 };
 
 // Get list user preferred
-export const getListUserPreferred = async (body,accessToken) => {
+export const getListUserPreferred = async (body, accessToken) => {
   try {
     const res = await axios.post(`${process.env.REACT_APP_API_KEY}/api/users/get-list-favorited-area`, body, {
       headers: {
@@ -108,6 +108,17 @@ export const getListUserPreferred = async (body,accessToken) => {
     return res.data;
   } catch (error) {
     console.log("Error getting list user preferred: ", error);
+    return false;
+  }
+};
+
+// Update user profile
+export const updateUserProfile = async (id, data) => {
+  try {
+    const res = await axios.patch(`${process.env.REACT_APP_API_KEY}/api/users/update-user/${id}`, data);
+    return res.data;
+  } catch (error) {
+    console.log("Error updating user profile: ", error);
     return false;
   }
 };

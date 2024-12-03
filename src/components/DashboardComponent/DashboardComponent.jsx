@@ -29,6 +29,7 @@ import { message, Tooltip, Checkbox, Form, List, Avatar } from "antd";
 import ModalFormComponent from "../ModalFormComponent/ModalFormComponent";
 import { waitTime } from "../../utils";
 import { testAreaFarm } from "../../services/serviceExam";
+import FormFillExam from "../ChildrenComponent/FormFillExam";
 
 const DashboardComponent = () => {
   const { t } = useTranslation();
@@ -432,7 +433,7 @@ const DashboardComponent = () => {
               wrapClassName: "exam-modal",
             }}
           >
-            {children}
+            <FormFillExam typeArea={record.typeArea} />
           </ModalFormComponent>
         </div>,
       ],

@@ -144,15 +144,12 @@ const RegisterPage = () => {
           />
           <ProFormSelect
             name="role"
-            // placeholder={t("Select role")}
-            fieldProps={{
-              placeholder: `${t("Select role")}`,
-            }}
-            rules={[{ required: true, message: t("Please select your role!") }]}
             options={[
               { label: t("Citizen"), value: "user" },
               { label: t("Manager"), value: "manager" },
             ]}
+            placeholder={t("Select role")}
+            // rules={[{ required: true, message: t("Please select your role!") }]}
           />
           <ProForm.Group>
             <ProFormDependency name={["role"]}>
@@ -168,16 +165,7 @@ const RegisterPage = () => {
                   <ProFormSelect
                     name="province"
                     placeholder={t("Select province")}
-                    fieldProps={{
-                      placeholder: `${t("Select province")}`,
-                    }}
                     options={options}
-                    rules={[
-                      {
-                        required: true,
-                        message: t("Please select province!"),
-                      },
-                    ]}
                   />
                 ) : null;
               }}
@@ -195,16 +183,7 @@ const RegisterPage = () => {
                   <ProFormSelect
                     name="nameRegion"
                     placeholder={t("Select management area")}
-                    fieldProps={{
-                      placeholder: `${t("Select management area")}`,
-                    }}
                     options={options}
-                    rules={[
-                      {
-                        required: true,
-                        message: t("Please select management area!"),
-                      },
-                    ]}
                   />
                 ) : null;
               }}

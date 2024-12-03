@@ -4,7 +4,7 @@ import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
 import DetailsRegionPage from "../pages/DetailsRegionPage/DetailsRegionPage";
 import ManagerPage from "../pages/ManagerPage/ManagerPage";
-
+import AlertPage from "../pages/AlertPage/AlertPage";
 // Define routes for the application. Each route should have a path, a page component, and an optional isShowHeader property.
 export const route = [
   {
@@ -33,5 +33,9 @@ export const route = [
   {
     path: "*",
     page: NotFoundPage,
+  },
+  {
+    path: "/notifications",
+    page: AlertPage,
   },
 ];
