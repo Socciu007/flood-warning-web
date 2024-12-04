@@ -17,3 +17,15 @@ export const updateManyAlerts = async (id) => {
   const res = await axios.post(`${process.env.REACT_APP_API_KEY}/api/notifications/update-many-alerts/${id}`);
   return res.data;
 };
+
+// Get all notifications by manager
+export const getAllNotificationsByManager = async (managerId) => {
+  const res = await axios.get(`${process.env.REACT_APP_API_KEY}/api/notifications/${managerId}`);
+  return res.data;
+};
+
+// Send notice to area
+export const sendNoticeToArea = async (data) => {
+  const res = await axios.post(`${process.env.REACT_APP_API_KEY}/api/notifications/add-alert`, data);
+  return res.data;
+};

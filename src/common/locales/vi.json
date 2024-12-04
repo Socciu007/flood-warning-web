@@ -94,5 +94,14 @@
   "Avatar": "Ảnh",
   "Phone": "Điện thoại",
   "Close": "Đóng",
-  "Upload": "Tải lên"
+  "Upload": "Tải lên",
+  "Send notice to area": "Gửi thông báo đến khu vực",
+  "Title": "Tiêu đề",
+  "Description": "Mô tả",
+  "Content": "Nội dung",
+  "Send": "Gửi",
+  "Send notice to area success!": "Gửi thông báo đến khu vực thành công!",
+  "Send notice to area failed!": "Gửi thông báo đến khu vực thất bại!",
+  "Send notice": "Gửi thông báo",
+  "You can add areas to your wish list to receive notifications.": "Bạn có thể thêm khu vực vào danh sách yêu thích để nhận thông báo."
 }

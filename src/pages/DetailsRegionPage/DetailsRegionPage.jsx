@@ -11,7 +11,7 @@ import { message } from "antd";
 import { useTranslation } from "react-i18next";
 import { ProFormSelect, ProForm } from "@ant-design/pro-form";
 import { formatDateTime } from "../../utils";
-import { Progress } from "antd";
+import { Progress, Tooltip as AntdTooltip } from "antd";
 import {
   CodepenOutlined,
   AreaChartOutlined,
@@ -79,7 +79,6 @@ const DetailsRegionPage = () => {
   // Get exam of farm area
   const getExamFarm = async (farmAreaId, accessToken) => {
     const res = await getExamOfFarmArea(farmAreaId, accessToken);
-    console.log(res);
     setExamOfFarmArea(res);
   };
 
@@ -124,7 +123,6 @@ const DetailsRegionPage = () => {
   const handleGetExamFarm = async (values) => {
     await getExamFarm(values?.farmAreaId, currentUser?.accessToken);
   };
-  console.log(examOfFarmArea);
 
   const position = [farmAreaDetail?.latitude, farmAreaDetail?.longitude];
   const data = {
@@ -268,12 +266,18 @@ const DetailsRegionPage = () => {
               <div className="information-container">
                 <div className="information-title-container">
                   <p className="information-title">{`${farmAreaDetail?.name}, ${farmAreaDetail?.province}`}</p>
-                  <StarFilled
-                    style={{ color: isFavorite ? "#FFD700" : "#000" }}
-                    height={14}
-                    width={14}
-                    onClick={handleFavorite}
-                  />
+                  <AntdTooltip
+                    title={t(
+                      "You can add areas to your wish list to receive notifications."
+                    )}
+                  >
+                    <StarFilled
+                      style={{ color: isFavorite ? "#FFD700" : "#000" }}
+                      height={14}
+                      width={14}
+                      onClick={handleFavorite}
+                    />
+                  </AntdTooltip>
                 </div>
                 <div className="information-farm-container">
                   {farmAreaDetail?.farmAreas.map((farm) => (
@@ -300,7 +304,21 @@ const DetailsRegionPage = () => {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               />
               <Marker position={position}>
-                <Popup>{`${farmAreaDetail?.name}, ${farmAreaDetail?.province}`}</Popup>
+                <Popup>
+                  <div
+                    style={{
+                      fontSize: 14,
+                      lineHeight: "22px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {`${farmAreaDetail?.name}, ${farmAreaDetail?.province}`}
+                    <br />
+                    {`${t("Latitude")}: ${position[0]}, ${t("Longitude")}: ${
+                      position[1]
+                    }`}
+                  </div>
+                </Popup>
               </Marker>
               {farmAreaDetail?.farmAreas.map((farm, index) => {
                 const RADIUS = 0.02;
@@ -321,7 +339,13 @@ const DetailsRegionPage = () => {
                       fillOpacity: 0.2,
                     }}
                   >
-                    <Popup>{farm.name}</Popup>
+                    <Popup>
+                      <div style={{ fontSize: 14, lineHeight: "22px" }}>
+                        {`${farm.name}, ${farm.area || "500 ha"}`}
+                        <br />
+                        {`${t("Type")}: ${t(farm?.type) || "Unknown"}`}
+                      </div>
+                    </Popup>
                   </Circle>
                 );
               })}

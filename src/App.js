@@ -4,7 +4,7 @@ import { route } from "./routes";
 import DefaultComponent from "./components/DefaultComponent/DefaultComponent";
 import { useSelector, useDispatch } from "react-redux";
 import storageService from "./services/storage.service";
-import { setUser, clearUser } from "./redux/slices/userSlice.ts";
+import { setUser } from "./redux/slices/userSlice.ts";
 import { getUserInfo, handleRefreshToken } from "./services/serviceUser.js";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
@@ -26,43 +26,56 @@ function App() {
   }, []);
 
   useEffect(() => {
-    axios.create().interceptors.request.use(
+    const axiosInstance = axios.create();
+
+    axiosInstance.interceptors.request.use(
       async (config) => {
-        const currentTime = new Date();
-        const accessToken = storageService.get("accessToken");
-        const refreshToken = storageService.get("refreshToken");
-        console.log("accessToken", accessToken);
+        try {
+          const currentTime = new Date();
+          const accessToken = storageService.get("accessToken");
+          const refreshToken = storageService.get("refreshToken");
 
-        if (accessToken) {
-          const decodedToken = jwtDecode(accessToken);
-          console.log("decodedToken.exp", decodedToken.exp);
+          if (accessToken) {
+            const decodedToken = jwtDecode(accessToken);
 
-          if (decodedToken.exp < currentTime.getTime() / 1000) {
-            if (refreshToken) {
-              const decodedRefreshToken = jwtDecode(refreshToken);
+            if (decodedToken.exp < currentTime.getTime() / 1000) {
+              if (refreshToken) {
+                const decodedRefreshToken = jwtDecode(refreshToken);
 
-              if (decodedRefreshToken.exp > currentTime.getTime() / 1000) {
-                const response = await handleRefreshToken(refreshToken);
-                if (response?.accessToken) {
-                  storageService.set("accessToken", response.accessToken);
-                  config.headers["Authorization"] = `Bearer ${response.accessToken}`;
+                if (decodedRefreshToken.exp > currentTime.getTime() / 1000) {
+                  const response = await handleRefreshToken(refreshToken);
+                  if (response?.accessToken) {
+                    storageService.set("accessToken", response.accessToken);
+                    config.headers["token"] = `Bearer ${response.accessToken}`;
+                  }
+                } else {
+                  handleLogout();
                 }
-              } else {
-                // Refresh token đã hết hạn
-                dispatch(clearUser());
-                storageService.remove("accessToken");
-                storageService.remove("refreshToken");
-                storageService.remove("user");
               }
             }
+            config.headers["token"] = `Bearer ${accessToken}`;
           }
+          return config;
+        } catch (error) {
+          console.error("Interceptor error:", error);
+          return Promise.reject(error);
         }
-        return config;
       },
       (error) => {
         return Promise.reject(error);
       }
     );
+
+    axiosInstance.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        if (error.message === 'Network Error') {
+          console.log("error", error);
+        }
+        return Promise.reject(error);
+      }
+    );
+
   }, []);
 
   // Handle decoded user from token
@@ -106,13 +119,9 @@ function App() {
                   key={route.path}
                   path={route.path}
                   element={
-                    // isCheckAuth ? (
                     <Layout>
                       <Page />
                     </Layout>
-                    // ) : (
-                    //   <Navigate to="/" replace />
-                    // )
                   }
                 />
               );
