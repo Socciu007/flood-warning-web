@@ -44,6 +44,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  Filler,
 } from "chart.js";
 // Register plugin Chart.js
 ChartJS.register(
@@ -152,16 +153,19 @@ const DetailsRegionPage = () => {
 
   const position = [farmAreaDetail?.latitude, farmAreaDetail?.longitude];
   const data = {
-    labels: examOfFarmArea?.map((item) =>
-      formatDateTime(item?.updatedAt).split(" ")[1].slice(0, 5)
-    ), // Labels for chart
+    labels: examOfFarmArea
+      ?.slice()
+      ?.reverse()
+      ?.map((item) =>
+        formatDateTime(item?.updatedAt).split(" ")[1].slice(0, 5)
+      ), // Labels for chart
     datasets: [
       {
         data: examOfFarmArea
           ?.slice()
           ?.reverse()
           ?.map((item) => (item?.result?.percentPos * 1).toFixed(2)), // Data for chart
-        fill: true, // No fill color under the line
+        // Filler: "#1d8cf8", // No fill color under the line
         backgroundColor: "#1d8cf8",
         borderColor: "#1d8cf8", // Color of the line
         borderWidth: 1,

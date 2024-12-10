@@ -16,7 +16,7 @@ import {
 import SearchComponent from "../SearchComponent/SearchComponent";
 import TableComponent from "../TableComponent/TableComponent";
 import {
-  getAllArea,
+  getAllFarmAreas,
   updateFarmArea,
   deleteFarmArea,
 } from "../../services/serviceFarmArea";
@@ -30,7 +30,7 @@ import { waitTime } from "../../utils";
 import { testAreaFarm } from "../../services/serviceExam";
 import FormFillExam from "../ChildrenComponent/FormFillExam";
 
-const DashboardComponent = () => {
+const DashboardAdminComponent = () => {
   const { t } = useTranslation();
   const actionRef = useRef();
   const [dataAreas, setDataAreas] = useState([]);
@@ -38,16 +38,17 @@ const DashboardComponent = () => {
 
   // Get all areas
   const queryClient = useQueryClient();
-  const { data: areas, isLoading: isLoadingAreas } = useQuery({
-    queryKey: ["areas"],
-    queryFn: () => getAllArea(currentUser._id),
+  const { data: farmAreas, isLoading: isLoadingAreas } = useQuery({
+    queryKey: ["farmAreas"],
+    queryFn: () => getAllFarmAreas(),
   });
   const { data: listUserPreferred } = useQuery({
     queryKey: ["listUserPreferred"],
-    queryFn: () => getListUserPreferred(
-      { regionId: currentUser.regionId },
-      currentUser.accessToken
-    ),
+    queryFn: () =>
+      getListUserPreferred(
+        { regionId: currentUser.regionId },
+        currentUser.accessToken
+      ),
   });
   const { data: examsOfUser } = useQuery({
     queryKey: ["examsOfUser"],
@@ -55,8 +56,8 @@ const DashboardComponent = () => {
   });
 
   useEffect(() => {
-    if (areas) {
-      const formattedAreas = areas.map((area) => ({
+    if (farmAreas) {
+      const formattedAreas = farmAreas.data.map((area) => ({
         id: area._id,
         nameArea: area.name,
         typeArea: area.type,
@@ -67,7 +68,7 @@ const DashboardComponent = () => {
       }));
       setDataAreas(formattedAreas);
     }
-  }, [areas]);
+  }, [farmAreas]);
 
   // Handle submit modal test area
   const handleSubmitModal = async (values, farmAreaId) => {
@@ -79,7 +80,7 @@ const DashboardComponent = () => {
     if (res) {
       message.success(t("Successful regional forecasting!"));
       // Refresh data
-      queryClient.invalidateQueries({ queryKey: ["areas"] });
+      queryClient.invalidateQueries({ queryKey: ["farmAreas"] });
     } else {
       message.error(t("Area forecast failed. Try again later!"));
     }
@@ -238,7 +239,7 @@ const DashboardComponent = () => {
     if (res) {
       message.success(t("Update farm area success!"));
       // Refresh data
-      queryClient.invalidateQueries({ queryKey: ["areas"] });
+      queryClient.invalidateQueries({ queryKey: ["farmAreas"] });
     } else {
       message.error(t("Update farm area failed!"));
     }
@@ -250,7 +251,7 @@ const DashboardComponent = () => {
     if (res) {
       message.success(t("Delete farm area success!"));
       // Refresh data
-      queryClient.invalidateQueries({ queryKey: ["areas"] });
+      queryClient.invalidateQueries({ queryKey: ["farmAreas"] });
     } else {
       message.error(t("Delete farm area failed!"));
     }
@@ -286,7 +287,7 @@ const DashboardComponent = () => {
       </div>
       <div className="dashboard-component-table">
         <TableComponent
-          keyTable="table-areas"
+          keyTable="table-areas-all"
           data={dataAreas}
           columns={columns}
           loading={isLoadingAreas}
@@ -373,4 +374,4 @@ const DashboardComponent = () => {
   );
 };
 
-export default DashboardComponent;
+export default DashboardAdminComponent;

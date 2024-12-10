@@ -13,9 +13,34 @@ import LoadingComponent from "./components/LoadingComponent/LoadingComponent.jsx
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-  const { isAuthenticated, currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
+    // Handle decoded user from token
+    const handleDecodedUser = () => {
+      let accessToken = currentUser?.accessToken || storageService.get("accessToken");
+      let decodedUser = {};
+      if (accessToken || currentUser?.accessToken) {
+        decodedUser = jwtDecode(accessToken);
+      }
+      return { decodedUser, accessToken };
+    };
+
+    // Fetch user info
+    const fetchUserInfo = async (userId, accessToken) => {
+      const res = await getUserInfo(userId, accessToken);
+      const refreshToken = storageService.get("refreshToken");
+      if (res.data) {
+        dispatch(
+          setUser({
+            ...res.data,
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+          })
+        );
+      }
+    };
+
     setIsLoading(true);
     const { accessToken, decodedUser } = handleDecodedUser();
     // console.log("decodedUser", decodedUser);
@@ -78,30 +103,6 @@ function App() {
 
   }, []);
 
-  // Handle decoded user from token
-  const handleDecodedUser = () => {
-    let accessToken = currentUser?.accessToken || storageService.get("accessToken");
-    let decodedUser = {};
-    if (accessToken || currentUser?.accessToken) {
-      decodedUser = jwtDecode(accessToken);
-    }
-    return { decodedUser, accessToken };
-  };
-
-  // Fetch user info
-  const fetchUserInfo = async (userId, accessToken) => {
-    const res = await getUserInfo(userId, accessToken);
-    const refreshToken = storageService.get("refreshToken");
-    if (res.data) {
-      dispatch(
-        setUser({
-          ...res.data,
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-        })
-      );
-    }
-  };
   // console.log("isAuthenticated", isAuthenticated);
   // console.log("currentUser", currentUser);
   return (

@@ -12,25 +12,26 @@ import { Tooltip, Button, Tag, message } from "antd";
 import SearchComponent from "../SearchComponent/SearchComponent";
 import TableComponent from "../TableComponent/TableComponent";
 import {
-  getAllNotificationsByManager,
+  getAllNotifications,
   sendManyNoticeToArea,
 } from "../../services/serviceNotifications";
-import { getExamOfUser } from "../../services/serviceExam";
+import { getAllExam } from "../../services/serviceExam";
+import { getAllFarmAreas, deleteFarmArea, updateFarmArea } from "../../services/serviceFarmArea";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import { getListUserPreferred } from "../../services/serviceUser";
+import { getAllUsers } from "../../services/serviceUser";
 import "./style.scss";
 import { formatDateTime, renderString } from "../../utils";
 import ModalFormComponent from "../ModalFormComponent/ModalFormComponent";
 // import DrawerComponent from "../DrawerComponent/DrawerComponent";
 // import FormFillNoti from "../ChildrenComponent/FormFillNoti";
 
-const ManagerComponent = ({ activeTab }) => {
+const AdminComponent = ({ activeTab }) => {
   const { t } = useTranslation();
   const actionRef = useRef();
   const [dataNotification, setDataNotification] = useState([]);
   const [dataExaminations, setDataExaminations] = useState([]);
-  const [dataWishlist, setDataWishlist] = useState([]);
+  const [dataUsers, setDataUsers] = useState([]);
   const [dataAreas, setDataAreas] = useState([]);
   const [dataSend, setDataSend] = useState([]);
   // const [isOpenDrawerNoti, setIsOpenDrawerNoti] = useState(false);
@@ -40,43 +41,42 @@ const ManagerComponent = ({ activeTab }) => {
   // Query notifications of manager
   const { data: notifications, isLoading: isLoadingNotifications } = useQuery({
     queryKey: ["notifications"],
-    queryFn: () => getAllNotificationsByManager(currentUser._id),
+    queryFn: () => getAllNotifications(currentUser.accessToken),
   });
 
-  // Query examinations of manager
+  // Query examinations
   const { data: examinations, isLoading: isLoadingExaminations } = useQuery({
     queryKey: ["examinations"],
-    queryFn: () => getExamOfUser(currentUser._id),
+    queryFn: () => getAllExam(currentUser.accessToken),
   });
 
-  // Query areas of manager
-  const { data: areas, isLoading: isLoadingAreas } = useQuery({
-    queryKey: ["areas"],
-    queryFn: () => getAllArea(currentUser._id),
+  // Query all farm areas
+  const { data: farmAreas, isLoading: isLoadingFarmAreas } = useQuery({
+    queryKey: ["farmAreas"],
+    queryFn: () => getAllFarmAreas(),
   });
 
   // Query wishlist user of manager
-  const { data: listUserPreferred, isLoading: isLoadingListUserPreferred } = useQuery({
-    queryKey: ["listUserPreferred"],
-    queryFn: () =>
-      getListUserPreferred(
-        { regionId: currentUser.regionId },
-        currentUser.accessToken
-      ),
+  const { data: usersData, isLoading: isLoadingUsersData } = useQuery({
+    queryKey: ["users"],
+    queryFn: () => getAllUsers(),
   });
 
   // Set data wishlist
   useEffect(() => {
-    if (listUserPreferred) {
-      const cloneData = listUserPreferred?.data?.map((u) => u.userInfo);
-      setDataWishlist(cloneData);
+    if (usersData) {
+      setDataUsers(usersData.data);
     }
-  }, [listUserPreferred]);
+  }, [usersData]);
 
   // Set data notifications
   useEffect(() => {
     if (notifications) {
-      setDataNotification(notifications);
+      const cloneNotifications = notifications.map((noti) => ({
+        ...noti,
+        sender: noti.userId.username,
+      }));
+      setDataNotification(cloneNotifications);
     }
   }, [notifications]);
 
@@ -97,8 +97,8 @@ const ManagerComponent = ({ activeTab }) => {
 
   // Set data farm area
   useEffect(() => {
-    if (areas) {
-      const formattedAreas = areas.map((area) => ({
+    if (farmAreas) {
+      const formattedAreas = farmAreas.data.map((area) => ({
         id: area._id,
         nameArea: area.name,
         typeArea: area.type,
@@ -109,7 +109,7 @@ const ManagerComponent = ({ activeTab }) => {
       }));
       setDataAreas(formattedAreas);
     }
-  }, [areas]);
+  }, [farmAreas]);
 
   const columnsNoti = [
     {
@@ -118,6 +118,11 @@ const ManagerComponent = ({ activeTab }) => {
       valueType: "indexBorder",
       className: "table-cell",
       width: 48,
+    },
+    {
+      title: t("Sender"),
+      dataIndex: "sender",
+      className: "table-cell"
     },
     {
       title: t("Title"),
@@ -488,7 +493,7 @@ const ManagerComponent = ({ activeTab }) => {
     },
   ];
 
-  const columnsWishList = [
+  const columnsUsers = [
     {
       title: "#",
       dataIndex: "index",
@@ -519,6 +524,25 @@ const ManagerComponent = ({ activeTab }) => {
       dataIndex: "address",
       key: "address",
       className: "table-cell",
+      width: 350,
+      render: (_, record) => {
+        return <span>{record.address}</span>;
+      },
+    },
+    {
+      title: t("Role"),
+      dataIndex: "role",
+      key: "role",
+      className: "table-cell",
+    },
+    {
+      title: t("Created At"),
+      dataIndex: "createdAt",
+      key: "createdAt",
+      className: "table-cell",
+      render: (_, record) => {
+        return <span>{formatDateTime(record.createdAt)}</span>;
+      },
     },
   ];
 
@@ -528,7 +552,7 @@ const ManagerComponent = ({ activeTab }) => {
     if (res) {
       message.success(t("Delete farm area success!"));
       // Refresh data
-      queryClient.invalidateQueries({ queryKey: ["areas"] });
+      queryClient.invalidateQueries({ queryKey: ["farmAreas"] });
     } else {
       message.error(t("Delete farm area failed!"));
     }
@@ -545,7 +569,7 @@ const ManagerComponent = ({ activeTab }) => {
     if (res) {
       message.success(t("Update farm area success!"));
       // Refresh data
-      queryClient.invalidateQueries({ queryKey: ["areas"] });
+      queryClient.invalidateQueries({ queryKey: ["farmAreas"] });
     } else {
       message.error(t("Update farm area failed!"));
     }
@@ -734,15 +758,15 @@ const ManagerComponent = ({ activeTab }) => {
         {activeTab === "users" && (
           <TableComponent
             keyTable="table-users"
-            data={dataWishlist}
-            columns={columnsWishList}
-            loading={isLoadingListUserPreferred}
+            data={dataUsers}
+            columns={columnsUsers}
+            loading={isLoadingUsersData}
             actionRef={actionRef}
             config={{
               search: false,
               options: {
                 reload: async () => {
-                  await queryClient.refetchQueries(["listUserPreferred"]);
+                  await queryClient.refetchQueries(["users"]);
                 },
                 reloadIcon: (
                   <Tooltip title={t("Refresh")}>
@@ -821,7 +845,7 @@ const ManagerComponent = ({ activeTab }) => {
             keyTable="table-areas"
             data={dataAreas}
             columns={columnsArea}
-            loading={isLoadingAreas}
+            loading={isLoadingFarmAreas}
             actionRef={actionRef}
             config={{
               search: false,
@@ -835,7 +859,7 @@ const ManagerComponent = ({ activeTab }) => {
               },
               options: {
                 reload: async () => {
-                  await queryClient.refetchQueries(["areas"]);
+                  await queryClient.refetchQueries(["farmAreas"]);
                 },
                 reloadIcon: (
                   <Tooltip title={t("Refresh")}>
@@ -895,4 +919,4 @@ const ManagerComponent = ({ activeTab }) => {
   );
 };
 
-export default ManagerComponent;
+export default AdminComponent;

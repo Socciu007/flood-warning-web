@@ -48,7 +48,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:6007",
+  "proxy": "http://localhost:6008",
   "devDependencies": {
     "@babel/eslint-parser": "^7.25.8",
     "eslint": "^8.57.1",

@@ -1,0 +1,87 @@
+.admin-page {
+  position: relative;
+  height: 100vh;
+  .main-container {
+    display: flex;
+    min-height: 100%;
+    flex-direction: row;
+    width: 100%;
+    box-sizing: border-box;
+    padding-top: 56px;
+    .navbar-content {
+      flex: 0 0 256px;
+      max-width: 256px;
+      min-width: 256px;
+      width: 256px;
+      padding: 24px 10px;
+      background-color: #fff;
+      .navbar-list {
+        list-style: none;
+        margin: 0;
+        .navbar-item {
+          display: flex;
+          align-items: center;
+          padding: 12px 16px;
+          margin-bottom: 8px;
+          cursor: pointer;
+          transition: all 0.3s;
+          color: #666;
+          border-radius: 4px;
+          font-size: 14px;
+
+          &:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: #0c8aff96;
+          }
+
+          &.active {
+            background-color: #0c8aff96;
+            color: white;
+          }
+
+          span,
+          img {
+            margin-left: 12px;
+            font-size: 14px;
+          }
+
+          .anticon {
+            font-size: 14px;
+          }
+
+          .anticon-dashboard {
+            svg {
+              color: #5e72e4;
+            }
+          }
+
+          .anticon-unordered-list {
+            svg {
+              color: #f5365c;
+            }
+          }
+
+          .anticon-bell {
+            svg {
+              color: #1104ffc2;
+            }
+          }
+        }
+      }
+    }
+
+    .main-content {
+      // margin-left: 250px;
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      min-height: 0;
+      padding: 24px;
+      .main-content-container {
+        height: 100%;
+      }
+    }
+  }
+}

@@ -50,6 +50,17 @@ export const getUserInfo = async (userId, accessToken) => {
   }
 };
 
+// Get all users
+export const getAllUsers = async () => {
+  try {
+    const res = await axios.get(`${process.env.REACT_APP_API_KEY}/api/users`);
+    return res.data;
+  } catch (error) {
+    console.log("Error getting all users: ", error);
+    return false;
+  }
+};
+
 // Refresh token
 export const handleRefreshToken = async () => {
   try {

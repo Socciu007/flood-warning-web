@@ -24,6 +24,14 @@ export const getAllNotificationsByManager = async (managerId) => {
   return res.data;
 };
 
+// Get all notifications
+export const getAllNotifications = async (accessToken) => {
+  const res = await axios.get(`${process.env.REACT_APP_API_KEY}/api/notifications`, {
+    headers: { token: `Bearer ${accessToken}` },
+  });
+  return res.data;
+};
+
 // Send notice to area
 export const sendNoticeToArea = async (data) => {
   const res = await axios.post(`${process.env.REACT_APP_API_KEY}/api/notifications/add-alert`, data);

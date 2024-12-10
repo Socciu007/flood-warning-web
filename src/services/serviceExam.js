@@ -30,3 +30,10 @@ export const getExamOfUser = async (userId, accessToken) => {
   return res.data;
 };
 
+// Get all exam
+export const getAllExam = async (accessToken) => {
+  const res = await axios.get(`${process.env.REACT_APP_API_KEY}/api/exams`, {
+    headers: { token: `Bearer ${accessToken}` },
+  });
+  return res.data;
+};
