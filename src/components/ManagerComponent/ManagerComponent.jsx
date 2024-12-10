@@ -123,21 +123,21 @@ const ManagerComponent = ({ activeTab }) => {
       title: t("Title"),
       dataIndex: "title",
       className: "table-cell",
+      width: 240,
     },
     {
       title: t("Description"),
       dataIndex: "description",
       className: "table-cell",
+      width: 350,
     },
     {
       title: t("Content"),
       dataIndex: "content",
       className: "table-cell",
+      copyable: true,
       ellipsis: true,
-      width: 300,
-      render: (_, record) => {
-        return <span>{record.content.slice(0, 200)}...</span>;
-      },
+      width: 350,
     },
     {
       title: t("Type"),

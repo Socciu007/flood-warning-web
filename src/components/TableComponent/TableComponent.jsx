@@ -6,6 +6,10 @@ const TableComponent = ({ actionRef, columns, data, loading, config, rowSelectio
   return (
     <div className="table-main">
       <ProTable
+        pagination={{
+          pageSize: 10,
+          showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+        }}
         actionRef={actionRef}
         rowKey={(record) => record._id}
         rowSelection={rowSelection}
