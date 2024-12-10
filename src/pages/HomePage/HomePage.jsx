@@ -38,7 +38,7 @@ const HomePage = () => {
 
           <Paragraph className="home-description">
             {t(
-              "Together, let's build sustainable aquaculture and save mangroves. Explore now"
+              "Stay informed about environmental changes to protect aquaculture and mangrove ecosystems!"
             )}
           </Paragraph>
 

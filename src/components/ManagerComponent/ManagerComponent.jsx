@@ -13,24 +13,27 @@ import SearchComponent from "../SearchComponent/SearchComponent";
 import TableComponent from "../TableComponent/TableComponent";
 import {
   getAllNotificationsByManager,
-  sendNoticeToArea,
+  sendManyNoticeToArea,
 } from "../../services/serviceNotifications";
 import { getExamOfUser } from "../../services/serviceExam";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
+import { getListUserPreferred } from "../../services/serviceUser";
 import "./style.scss";
-import { formatDateTime } from "../../utils";
+import { formatDateTime, renderString } from "../../utils";
 import ModalFormComponent from "../ModalFormComponent/ModalFormComponent";
-import DrawerComponent from "../DrawerComponent/DrawerComponent";
-import FormFillNoti from "../ChildrenComponent/FormFillNoti";
+// import DrawerComponent from "../DrawerComponent/DrawerComponent";
+// import FormFillNoti from "../ChildrenComponent/FormFillNoti";
 
 const ManagerComponent = ({ activeTab }) => {
   const { t } = useTranslation();
   const actionRef = useRef();
   const [dataNotification, setDataNotification] = useState([]);
   const [dataExaminations, setDataExaminations] = useState([]);
+  const [dataWishlist, setDataWishlist] = useState([]);
   const [dataAreas, setDataAreas] = useState([]);
-  const [isOpenDrawerNoti, setIsOpenDrawerNoti] = useState(false);
+  const [dataSend, setDataSend] = useState([]);
+  // const [isOpenDrawerNoti, setIsOpenDrawerNoti] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const queryClient = useQueryClient();
 
@@ -51,6 +54,24 @@ const ManagerComponent = ({ activeTab }) => {
     queryKey: ["areas"],
     queryFn: () => getAllArea(currentUser._id),
   });
+
+  // Query wishlist user of manager
+  const { data: listUserPreferred, isLoading: isLoadingListUserPreferred } = useQuery({
+    queryKey: ["listUserPreferred"],
+    queryFn: () =>
+      getListUserPreferred(
+        { regionId: currentUser.regionId },
+        currentUser.accessToken
+      ),
+  });
+
+  // Set data wishlist
+  useEffect(() => {
+    if (listUserPreferred) {
+      const cloneData = listUserPreferred?.data?.map((u) => u.userInfo);
+      setDataWishlist(cloneData);
+    }
+  }, [listUserPreferred]);
 
   // Set data notifications
   useEffect(() => {
@@ -112,6 +133,11 @@ const ManagerComponent = ({ activeTab }) => {
       title: t("Content"),
       dataIndex: "content",
       className: "table-cell",
+      ellipsis: true,
+      width: 300,
+      render: (_, record) => {
+        return <span>{record.content.slice(0, 200)}...</span>;
+      },
     },
     {
       title: t("Type"),
@@ -169,6 +195,18 @@ const ManagerComponent = ({ activeTab }) => {
         return (
           <span>
             {record.posTemperature ? record.posTemperature.toFixed(2) : "-"}
+          </span>
+        );
+      },
+    },
+    {
+      title: t("Rainfall"),
+      dataIndex: "posRainfall",
+      className: "table-cell",
+      render: (_, record) => {
+        return (
+          <span>
+            {record.posRainfall ? record.posRainfall.toFixed(2) : "-"}
           </span>
         );
       },
@@ -450,6 +488,40 @@ const ManagerComponent = ({ activeTab }) => {
     },
   ];
 
+  const columnsWishList = [
+    {
+      title: "#",
+      dataIndex: "index",
+      valueType: "indexBorder",
+      className: "table-cell",
+      width: 48,
+    },
+    {
+      title: t("Name"),
+      dataIndex: "username",
+      key: "username",
+      className: "table-cell",
+    },
+    {
+      title: t("Email"),
+      dataIndex: "email",
+      key: "email",
+      className: "table-cell",
+    },
+    {
+      title: t("Phone"),
+      dataIndex: "phone",
+      key: "phone",
+      className: "table-cell",
+    },
+    {
+      title: t("Address"),
+      dataIndex: "address",
+      key: "address",
+      className: "table-cell",
+    },
+  ];
+
   // Handle delete farm
   const handleDeleteFarm = async (id) => {
     const res = await deleteFarmArea(id);
@@ -480,19 +552,136 @@ const ManagerComponent = ({ activeTab }) => {
   };
 
   // Handle send notice to area
-  const handleSendNotice = async (values) => {
-    const res = await sendNoticeToArea({
-      ...values,
-      userId: currentUser._id,
-      regionId: currentUser.regionId,
-      type: "alert",
-    });
+  const handleSendNotice = async (data) => {
+    if (data.length === 0) {
+      message.warning(t("Please select at least one examination to send notice!"));
+      return;
+    }
+    const res = await sendManyNoticeToArea(data);
     if (res) {
       message.success(t("Send notice to area success!"));
+      actionRef.current?.clearSelected?.();
+      setDataSend([]);
     } else {
       message.error(t("Send notice to area failed!"));
+      actionRef.current?.clearSelected?.();
+      setDataSend([]);
     }
-    return true
+    return true;
+  };
+
+  // Handle select row in examination table
+  const handleSelectRow = (_, selectedRows) => {
+    const dataSend = selectedRows.map((item) => {
+      const levelWarning =
+        item.result.percentPos > 0.75
+          ? "Low Level"
+          : item.result.percentPos > 0.5
+          ? "Moderate Level"
+          : item.result.percentPos > 0.25
+          ? "High Level"
+          : "Severe Level";
+      const content = `Environmental Data:
+      ${renderString(
+        item.posDO,
+        "DO",
+        `${item.DO}mg/l`,
+        "Low DO levels can reduce the ability of aquatic species to survive."
+      )}
+      ${renderString(
+        item.posTemperature,
+        "Temperature",
+        `${item.temperature}°C`,
+        "This temperature condition disrupts the physiology, growth ability and reduces the reproductive ability of aquatic products."
+      )}
+      ${renderString(
+        item.pospH,
+        "pH",
+        item.pH,
+        "Low pH levels can reduce the ability of plants and aquatic animals to absorb nutrients."
+      )}
+      ${renderString(
+        item.posAmmonia,
+        "Ammonia(NH₃)",
+        `${item.ammonia}mg/l`,
+        "Ammonia levels reduce the quality of aquatic and plant habitats."
+      )}
+      ${renderString(
+        item.posBOD5,
+        "BOD₅",
+        `${item.BOD5}mg/l`,
+        "COD levels reduce the amount of dissolved oxygen in water and are harmful to aquatic life."
+      )}
+      ${renderString(
+        item.posCOD,
+        "COD",
+        `${item.COD}mg/l`,
+        "COD levels reduce the amount of dissolved oxygen in water and are harmful to aquatic life."
+      )}
+      ${renderString(
+        item.posColiform,
+        "Coliform",
+        `${item.coliform}CFU/100ml`,
+        "There is organic pollution in the aquatic environment."
+      )}
+      ${renderString(
+        item.posClarity,
+        "Clarity",
+        `${item.clarity}cm`,
+        "Signs of pollution, organic waste or bacteria in water, posing a risk of disease outbreak."
+      )}
+      ${renderString(
+        item.posPhotsPhat,
+        "Phosphat",
+        `${item.phosphat}mg/l`,
+        "Pets showing signs of Phosphate toxicity and stress."
+      )}
+      ${renderString(
+        item.posSalinity,
+        "Salinity",
+        `${item.salinity}‰`,
+        "Low salinity aquatic environments can affect the ability of aquatic species to sustain life."
+      )}
+      ${renderString(
+        item.posAlkalinity,
+        "Alkalinity",
+        `${item.alkalinity}mg/l`,
+        "Risk of water acidification."
+      )}
+      ${renderString(
+        item.posSuspendedSolids,
+        "Suspended Solids",
+        `${item.suspendedSolids}mg/l`,
+        "TSS levels can reduce water filtration and degrade water quality in aquatic habitats."
+      )}
+      ${renderString(
+        item.posTotalCrom,
+        "Total Crom",
+        `${item.totalCrom}mg/l`,
+        "There is chromium contamination."
+      )}
+      ${renderString(
+        item.posH2S,
+        "H₂S",
+        `${item.H2S}mg/l`,
+        "This level of H₂S can lead to oxygen deficiency in the environment."
+      )}
+      ${renderString(
+        item.posRainfall,
+        "Rainfall",
+        `${item.rainfall}mm`,
+        "This rainfall can reduce the vitality of species."
+      )}
+      `;
+      return {
+        title: `[${item.farmAreaId.name} Alert] - ${levelWarning}`,
+        description: `This is a ${levelWarning} alert for the ${item.farmAreaId.type}`,
+        content: content,
+        userId: currentUser._id,
+        farmAreaId: item.farmAreaId._id,
+      };
+    });
+    setDataSend(dataSend);
   };
 
   return (
@@ -542,10 +731,49 @@ const ManagerComponent = ({ activeTab }) => {
             }}
           />
         )}
+        {activeTab === "users" && (
+          <TableComponent
+            key="table-users"
+            data={dataWishlist}
+            columns={columnsWishList}
+            loading={isLoadingListUserPreferred}
+            actionRef={actionRef}
+            config={{
+              search: false,
+              options: {
+                reload: async () => {
+                  await queryClient.refetchQueries(["notifications"]);
+                },
+                reloadIcon: (
+                  <Tooltip title={t("Refresh")}>
+                    <ReloadOutlined />
+                  </Tooltip>
+                ),
+                densityIcon: (
+                  <Tooltip title={t("Density")}>
+                    <ColumnHeightOutlined />
+                  </Tooltip>
+                ),
+                // search: true
+                setting: {
+                  settingIcon: (
+                    <Tooltip title={t("Setting")}>
+                      <SettingOutlined />
+                    </Tooltip>
+                  ),
+                },
+              },
+            }}
+          />
+        )}
         {activeTab === "examinations" && (
           <TableComponent
             key="table-examinations"
             data={dataExaminations}
+            rowSelection={{
+              onChange: handleSelectRow,
+              type: "checkbox",
+            }}
             columns={columnsExam}
             loading={isLoadingExaminations}
             actionRef={actionRef}
@@ -578,7 +806,8 @@ const ManagerComponent = ({ activeTab }) => {
                 <Button
                   key="button"
                   icon={<PlusOutlined />}
-                  onClick={() => setIsOpenDrawerNoti(true)}
+                  // onClick={() => setIsOpenDrawerNoti(true)}
+                  onClick={() => handleSendNotice(dataSend)}
                   type="primary"
                 >
                   {t("Send notice")}
@@ -644,7 +873,7 @@ const ManagerComponent = ({ activeTab }) => {
         )}
         <div className="right-manager-component"></div>
       </div>
-      <DrawerComponent
+      {/* <DrawerComponent
         title="Send notice to area"
         open={isOpenDrawerNoti}
         onOpenChange={setIsOpenDrawerNoti}
@@ -661,7 +890,7 @@ const ManagerComponent = ({ activeTab }) => {
         }}
       >
         <FormFillNoti />
-      </DrawerComponent>
+      </DrawerComponent> */}
     </div>
   );
 };

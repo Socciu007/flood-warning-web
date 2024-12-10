@@ -58,23 +58,13 @@ ChartJS.register(
 
 const DetailsRegionPage = () => {
   const [activeTab, setActiveTab] = useState("information");
-  const [isFavorite, setIsFavorite] = useState();
   const [examOfFarmArea, setExamOfFarmArea] = useState([]);
   const { t } = useTranslation();
   const { id } = useParams();
   const dispatch = useDispatch();
   const { farmAreaDetail } = useSelector((state) => state.farmArea);
+  const [isFavorite, setIsFavorite] = useState([]);
   const { currentUser } = useSelector((state) => state.user);
-
-  // Get favorited area
-  const getFavoriteArea = async (data, accessToken) => {
-    const res = await getFavoritedArea(data, accessToken);
-    if (res?.data && !!res?.data?.length) {
-      setIsFavorite(res?.data[0]?.status);
-    } else {
-      setIsFavorite(false);
-    }
-  };
 
   // Get exam of farm area
   const getExamFarm = async (farmAreaId, accessToken) => {
@@ -83,12 +73,29 @@ const DetailsRegionPage = () => {
   };
 
   useEffect(() => {
-    getFavoriteArea(
-      { userId: currentUser?._id, regionId: id },
-      currentUser?.accessToken
-    );
-  }, [currentUser, id]);
+    const initFavoriteAreas = async () => {
+      if (!farmAreaDetail?.farmAreas || !currentUser?._id) return;
 
+      try {
+        const favoriteIds = await Promise.all(
+          farmAreaDetail.farmAreas.map(async (farm) => {
+            const res = await getFavoritedArea(
+              { userId: currentUser._id, farmAreaId: farm._id },
+              currentUser?.accessToken
+            );
+            return res?.data?.[0]?.status ? farm._id : undefined;
+          })
+        );
+        setIsFavorite(favoriteIds.filter(Boolean));
+      } catch (error) {
+        console.error("Error initializing favorites:", error);
+      }
+    };
+
+    initFavoriteAreas();
+  }, [farmAreaDetail, currentUser]);
+
+  // Set detail of farm area and init favorite area
   useEffect(() => {
     const fetchDataArea = async () => {
       if (!farmAreaDetail) {
@@ -97,25 +104,44 @@ const DetailsRegionPage = () => {
       }
     };
     fetchDataArea();
-  }, [id, farmAreaDetail, dispatch]);
-
-  useEffect(() => {
-    const addFavoriteArea = async () => {
-      await favoritedArea(
-        { userId: currentUser?._id, regionId: id, status: isFavorite },
-        currentUser?.accessToken
-      );
-    };
-    addFavoriteArea();
-  }, [isFavorite]);
+  }, [id, farmAreaDetail, dispatch, currentUser]);
 
   // Handle favorite
-  const handleFavorite = () => {
-    setIsFavorite((prev) => !prev);
-    if (!isFavorite) {
-      message.info(t("Added to favorites!"));
-    } else {
+  const handleFavorite = async (farmId) => {
+    // Check login
+    if (!currentUser?._id) {
+      message.warning(t("Please login to add favorites!"));
+      return;
+    }
+    let updatedFavorites;
+    let status;
+    if (isFavorite.includes(farmId)) {
+      // Remove farmId from isFavorite
+      updatedFavorites = isFavorite.filter((id) => id !== farmId);
+      status = false;
       message.info(t("Removed favorite area!"));
+    } else {
+      // Add farmId to isFavorite
+      updatedFavorites = [...isFavorite, farmId];
+      status = true;
+      message.info(t("Added to favorites!"));
+    }
+    setIsFavorite(updatedFavorites);
+
+    try {
+      const res = await favoritedArea(
+        {
+          userId: currentUser?._id,
+          farmAreaId: farmId,
+          status: status,
+        },
+        currentUser?.accessToken
+      );
+      if (!res) {
+        setIsFavorite(isFavorite);
+      }
+    } catch (error) {
+      setIsFavorite(isFavorite);
     }
   };
 
@@ -194,7 +220,7 @@ const DetailsRegionPage = () => {
               onClick={() => setActiveTab("forecast")}
             >
               <AreaChartOutlined />
-              {t("Forecast")}
+              {t("Data")}
             </button>
             <button
               className={`tab-button ${
@@ -266,23 +292,29 @@ const DetailsRegionPage = () => {
               <div className="information-container">
                 <div className="information-title-container">
                   <p className="information-title">{`${farmAreaDetail?.name}, ${farmAreaDetail?.province}`}</p>
-                  <AntdTooltip
-                    title={t(
-                      "You can add areas to your wish list to receive notifications."
-                    )}
-                  >
-                    <StarFilled
-                      style={{ color: isFavorite ? "#FFD700" : "#000" }}
-                      height={14}
-                      width={14}
-                      onClick={handleFavorite}
-                    />
-                  </AntdTooltip>
                 </div>
                 <div className="information-farm-container">
                   {farmAreaDetail?.farmAreas.map((farm) => (
                     <div className="information-farm-item" key={farm._id}>
-                      <p className="information-farm-name">{farm.name}</p>
+                      <p className="information-farm-name">
+                        {farm.name}, {farm?.area || "500 ha"}
+                      </p>
+                      <AntdTooltip
+                        title={t(
+                          "You can add areas to your wish list to receive notifications."
+                        )}
+                      >
+                        <StarFilled
+                          style={{
+                            color: isFavorite.includes(farm._id)
+                              ? "#FFD700"
+                              : "#000",
+                          }}
+                          height={14}
+                          width={14}
+                          onClick={() => handleFavorite(farm._id)}
+                        />
+                      </AntdTooltip>
                     </div>
                   ))}
                 </div>

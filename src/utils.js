@@ -41,6 +41,11 @@ export const isJsonString = (data) => {
   return true;
 }
 
+//
+export const renderString = (positive, name, value, note) => {
+  return positive < 0.5 ? `${name}: ${value} (${note})` : `${name}: ${value} (Stability)`
+};
+
 // Get base64 from image
 export const getBase64 = (file) =>
   new Promise((resolve, reject) => {
