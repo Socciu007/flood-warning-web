@@ -43,8 +43,7 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend,
-  Filler,
+  Legend
 } from "chart.js";
 // Register plugin Chart.js
 ChartJS.register(
@@ -72,6 +71,7 @@ const DetailsRegionPage = () => {
     const res = await getExamOfFarmArea(farmAreaId, accessToken);
     setExamOfFarmArea(res);
   };
+  console.log('examOfFarmArea', examOfFarmArea);
 
   useEffect(() => {
     const initFavoriteAreas = async () => {
@@ -165,7 +165,7 @@ const DetailsRegionPage = () => {
           ?.slice()
           ?.reverse()
           ?.map((item) => (item?.result?.percentPos * 1).toFixed(2)), // Data for chart
-        // Filler: "#1d8cf8", // No fill color under the line
+        fill: false, // No fill color under the line
         backgroundColor: "#1d8cf8",
         borderColor: "#1d8cf8", // Color of the line
         borderWidth: 1,
@@ -265,6 +265,16 @@ const DetailsRegionPage = () => {
                   </ProForm>
                   {examOfFarmArea?.length > 0 && (
                     <div className="forecast-chart">
+                      <div className="forecast-chart-title">
+                        <p>{examOfFarmArea[0]?.name}</p>
+                        <span style={{ backgroundColor: examOfFarmArea[0]?.result?.percentPos > 0.75 ? 
+                          "#87d068" : examOfFarmArea[0]?.result?.percentPos > 0.5 ? 
+                          "#ffc107" : examOfFarmArea[0]?.result?.percentPos > 0.25 ? 
+                          "orange" : examOfFarmArea[0]?.result?.percentPos > 0 ?
+                          "red" : "#fff"
+                          }} 
+                        />
+                      </div>
                       <h2 className="forecast-title">
                         {t("Latest predictions")}
                       </h2>
