@@ -20,8 +20,8 @@ import {
   updateFarmArea,
   deleteFarmArea,
 } from "../../services/serviceFarmArea";
-import { getListUserPreferred } from "../../services/serviceUser";
-import { getExamOfUser } from "../../services/serviceExam";
+import { getAllUsers } from "../../services/serviceUser";
+import { getAllExam } from "../../services/serviceExam";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { message, Tooltip, List, Avatar } from "antd";
@@ -42,17 +42,13 @@ const DashboardAdminComponent = () => {
     queryKey: ["farmAreas"],
     queryFn: () => getAllFarmAreas(),
   });
-  const { data: listUserPreferred } = useQuery({
-    queryKey: ["listUserPreferred"],
-    queryFn: () =>
-      getListUserPreferred(
-        { regionId: currentUser.regionId },
-        currentUser.accessToken
-      ),
+  const { data: userData } = useQuery({
+    queryKey: ["users"],
+    queryFn: () => getAllUsers(),
   });
-  const { data: examsOfUser } = useQuery({
-    queryKey: ["examsOfUser"],
-    queryFn: () => getExamOfUser(currentUser._id, currentUser.accessToken),
+  const { data: examinations } = useQuery({
+    queryKey: ["examinations"],
+    queryFn: () => getAllExam(currentUser.accessToken),
   });
 
   useEffect(() => {
@@ -267,7 +263,7 @@ const DashboardAdminComponent = () => {
         <div className="dashboard-component-header">
           <CardComponent
             title={t("Total users")}
-            count={listUserPreferred?.data?.length || 0}
+            count={userData?.data?.length || 0}
             srcImg={iconGroupUser}
             backgroundColor={"#ffd600"}
           />
@@ -279,7 +275,7 @@ const DashboardAdminComponent = () => {
           />
           <CardComponent
             title={t("Total exams")}
-            count={examsOfUser?.length || 0}
+            count={examinations?.length || 0}
             srcImg={iconExam}
             backgroundColor={"#fb6340"}
           />
@@ -335,7 +331,7 @@ const DashboardAdminComponent = () => {
             <List
               className="right-dashboard-component-list-item"
               itemLayout="horizontal"
-              dataSource={listUserPreferred?.data}
+              dataSource={userData?.data}
               renderItem={(item) => (
                 <List.Item
                   // onClick={() => handleSearchCustomer(item?.id, null, null)}
@@ -346,21 +342,21 @@ const DashboardAdminComponent = () => {
                   <List.Item.Meta
                     avatar={
                       <Avatar
-                        src={item?.userInfo?.avatar}
+                        src={item?.avatar}
                         style={{ backgroundColor: "#f56a00" }}
                       >
                         {item?.avatar
                           ? null
-                          : item?.userInfo?.username?.[0]?.toUpperCase() || "A"}
+                          : item?.username?.[0]?.toUpperCase() || "A"}
                       </Avatar>
                     }
                     title={
                       <div className="customer-user-info">
                         <span>
-                          {item?.userInfo?.username ||
-                            item?.userInfo?.email?.split("@")[0]}
+                          {item?.username ||
+                            item?.email?.split("@")[0]}
                         </span>
-                        <span>{item?.userInfo?.email}</span>
+                        <span>{item?.email}</span>
                       </div>
                     }
                   />

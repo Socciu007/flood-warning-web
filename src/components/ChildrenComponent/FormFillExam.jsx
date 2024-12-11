@@ -147,7 +147,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("Total Crom")}
             placeholder={false}
             fieldProps={{
-              precision: 0,
+              precision: 1,
               moneySymbol: false,
             }}
           />
