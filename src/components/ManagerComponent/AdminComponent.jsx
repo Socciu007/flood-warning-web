@@ -798,6 +798,7 @@ const AdminComponent = ({ activeTab }) => {
               onChange: handleSelectRow,
               type: "checkbox",
             }}
+            rowKey={(record) => record._id}
             columns={columnsExam}
             loading={isLoadingExaminations}
             actionRef={actionRef}

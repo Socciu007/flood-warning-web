@@ -44,10 +44,11 @@ const DashboardComponent = () => {
   });
   const { data: listUserPreferred } = useQuery({
     queryKey: ["listUserPreferred"],
-    queryFn: () => getListUserPreferred(
-      { regionId: currentUser.regionId },
-      currentUser.accessToken
-    ),
+    queryFn: () =>
+      getListUserPreferred(
+        { regionId: currentUser.regionId },
+        currentUser.accessToken
+      ),
   });
   const { data: examsOfUser } = useQuery({
     queryKey: ["examsOfUser"],
@@ -302,9 +303,7 @@ const DashboardComponent = () => {
               actionRender: (_, __, dom) => [dom.save, dom.cancel],
             },
             options: {
-              reload: async () => {
-                await queryClient.refetchQueries(["areas"]);
-              },
+              reload: () => queryClient.invalidateQueries({ queryKey: ["areas"] }),
               reloadIcon: (
                 <Tooltip title={t("Refresh")}>
                   <ReloadOutlined />

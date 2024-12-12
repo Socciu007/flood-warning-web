@@ -22,7 +22,14 @@ import { getListUserPreferred } from "../../services/serviceUser";
 import "./style.scss";
 import { formatDateTime, renderString } from "../../utils";
 import ModalFormComponent from "../ModalFormComponent/ModalFormComponent";
-// import DrawerComponent from "../DrawerComponent/DrawerComponent";
+import DrawerComponent from "../DrawerComponent/DrawerComponent";
+import FormFillFarm from "../ChildrenComponent/FormFillFarm";
+import {
+  createFarmArea,
+  updateFarmArea,
+  deleteFarmArea,
+  getAllArea,
+} from "../../services/serviceFarmArea";
 // import FormFillNoti from "../ChildrenComponent/FormFillNoti";
 
 const ManagerComponent = ({ activeTab }) => {
@@ -34,6 +41,7 @@ const ManagerComponent = ({ activeTab }) => {
   const [dataAreas, setDataAreas] = useState([]);
   const [dataSend, setDataSend] = useState([]);
   // const [isOpenDrawerNoti, setIsOpenDrawerNoti] = useState(false);
+  const [isOpenDrawerAddFarm, setIsOpenDrawerAddFarm] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const queryClient = useQueryClient();
 
@@ -51,19 +59,20 @@ const ManagerComponent = ({ activeTab }) => {
 
   // Query areas of manager
   const { data: areas, isLoading: isLoadingAreas } = useQuery({
-    queryKey: ["areas"],
+    queryKey: ["areasTab"],
     queryFn: () => getAllArea(currentUser._id),
   });
 
   // Query wishlist user of manager
-  const { data: listUserPreferred, isLoading: isLoadingListUserPreferred } = useQuery({
-    queryKey: ["listUserPreferred"],
-    queryFn: () =>
-      getListUserPreferred(
-        { regionId: currentUser.regionId },
-        currentUser.accessToken
-      ),
-  });
+  const { data: listUserPreferred, isLoading: isLoadingListUserPreferred } =
+    useQuery({
+      queryKey: ["listUserPreferred"],
+      queryFn: () =>
+        getListUserPreferred(
+          { regionId: currentUser.regionId },
+          currentUser.accessToken
+        ),
+    });
 
   // Set data wishlist
   useEffect(() => {
@@ -105,6 +114,7 @@ const ManagerComponent = ({ activeTab }) => {
         area: area.area,
         nameRegion: area.regionId.name,
         province: area.regionId.province,
+        regionId: area.regionId._id,
         createdAt: area.createdAt,
       }));
       setDataAreas(formattedAreas);
@@ -528,7 +538,7 @@ const ManagerComponent = ({ activeTab }) => {
     if (res) {
       message.success(t("Delete farm area success!"));
       // Refresh data
-      queryClient.invalidateQueries({ queryKey: ["areas"] });
+      queryClient.invalidateQueries({ queryKey: ["areasTab"] });
     } else {
       message.error(t("Delete farm area failed!"));
     }
@@ -545,7 +555,7 @@ const ManagerComponent = ({ activeTab }) => {
     if (res) {
       message.success(t("Update farm area success!"));
       // Refresh data
-      queryClient.invalidateQueries({ queryKey: ["areas"] });
+      queryClient.invalidateQueries({ queryKey: ["areasTab"] });
     } else {
       message.error(t("Update farm area failed!"));
     }
@@ -554,7 +564,9 @@ const ManagerComponent = ({ activeTab }) => {
   // Handle send notice to area
   const handleSendNotice = async (data) => {
     if (data.length === 0) {
-      message.warning(t("Please select at least one examination to send notice!"));
+      message.warning(
+        t("Please select at least one examination to send notice!")
+      );
       return;
     }
     const res = await sendManyNoticeToArea(data);
@@ -684,6 +696,23 @@ const ManagerComponent = ({ activeTab }) => {
     setDataSend(dataSend);
   };
 
+  // handle create farm area
+  const handleCreateFarm = async (values) => {
+    try {
+      const res = await createFarmArea(dataAreas[0].regionId, values);
+      if (res.status) {
+        message.success(t("Create farm area success!"));
+        // Refresh data
+        queryClient.invalidateQueries({ queryKey: ["areasTab"] });
+      } else {
+        message.error(t(res.message));
+      }
+    } catch (error) {
+      message.error(t("Create farm area failed!"));
+    }
+    return true;
+  };
+
   return (
     <div className="manager-component">
       <div>
@@ -774,6 +803,7 @@ const ManagerComponent = ({ activeTab }) => {
               onChange: handleSelectRow,
               type: "checkbox",
             }}
+            rowKey={(record) => record._id}
             columns={columnsExam}
             loading={isLoadingExaminations}
             actionRef={actionRef}
@@ -835,7 +865,9 @@ const ManagerComponent = ({ activeTab }) => {
               },
               options: {
                 reload: async () => {
-                  await queryClient.refetchQueries(["areas"]);
+                  await queryClient.invalidateQueries({
+                    queryKey: ["areasTab"],
+                  });
                 },
                 reloadIcon: (
                   <Tooltip title={t("Refresh")}>
@@ -860,9 +892,7 @@ const ManagerComponent = ({ activeTab }) => {
                 <Button
                   key="button"
                   icon={<PlusOutlined />}
-                  onClick={() => {
-                    actionRef.current?.reload();
-                  }}
+                  onClick={() => setIsOpenDrawerAddFarm(true)}
                   type="primary"
                 >
                   {t("Add farm")}
@@ -891,6 +921,24 @@ const ManagerComponent = ({ activeTab }) => {
       >
         <FormFillNoti />
       </DrawerComponent> */}
+      <DrawerComponent
+        title="Create farming area"
+        open={isOpenDrawerAddFarm}
+        onOpenChange={setIsOpenDrawerAddFarm}
+        submitter={{
+          searchConfig: {
+            submitText: t("Create"),
+            resetText: t("Cancel"),
+          },
+        }}
+        onFinish={async (values) => handleCreateFarm(values)}
+        props={{
+          width: "500px",
+          wrapClassName: "exam-drawer",
+        }}
+      >
+        <FormFillFarm />
+      </DrawerComponent>
     </div>
   );
 };

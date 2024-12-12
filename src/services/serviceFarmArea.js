@@ -23,3 +23,9 @@ export const deleteFarmArea = async (id) => {
   const res = await axios.delete(`${process.env.REACT_APP_API_KEY}/api/farm-areas/${id}`);
   return res.data;
 };
+
+// Create farm area 
+export const createFarmArea = async (regionId, data) => {
+  const res = await axios.post(`${process.env.REACT_APP_API_KEY}/api/farm-areas/create-area/${regionId}`, data);
+  return res.data;
+};

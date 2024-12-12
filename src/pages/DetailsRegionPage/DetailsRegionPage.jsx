@@ -43,7 +43,7 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from "chart.js";
 // Register plugin Chart.js
 ChartJS.register(
@@ -71,7 +71,7 @@ const DetailsRegionPage = () => {
     const res = await getExamOfFarmArea(farmAreaId, accessToken);
     setExamOfFarmArea(res);
   };
-  console.log('examOfFarmArea', examOfFarmArea);
+  console.log("examOfFarmArea", examOfFarmArea);
 
   useEffect(() => {
     const initFavoriteAreas = async () => {
@@ -266,18 +266,27 @@ const DetailsRegionPage = () => {
                   {examOfFarmArea?.length > 0 && (
                     <div className="forecast-chart">
                       <div className="forecast-chart-title">
-                        <p>{examOfFarmArea[0]?.name}</p>
-                        <span style={{ backgroundColor: examOfFarmArea[0]?.result?.percentPos > 0.75 ? 
-                          "#87d068" : examOfFarmArea[0]?.result?.percentPos > 0.5 ? 
-                          "#ffc107" : examOfFarmArea[0]?.result?.percentPos > 0.25 ? 
-                          "orange" : examOfFarmArea[0]?.result?.percentPos > 0 ?
-                          "red" : "#fff"
-                          }} 
+                        <AntdTooltip title={examOfFarmArea[0]?.name}>
+                          <p>{examOfFarmArea[0]?.name?.split("-")[0].trim()}</p>
+                        </AntdTooltip>
+                        <span
+                          style={{
+                            backgroundColor:
+                              examOfFarmArea[0]?.result?.percentPos > 0.75
+                                ? "#87d068"
+                                : examOfFarmArea[0]?.result?.percentPos > 0.5
+                                ? "#ffc107"
+                                : examOfFarmArea[0]?.result?.percentPos > 0.25
+                                ? "orange"
+                                : examOfFarmArea[0]?.result?.percentPos > 0
+                                ? "red"
+                                : "#fff",
+                          }}
                         />
                       </div>
-                      <h2 className="forecast-title">
+                      <p className="forecast-title">
                         {t("Latest predictions")}
-                      </h2>
+                      </p>
                       <Progress
                         type="dashboard"
                         steps={3}
@@ -293,9 +302,9 @@ const DetailsRegionPage = () => {
                             : "red"
                         }
                       />
-                      <h2 className="forecast-title">
+                      <p className="forecast-title">
                         {t("Recent forecast chart")}
-                      </h2>
+                      </p>
                       <Line data={data} options={options} />
                     </div>
                   )}

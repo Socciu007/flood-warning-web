@@ -105,5 +105,15 @@
   "Send notice to area success!": "Gửi thông báo đến khu vực thành công!",
   "Send notice to area failed!": "Gửi thông báo đến khu vực thất bại!",
   "Send notice": "Gửi thông báo",
-  "You can add areas to your wish list to receive notifications.": "Bạn có thể thêm khu vực vào danh sách yêu thích để nhận thông báo."
+  "You can add areas to your wish list to receive notifications.": "Bạn có thể thêm khu vực vào danh sách yêu thích để nhận thông báo.",
+  "Enter name farm": "Nhập tên vùng nuôi",
+  "Select type farm": "Chọn loại vùng nuôi",
+  "Enter area": "Nhập diện tích",
+  "Create farming area": "Tạo vùng nuôi trồng",
+  "Create": "Tạo",
+  "Area(ha)": "Diện tích (ha)",
+  "Create farm area success!": "Tạo vùng nuôi thành công!",
+  "Create farm area failed!": "Tạo vùng nuôi thất bại!",
+  "Farm area name already exists in this region!": "Tên vùng nuôi đã tồn tại trong khu vực này!",
+  "Region not found!": "Khu vực không tồn tại!"
 }

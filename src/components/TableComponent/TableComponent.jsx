@@ -12,6 +12,7 @@ const TableComponent = ({
   loading,
   config,
   rowSelection,
+  rowKey = (record) => record.id,
 }) => {
   const { t } = useTranslation();
   return (
@@ -24,7 +25,7 @@ const TableComponent = ({
             `${range[0]}-${range[1]} of ${total} items`,
         }}
         actionRef={actionRef}
-        rowKey={(record) => record.id}
+        rowKey={rowKey}
         rowSelection={rowSelection}
         columns={columns}
         dataSource={data}
