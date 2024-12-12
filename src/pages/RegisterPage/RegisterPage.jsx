@@ -149,7 +149,7 @@ const RegisterPage = () => {
               { label: t("Manager"), value: "manager" },
             ]}
             placeholder={t("Select role")}
-            // rules={[{ required: true, message: t("Please select your role!") }]}
+            rules={[{ required: true, message: t("Please select your role!") }]}
           />
           <ProForm.Group>
             <ProFormDependency name={["role"]}>

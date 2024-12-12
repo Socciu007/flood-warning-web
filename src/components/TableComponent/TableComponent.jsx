@@ -20,11 +20,12 @@ const TableComponent = ({
       <ProTable
         key={keyTable}
         pagination={{
-          pageSize: 10,
+          pageSize: 8,
           showTotal: (total, range) =>
             `${range[0]}-${range[1]} of ${total} items`,
         }}
         actionRef={actionRef}
+        tableAlertRender={false}
         rowKey={rowKey}
         rowSelection={rowSelection}
         columns={columns}

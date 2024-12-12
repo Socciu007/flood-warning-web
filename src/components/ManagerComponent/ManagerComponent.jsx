@@ -802,6 +802,7 @@ const ManagerComponent = ({ activeTab }) => {
             rowSelection={{
               onChange: handleSelectRow,
               type: "checkbox",
+            
             }}
             rowKey={(record) => record._id}
             columns={columnsExam}
