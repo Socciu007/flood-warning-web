@@ -35,6 +35,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 import { Line } from "react-chartjs-2";
+import { Liquid } from "@ant-design/plots";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -71,7 +72,6 @@ const DetailsRegionPage = () => {
     const res = await getExamOfFarmArea(farmAreaId, accessToken);
     setExamOfFarmArea(res);
   };
-  console.log("examOfFarmArea", examOfFarmArea);
 
   useEffect(() => {
     const initFavoriteAreas = async () => {
@@ -172,6 +172,19 @@ const DetailsRegionPage = () => {
         tension: 0.2, // Curve of the line
       },
     ],
+  };
+
+  const config = {
+    percent: Number(examOfFarmArea[0]?.result?.percentPos?.toFixed(2)),
+    style: {
+      outlineBorder: 3,
+      outlineDistance: 8,
+      waveLength: 128,
+      backgroundFill: 'pink'
+    },
+    width: 180,
+    height: 180,
+    className: 'liquid-chart',
   };
 
   const options = {
@@ -287,7 +300,8 @@ const DetailsRegionPage = () => {
                       <p className="forecast-title">
                         {t("Latest predictions")}
                       </p>
-                      <Progress
+                      <Liquid {...config} />
+                      {/* <Progress
                         type="dashboard"
                         steps={3}
                         percent={(
@@ -301,7 +315,7 @@ const DetailsRegionPage = () => {
                             ? "#87d068"
                             : "red"
                         }
-                      />
+                      /> */}
                       <p className="forecast-title">
                         {t("Recent forecast chart")}
                       </p>

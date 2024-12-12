@@ -699,6 +699,7 @@ const ManagerComponent = ({ activeTab }) => {
   // handle create farm area
   const handleCreateFarm = async (values) => {
     try {
+      values.area = `${values.area} ha`;
       const res = await createFarmArea(dataAreas[0].regionId, values);
       if (res.status) {
         message.success(t("Create farm area success!"));

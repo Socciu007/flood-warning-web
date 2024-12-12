@@ -24,9 +24,12 @@ const FormFillFarm = () => {
       />
       <ProFormDigit
         name="area"
-        label={t("Area(ha)")}
+        label={t("Area (ha)")}
         placeholder={t("Enter area")}
         min={0}
+        fieldProps={{
+          precision: 2,
+        }}
       />
     </div>
   );

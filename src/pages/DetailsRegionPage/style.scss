@@ -19,6 +19,7 @@
       max-width: 250px;
       padding-right: 1.5rem;
       padding-left: 1.5rem;
+      background-color: #fff;
       .tab-button-container {
         display: flex;
         box-shadow: 0px 4px 10px rgba(27.63, 7.97, 106.25, 0.25);
@@ -96,6 +97,9 @@
               margin-top: 10px;
               padding: 0 8px;
               font-size: 14px;
+              .g2-tooltip {
+                display: none !important;
+              }
               .forecast-chart-title {
                 display: flex;
                 justify-content: space-between;
