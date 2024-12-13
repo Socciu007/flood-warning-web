@@ -299,19 +299,20 @@ const DashboardAdminComponent = () => {
               actionRender: (_, __, dom) => [dom.save, dom.cancel],
             },
             options: {
-              reload: async () => {
-                await queryClient.refetchQueries(["areas"]);
+              reload: () => {
+                queryClient.invalidateQueries({ queryKey: ["farmAreas"] });
               },
               reloadIcon: (
                 <Tooltip title={t("Refresh")}>
                   <ReloadOutlined />
                 </Tooltip>
               ),
-              densityIcon: (
-                <Tooltip title={t("Density")}>
-                  <ColumnHeightOutlined />
-                </Tooltip>
-              ),
+              // densityIcon: (
+              //   <Tooltip title={t("Density")}>
+              //     <ColumnHeightOutlined />
+              //   </Tooltip>
+              // ),
+              density: false,
               // search: true
               setting: {
                 settingIcon: (
@@ -353,8 +354,7 @@ const DashboardAdminComponent = () => {
                     title={
                       <div className="customer-user-info">
                         <span>
-                          {item?.username ||
-                            item?.email?.split("@")[0]}
+                          {item?.username || item?.email?.split("@")[0]}
                         </span>
                         <span>{item?.email}</span>
                       </div>
