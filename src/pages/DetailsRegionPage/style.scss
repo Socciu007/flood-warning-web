@@ -1,4 +1,5 @@
 .details-region-page {
+  // background-color: #fff;
   .navbar {
     position: fixed;
     top: 0;
@@ -113,7 +114,16 @@
               .forecast-title {
                 font-size: 14px;
                 // text-align: center;
-                margin: 10px 0px;
+                margin-top: 10px;
+                margin-bottom: 5px;
+              }
+              .forecast-title-detail {
+                font-size: 13px;
+                margin-left: 3px;
+                p {
+                  margin-bottom: 5px;
+                  line-height: 20px;
+                }
               }
               .ant-progress {
                 height: 70px;

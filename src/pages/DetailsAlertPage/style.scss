@@ -1,6 +1,7 @@
 .details-alert-page {
   position: relative;
   height: 100vh;
+  background-color: #fff;
   .main-container {
     display: flex;
     min-height: 100%;
@@ -54,7 +55,7 @@
       }
       .content-detail-content {
         margin-top: 10px;
-        line-height: 22.5px;
+        line-height: 25.5px;
       }
     }
   }

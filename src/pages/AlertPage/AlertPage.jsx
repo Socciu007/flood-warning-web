@@ -12,6 +12,7 @@ import {
 import { useSelector } from "react-redux";
 import { formatDateTime } from "../../utils";
 import "./style.scss";
+import { color } from "chart.js/helpers";
 
 const AlertPage = () => {
   const { t } = useTranslation();
@@ -23,6 +24,7 @@ const AlertPage = () => {
     queryKey: ["alerts"],
     queryFn: () => getAlerts(currentUser._id),
   });
+  console.log(alerts);
 
   // handle mark all alerts as viewed
   const handleMarkAllAlerts = async () => {
@@ -54,7 +56,7 @@ const AlertPage = () => {
             <List
               className="content-list-item"
               itemLayout="horizontal"
-              dataSource={alerts}
+              dataSource={alerts?.filter((item) => item?.type !== "email")}
               renderItem={(item) => (
                 <List.Item
                   className="alert-item"
@@ -67,29 +69,52 @@ const AlertPage = () => {
                     avatar={
                       <div className="avatar-icon">
                         <Tag
-                          color={item?.type === "email" ? "volcano" : "green"}
+                          color={
+                            item?.title.includes("Low")
+                              ? "green"
+                              : item?.title.includes("Moderate")
+                              ? "yellow"
+                              : item?.title.includes("High")
+                              ? "volcano"
+                              : "red"
+                          }
+                          style={{
+                            borderColor:
+                              item?.title.includes("Low")
+                                ? "green"
+                                  : item?.title.includes("Moderate")
+                                  ? "#FFFF00"
+                                  : item?.title.includes("High")
+                                  ? "#FF9900"
+                                  : "#FF0000",
+                            color: item?.title.includes("Low")
+                            ? "green"
+                              : item?.title.includes("Moderate")
+                              ? "#a2bc33de"
+                              : item?.title.includes("High")
+                              ? "#FF9900"
+                              : "#FF0000",
+                          }}
                         >
                           {item?.type}
                         </Tag>
                       </div>
                     }
                     title={
-                      <div className="alert-item-container">
-                        <div className="alert-item-title">
-                          <span>
+                        <div className="alert-item-container">
+                          <div className="alert-item-title">
+                            <span>
                             <b>{item?.title}</b>: {item?.description}
                           </span>
                           <div>{formatDateTime(item?.createdAt)}</div>
                         </div>
                         <div className="alert-item-btn">
-                          {item?.type !== "email" && (
-                            <Button
-                              className="view-btn"
-                              onClick={() => handleViewAlert(item?._id)}
-                            >
-                              {t("View detail")}
-                            </Button>
-                          )}
+                          <Button
+                            className="view-btn"
+                            onClick={() => handleViewAlert(item?._id)}
+                          >
+                            {t("View detail")}
+                          </Button>
                         </div>
                       </div>
                     }

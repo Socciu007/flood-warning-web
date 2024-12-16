@@ -9,7 +9,7 @@ import {
   DeleteFilled,
 } from "@ant-design/icons";
 import { Tooltip, Button, Tag, message } from "antd";
-import SearchComponent from "../SearchComponent/SearchComponent";
+// import SearchComponent from "../SearchComponent/SearchComponent";
 import TableComponent from "../TableComponent/TableComponent";
 import {
   getAllNotifications,
@@ -384,7 +384,7 @@ const AdminComponent = ({ activeTab }) => {
 
   const columnsArea = [
     {
-      title: "#",
+      title: "No",
       dataIndex: "index",
       valueType: "indexBorder",
       className: "table-cell",
@@ -724,7 +724,7 @@ const AdminComponent = ({ activeTab }) => {
           {activeTab === "users" && <h3>{t("Users")}</h3>}
           {activeTab === "areas" && <h3>{t("Areas List")}</h3>}
           {activeTab === "examinations" && <h3>{t("Examination List")}</h3>}
-          <SearchComponent />
+          {/* <SearchComponent /> */}
         </div>
       </div>
       <div className="manager-component-table">

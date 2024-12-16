@@ -43,7 +43,7 @@ const HomePage = () => {
           </Paragraph>
 
           <Card className="search-container">
-            <h3 className="search-title">{t("Explore data on your area.")}</h3>
+            <h3 className="search-title">{t("Explore data on your area")}</h3>
             <ProList
               search={{
                 searchText: t("Search"),

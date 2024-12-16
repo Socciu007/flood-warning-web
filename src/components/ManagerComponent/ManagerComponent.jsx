@@ -9,7 +9,7 @@ import {
   DeleteFilled,
 } from "@ant-design/icons";
 import { Tooltip, Button, Tag, message } from "antd";
-import SearchComponent from "../SearchComponent/SearchComponent";
+// import SearchComponent from "../SearchComponent/SearchComponent";
 import TableComponent from "../TableComponent/TableComponent";
 import {
   getAllNotificationsByManager,
@@ -121,7 +121,7 @@ const ManagerComponent = ({ activeTab }) => {
 
   const columnsNoti = [
     {
-      title: "#",
+      title: "No",
       dataIndex: "index",
       valueType: "indexBorder",
       className: "table-cell",
@@ -171,7 +171,7 @@ const ManagerComponent = ({ activeTab }) => {
 
   const columnsExam = [
     {
-      title: "#",
+      title: "No",
       dataIndex: "index",
       valueType: "indexBorder",
       className: "table-cell",
@@ -628,7 +628,7 @@ const ManagerComponent = ({ activeTab }) => {
         item.posBOD5,
         "BOD₅",
         `${item.BOD5}mg/l`,
-        "COD levels reduce the amount of dissolved oxygen in water and are harmful to aquatic life."
+        "BOD5 levels reduce the amount of dissolved oxygen in water and are harmful to aquatic life."
       )}
       ${renderString(
         item.posCOD,
@@ -727,7 +727,7 @@ const ManagerComponent = ({ activeTab }) => {
           {activeTab === "users" && <h3>{t("Users")}</h3>}
           {activeTab === "areas" && <h3>{t("Areas List")}</h3>}
           {activeTab === "examinations" && <h3>{t("Examination List")}</h3>}
-          <SearchComponent />
+          {/* <SearchComponent /> */}
         </div>
       </div>
       <div className="manager-component-table">

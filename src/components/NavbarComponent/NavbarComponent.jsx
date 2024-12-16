@@ -151,7 +151,7 @@ const NavbarComponent = () => {
                     alt="Alert"
                   />
                 </Badge>
-                <span>{t("Notice")}</span>
+                <span>{t("Notification")}</span>
               </div>
             </Link>
           )}

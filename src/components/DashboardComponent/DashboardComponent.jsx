@@ -13,7 +13,7 @@ import {
   SettingOutlined,
   FileAddOutlined,
 } from "@ant-design/icons";
-import SearchComponent from "../SearchComponent/SearchComponent";
+// import SearchComponent from "../SearchComponent/SearchComponent";
 import TableComponent from "../TableComponent/TableComponent";
 import {
   getAllArea,
@@ -91,7 +91,7 @@ const DashboardComponent = () => {
   // Config columns table
   const columns = [
     {
-      title: "#",
+      title: "No",
       dataIndex: "index",
       valueType: "indexBorder",
       className: "table-cell",
@@ -112,7 +112,7 @@ const DashboardComponent = () => {
       },
     },
     {
-      title: t("Type Farm"),
+      title: t("Type"),
       dataIndex: "typeArea",
       valueType: "select",
       valueEnum: {
@@ -143,7 +143,7 @@ const DashboardComponent = () => {
       },
     },
     {
-      title: t("Name Region"),
+      title: t("Region"),
       dataIndex: "nameRegion",
       key: "nameRegion",
       className: "table-cell",
@@ -157,7 +157,7 @@ const DashboardComponent = () => {
       editable: false,
     },
     {
-      title: t("Results"),
+      title: t("Result"),
       dataIndex: "results",
       key: "results",
       className: "table-cell",
@@ -170,7 +170,7 @@ const DashboardComponent = () => {
     {
       title: t("Action"),
       valueType: "option",
-      // className: "table-cell",
+      className: "table-cell",
       width: 80,
       key: "option",
       render: (_, record, __, action) => [
@@ -283,7 +283,7 @@ const DashboardComponent = () => {
       <div>
         <div className="dashboard-component-title">
           <h3>{t("Dashboard")}</h3>
-          <SearchComponent />
+          {/* <SearchComponent /> */}
         </div>
         <div className="dashboard-component-header">
           <CardComponent
@@ -324,7 +324,8 @@ const DashboardComponent = () => {
               actionRender: (_, __, dom) => [dom.save, dom.cancel],
             },
             options: {
-              reload: () => queryClient.invalidateQueries({ queryKey: ["areas"] }),
+              reload: false,
+              // reload: () => queryClient.invalidateQueries({ queryKey: ["areas"] }),
               reloadIcon: (
                 <Tooltip title={t("Refresh")}>
                   <ReloadOutlined />
@@ -336,14 +337,15 @@ const DashboardComponent = () => {
                   <ColumnHeightOutlined />
                 </Tooltip>
               ),
-              // search: true
-              setting: {
-                settingIcon: (
-                  <Tooltip title={t("Setting")}>
-                    <SettingOutlined />
-                  </Tooltip>
-                ),
-              },
+              // search: true,
+              setting: false,
+              // setting: {
+              //   settingIcon: (
+              //     <Tooltip title={t("Setting")}>
+              //       <SettingOutlined />
+              //     </Tooltip>
+              //   ),
+              // },
             },
           }}
         />

@@ -47,6 +47,7 @@
     }
     .ant-space-item {
       font-size: 14px;
+      flex: 1;
       .ant-select {
         width: 90px !important;
         .ant-select-selector {
@@ -82,6 +83,12 @@
         gap: 8px;
         height: 32px;
         padding: 4px 15px;
+        .ant-badge {
+          width: 15px;
+        }
+      }
+      .ant-btn-icon {
+        width: 15px;
       }
     }
   }

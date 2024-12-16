@@ -25,6 +25,7 @@ import {
   Popup,
   Circle,
   ZoomControl,
+  Tooltip as LeafletTooltip,
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -34,7 +35,7 @@ L.Icon.Default.mergeOptions({
   iconUrl: require("leaflet/dist/images/marker-icon.png"),
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
-import { Line } from "react-chartjs-2";
+// import { Line } from "react-chartjs-2";
 import { Liquid } from "@ant-design/plots";
 import {
   Chart as ChartJS,
@@ -180,7 +181,7 @@ const DetailsRegionPage = () => {
       outlineBorder: 3,
       outlineDistance: 8,
       waveLength: 128,
-      backgroundFill: 'pink'
+      backgroundFill: 'pink',
     },
     width: 180,
     height: 180,
@@ -279,9 +280,7 @@ const DetailsRegionPage = () => {
                   {examOfFarmArea?.length > 0 && (
                     <div className="forecast-chart">
                       <div className="forecast-chart-title">
-                        <AntdTooltip title={examOfFarmArea[0]?.name}>
-                          <p>{examOfFarmArea[0]?.name?.split("-")[0].trim()}</p>
-                        </AntdTooltip>
+                        <p>{examOfFarmArea[0]?.name?.replace(" Alert ", " ")}</p>
                         <span
                           style={{
                             backgroundColor:
@@ -298,28 +297,62 @@ const DetailsRegionPage = () => {
                         />
                       </div>
                       <p className="forecast-title">
-                        {t("Latest predictions")}
+                        A. {t("Latest predictions")}
                       </p>
-                      <Liquid {...config} />
-                      {/* <Progress
-                        type="dashboard"
-                        steps={3}
-                        percent={(
-                          examOfFarmArea[0]?.result?.percentPos * 100
-                        ).toFixed(0)}
-                        trailColor="rgba(0, 0, 0, 0.06)"
-                        strokeWidth={10}
-                        gapDegree={180}
-                        strokeColor={
-                          examOfFarmArea[0]?.result?.percentPos > 0.5
-                            ? "#87d068"
-                            : "red"
-                        }
-                      /> */}
+                      {/* <AntdTooltip title={t(`Suitable growth rate of cultivated objects: ${Number(examOfFarmArea[0]?.result?.percentPos?.toFixed(2))}`)}>
+                      </AntdTooltip> */}
+                        <Liquid {...config} />
                       <p className="forecast-title">
-                        {t("Recent forecast chart")}
+                        B. {t("Data environment:")}
                       </p>
-                      <Line data={data} options={options} />
+                      <div className="forecast-title-detail">
+                        <p>
+                          {examOfFarmArea[0]?.posDO < 0.5 && `• DO: ${examOfFarmArea[0]?.DO}mg/l Low DO levels can reduce the ability of aquatic species to survive.`}
+                        </p>
+                        <p>
+                          {examOfFarmArea[0]?.posTemperature < 0.5 && `• Temperature: ${examOfFarmArea[0]?.temperature}°C This temperature condition disrupts the physiology, growth ability and reduces the reproductive ability of aquatic products.`}
+                        </p>
+                        <p>
+                          {examOfFarmArea[0]?.pospH < 0.5 && `• pH: ${examOfFarmArea[0]?.pH} Low pH levels can reduce the ability of plants and aquatic animals to absorb nutrients.`}
+                        </p>
+                        <p>
+                          {examOfFarmArea[0]?.posAlkalinity < 0.5 && `• Alkalinity: ${examOfFarmArea[0]?.alkalinity}mg/l Risk of water acidification.`}
+                        </p>
+                        <p>
+                          {examOfFarmArea[0]?.posAmmonia < 0.5 && `• Ammonia: ${examOfFarmArea[0]?.ammonia}mg/l Ammonia levels reduce the quality of aquatic and plant habitats.`}
+                        </p>
+                        <p>
+                          {examOfFarmArea[0]?.posBOD5 < 0.5 && `• BOD5: ${examOfFarmArea[0]?.BOD5}mg/l BOD5 levels reduce the amount of dissolved oxygen in water and are harmful to aquatic life.`}
+                        </p>
+                        <p>
+                          {examOfFarmArea[0]?.posCOD < 0.5 && `• COD: ${examOfFarmArea[0]?.COD}mg/l COD levels reduce the amount of dissolved oxygen in water and are harmful to aquatic life.`}
+                        </p>
+                        <p>
+                          {examOfFarmArea[0]?.posClarity < 0.5 && `• Clarity: ${examOfFarmArea[0]?.clarity}mg/l Sign of pollution, organic waste or bacteria in water, posing a risk of disease outbreak.`}
+                        </p>
+                        <p>
+                          {examOfFarmArea[0]?.posColiform < 0.5 && `• Coliform: ${examOfFarmArea[0]?.coliform}CFU/100ml There is organic pollution in the aquatic environment.`}
+                        </p>
+                        <p>
+                          {examOfFarmArea[0]?.posSalinity < 0.5 && `• Salinity: ${examOfFarmArea[0]?.salinity}‰ Low salinity aquatic environments can affect the ability of aquatic species to sustain life. `}
+                        </p>
+                        <p>
+                          {examOfFarmArea[0]?.posPhotsPhat < 0.5 && `• Photsphat: ${examOfFarmArea[0]?.phosPhat}mg/l Pets showing signs of Phosphate toxicity and stress.`}
+                        </p>
+                        <p>
+                          {examOfFarmArea[0]?.posSuspendedSolids < 0.5 && `• TSS: ${examOfFarmArea[0]?.TSS}mg/l TSS levels can reduce water filtration and degrade water quality in aquatic habitats.`}
+                        </p>
+                        <p>
+                          {examOfFarmArea[0]?.posTotalCrom < 0.5 && `• Total Crom: ${examOfFarmArea[0]?.totalCrom}mg/l There is chromium contamination.`}
+                        </p>
+                        <p>
+                          {examOfFarmArea[0]?.posH2S < 0.5 && `• H₂S: ${examOfFarmArea[0]?.H2S}mg/l This level of H₂S can lead to oxygen deficiency in the environment.`}
+                        </p>
+                        <p>
+                          {examOfFarmArea[0]?.posRainfall < 0.5 && `• Rainfall: ${examOfFarmArea[0]?.rainfall}mm This rainfall can reduce the vitality of species.`}
+                        </p>
+                      </div>
+                      {/* <Line data={data} options={options} /> */}
                     </div>
                   )}
                 </div>
@@ -334,7 +367,7 @@ const DetailsRegionPage = () => {
                   {farmAreaDetail?.farmAreas.map((farm) => (
                     <div className="information-farm-item" key={farm._id}>
                       <p className="information-farm-name">
-                        {farm.name}, {farm?.area || "500 ha"}
+                        {farm.name}, {farm?.area?.includes("ha") ? farm?.area : `${farm?.area} ha`}
                       </p>
                       <AntdTooltip
                         title={t(
@@ -395,27 +428,39 @@ const DetailsRegionPage = () => {
                 const angle = (1.7 * Math.PI * index) / totalFarm;
                 const positionFarm = [
                   position[0] - RADIUS * Math.cos(angle),
-                  position[1] - RADIUS * Math.sin(angle),
+                  position[1] - RADIUS * Math.sin(angle)
                 ];
                 return (
-                  <Circle
-                    key={farm._id}
-                    center={positionFarm}
-                    radius={700}
-                    pathOptions={{
-                      color: "#3288F0",
-                      fillColor: "#3288F0",
-                      fillOpacity: 0.2,
-                    }}
-                  >
-                    <Popup>
-                      <div style={{ fontSize: 14, lineHeight: "22px" }}>
-                        {`${farm.name}, ${farm.area || "500 ha"}`}
-                        <br />
-                        {`${t("Type")}: ${t(farm?.type) || "Unknown"}`}
-                      </div>
-                    </Popup>
-                  </Circle>
+                  <>
+                    <Circle
+                      key={farm._id}
+                      center={positionFarm}
+                      radius={600}
+                      pathOptions={{
+                        color: "#3288F0",
+                        fillColor: "#3288F0",
+                        fillOpacity: 0.2,
+                      }}
+                      title={farm.name}
+                    >
+                      <Popup>
+                        <div style={{ fontSize: 14, lineHeight: "22px" }}>
+                          {`${farm.name}, ${farm?.area?.includes("ha") ? farm?.area : `${farm?.area} ha`}`}
+                          <br />
+                          {`${t("Type")}: ${t(farm?.type) || "Unknown"}`}
+                        </div>
+                      </Popup>
+                      <LeafletTooltip
+                        permanent
+                        direction="right"
+                        offset={[10, 10]}
+                      >
+                        <span style={{ fontSize: "12px", fontWeight: "bold" }}>
+                          {farm.name}
+                        </span>
+                      </LeafletTooltip>
+                    </Circle>
+                  </>
                 );
               })}
             </MapContainer>
