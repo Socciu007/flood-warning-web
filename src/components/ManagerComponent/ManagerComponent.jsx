@@ -683,8 +683,7 @@ const ManagerComponent = ({ activeTab }) => {
         "Rainfall",
         `${item.rainfall}mm`,
         "This rainfall can reduce the vitality of species."
-      )}
-      `;
+      )}`;
       return {
         title: `[${item.farmAreaId.name} Alert] - ${levelWarning}`,
         description: `This is a ${levelWarning} alert for the ${item.farmAreaId.type}`,

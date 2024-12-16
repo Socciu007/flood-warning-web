@@ -43,3 +43,9 @@ export const sendManyNoticeToArea = async (data) => {
   const res = await axios.post(`${process.env.REACT_APP_API_KEY}/api/notifications/send-many-alerts`, data);
   return res.data;
 };
+
+// Get detail alert
+export const getDetailAlert = async (id) => {
+  const res = await axios.get(`${process.env.REACT_APP_API_KEY}/api/notifications/${id}`);
+  return res.data;
+};

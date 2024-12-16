@@ -3,6 +3,7 @@ import NavbarComponent from "../../components/NavbarComponent/NavbarComponent";
 import { Button, List, Tag } from "antd";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import {
   getAlerts,
   updateAlertStatus,
@@ -15,13 +16,13 @@ import "./style.scss";
 const AlertPage = () => {
   const { t } = useTranslation();
   const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   // Query all alerts
   const { data: alerts, refetch } = useQuery({
     queryKey: ["alerts"],
     queryFn: () => getAlerts(currentUser._id),
   });
-  console.log(alerts);
 
   // handle mark all alerts as viewed
   const handleMarkAllAlerts = async () => {
@@ -33,6 +34,7 @@ const AlertPage = () => {
   // Handle view alert
   const handleViewAlert = async (id) => {
     await updateAlertStatus(id);
+    navigate(`/notifications/${id}`);
     // Refesh data
     refetch();
   };
@@ -55,7 +57,6 @@ const AlertPage = () => {
               dataSource={alerts}
               renderItem={(item) => (
                 <List.Item
-                  onClick={() => handleViewAlert(item?._id)}
                   className="alert-item"
                   style={{
                     backgroundColor:
@@ -73,11 +74,23 @@ const AlertPage = () => {
                       </div>
                     }
                     title={
-                      <div className="alert-item-title">
-                        <span>
-                          <b>{item?.title}</b>: {item?.description}
-                        </span>
-                        <div>{formatDateTime(item?.createdAt)}</div>
+                      <div className="alert-item-container">
+                        <div className="alert-item-title">
+                          <span>
+                            <b>{item?.title}</b>: {item?.description}
+                          </span>
+                          <div>{formatDateTime(item?.createdAt)}</div>
+                        </div>
+                        <div className="alert-item-btn">
+                          {item?.type !== "email" && (
+                            <Button
+                              className="view-btn"
+                              onClick={() => handleViewAlert(item?._id)}
+                            >
+                              {t("View detail")}
+                            </Button>
+                          )}
+                        </div>
                       </div>
                     }
                   />
