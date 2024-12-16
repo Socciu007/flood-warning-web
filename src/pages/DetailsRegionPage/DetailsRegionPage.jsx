@@ -11,7 +11,7 @@ import { message } from "antd";
 import { useTranslation } from "react-i18next";
 import { ProFormSelect, ProForm } from "@ant-design/pro-form";
 import { formatDateTime } from "../../utils";
-import { Progress, Tooltip as AntdTooltip } from "antd";
+import { Tooltip as AntdTooltip } from "antd";
 import {
   CodepenOutlined,
   AreaChartOutlined,

@@ -34,6 +34,7 @@ const DashboardComponent = () => {
   const { t } = useTranslation();
   const actionRef = useRef();
   const [dataAreas, setDataAreas] = useState([]);
+  // const [search, setSearch] = useState("");
   const { currentUser } = useSelector((state) => state.user);
 
   // Get all areas
@@ -104,6 +105,7 @@ const DashboardComponent = () => {
       key: "nameArea",
       className: "table-cell",
       fieldProps: {
+        placeholder: t("Name"),
         style: {
           width: "100px",
         },
@@ -120,17 +122,24 @@ const DashboardComponent = () => {
       },
       key: "typeArea",
       className: "table-cell",
+      fieldProps: {
+        placeholder: t("Type"),
+      },
     },
     {
-      title: t("Area"),
+      title: t("Area (ha)"),
       dataIndex: "area",
-      valueType: "text",
+      valueType: "number",
       key: "area",
       className: "table-cell",
       fieldProps: {
+        placeholder: t("Area (ha)"),
         style: {
           width: "100px",
         },
+      },
+      render: (_, record) => {
+        return <span>{record.area.split(" ")[0]}</span>;
       },
     },
     {
@@ -237,9 +246,9 @@ const DashboardComponent = () => {
     };
     const res = await updateFarmArea(id, data);
     if (res) {
-      message.success(t("Update farm area success!"));
       // Refresh data
-      queryClient.invalidateQueries({ queryKey: ["areas"] });
+      await queryClient.invalidateQueries({ queryKey: ["areas"] });
+      message.success(t("Update farm area success!"));
     } else {
       message.error(t("Update farm area failed!"));
     }
@@ -249,13 +258,25 @@ const DashboardComponent = () => {
   const handleDeleteFarm = async (id) => {
     const res = await deleteFarmArea(id);
     if (res) {
-      message.success(t("Delete farm area success!"));
       // Refresh data
-      queryClient.invalidateQueries({ queryKey: ["areas"] });
+      await queryClient.invalidateQueries({ queryKey: ["areas"] });
+      message.success(t("Delete farm area success!"));
     } else {
       message.error(t("Delete farm area failed!"));
     }
   };
+
+  // Handle search
+  // const handleSearch = async (e) => {
+  //   const searchValue = e.target.value;
+  //   // setSearch(searchValue);
+  //   const filteredAreas = dataAreas.filter((area) =>
+  //     Object.values(area).some((value) =>
+  //       value?.toString().toLowerCase().includes(searchValue.toLowerCase())
+  //       )
+  //     );
+  //   setDataAreas(filteredAreas);
+  // };
 
   return (
     <div className="dashboard-component">
@@ -309,6 +330,7 @@ const DashboardComponent = () => {
                   <ReloadOutlined />
                 </Tooltip>
               ),
+              density: false,
               densityIcon: (
                 <Tooltip title={t("Density")}>
                   <ColumnHeightOutlined />

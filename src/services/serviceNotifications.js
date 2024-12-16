@@ -20,7 +20,7 @@ export const updateManyAlerts = async (id) => {
 
 // Get all notifications by manager
 export const getAllNotificationsByManager = async (managerId) => {
-  const res = await axios.get(`${process.env.REACT_APP_API_KEY}/api/notifications/${managerId}`);
+  const res = await axios.get(`${process.env.REACT_APP_API_KEY}/api/notifications/get-alert-of-manager/${managerId}`);
   return res.data;
 };
 

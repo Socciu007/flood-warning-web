@@ -30,7 +30,6 @@ import {
   deleteFarmArea,
   getAllArea,
 } from "../../services/serviceFarmArea";
-// import FormFillNoti from "../ChildrenComponent/FormFillNoti";
 
 const ManagerComponent = ({ activeTab }) => {
   const { t } = useTranslation();
@@ -40,7 +39,6 @@ const ManagerComponent = ({ activeTab }) => {
   const [dataWishlist, setDataWishlist] = useState([]);
   const [dataAreas, setDataAreas] = useState([]);
   const [dataSend, setDataSend] = useState([]);
-  // const [isOpenDrawerNoti, setIsOpenDrawerNoti] = useState(false);
   const [isOpenDrawerAddFarm, setIsOpenDrawerAddFarm] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const queryClient = useQueryClient();
@@ -50,7 +48,7 @@ const ManagerComponent = ({ activeTab }) => {
     queryKey: ["notifications"],
     queryFn: () => getAllNotificationsByManager(currentUser._id),
   });
-
+  
   // Query examinations of manager
   const { data: examinations, isLoading: isLoadingExaminations } = useQuery({
     queryKey: ["examinations"],
@@ -94,11 +92,11 @@ const ManagerComponent = ({ activeTab }) => {
     if (examinations) {
       const formattedExaminations = examinations.map((exam) => ({
         ...exam,
-        nameFarm: exam.farmAreaId.name,
-        typeFarm: exam.farmAreaId.type,
-        percentPos: exam.result.percentPos,
-        percentNeg: exam.result.percentNeg,
-        percentNeu: exam.result.percentNeu,
+        nameFarm: exam?.farmAreaId?.name,
+        typeFarm: exam?.farmAreaId?.type,
+        percentPos: exam?.result?.percentPos,
+        percentNeg: exam?.result?.percentNeg,
+        percentNeu: exam?.result?.percentNeu,
       }));
       setDataExaminations(formattedExaminations);
     }
@@ -402,6 +400,7 @@ const ManagerComponent = ({ activeTab }) => {
       key: "nameArea",
       className: "table-cell",
       fieldProps: {
+        placeholder: t("Name"),
         style: {
           width: "100px",
         },
@@ -418,17 +417,24 @@ const ManagerComponent = ({ activeTab }) => {
       },
       key: "typeArea",
       className: "table-cell",
+      fieldProps: {
+        placeholder: t("Type"),
+      },
     },
     {
-      title: t("Area"),
+      title: t("Area (ha)"),
       dataIndex: "area",
-      valueType: "text",
+      valueType: "number",
       key: "area",
       className: "table-cell",
       fieldProps: {
+        placeholder: t("Area (ha)"),
         style: {
           width: "100px",
         },
+      },
+      render: (_, record) => {
+        return <span>{record.area.split(" ")[0]}</span>;
       },
     },
     {
@@ -536,9 +542,9 @@ const ManagerComponent = ({ activeTab }) => {
   const handleDeleteFarm = async (id) => {
     const res = await deleteFarmArea(id);
     if (res) {
-      message.success(t("Delete farm area success!"));
       // Refresh data
-      queryClient.invalidateQueries({ queryKey: ["areasTab"] });
+      await queryClient.invalidateQueries({ queryKey: ["areasTab"] });
+      message.success(t("Delete farm area success!"));
     } else {
       message.error(t("Delete farm area failed!"));
     }
@@ -553,9 +559,9 @@ const ManagerComponent = ({ activeTab }) => {
     };
     const res = await updateFarmArea(id, data);
     if (res) {
-      message.success(t("Update farm area success!"));
       // Refresh data
-      queryClient.invalidateQueries({ queryKey: ["areasTab"] });
+      await queryClient.invalidateQueries({ queryKey: ["areasTab"] });
+      message.success(t("Update farm area success!"));
     } else {
       message.error(t("Update farm area failed!"));
     }
@@ -743,6 +749,7 @@ const ManagerComponent = ({ activeTab }) => {
                     <ReloadOutlined />
                   </Tooltip>
                 ),
+                density: false,
                 densityIcon: (
                   <Tooltip title={t("Density")}>
                     <ColumnHeightOutlined />
@@ -778,6 +785,7 @@ const ManagerComponent = ({ activeTab }) => {
                     <ReloadOutlined />
                   </Tooltip>
                 ),
+                density: false,
                 densityIcon: (
                   <Tooltip title={t("Density")}>
                     <ColumnHeightOutlined />
@@ -819,6 +827,7 @@ const ManagerComponent = ({ activeTab }) => {
                     <ReloadOutlined />
                   </Tooltip>
                 ),
+                density: false,
                 densityIcon: (
                   <Tooltip title={t("Density")}>
                     <ColumnHeightOutlined />
@@ -875,6 +884,7 @@ const ManagerComponent = ({ activeTab }) => {
                     <ReloadOutlined />
                   </Tooltip>
                 ),
+                density: false,
                 densityIcon: (
                   <Tooltip title={t("Density")}>
                     <ColumnHeightOutlined />
@@ -904,24 +914,6 @@ const ManagerComponent = ({ activeTab }) => {
         )}
         <div className="right-manager-component"></div>
       </div>
-      {/* <DrawerComponent
-        title="Send notice to area"
-        open={isOpenDrawerNoti}
-        onOpenChange={setIsOpenDrawerNoti}
-        submitter={{
-          searchConfig: {
-            submitText: t("Send"),
-            resetText: t("Cancel"),
-          },
-        }}
-        onFinish={async (values) => handleSendNotice(values)}
-        props={{
-          width: "500px",
-          wrapClassName: "exam-drawer",
-        }}
-      >
-        <FormFillNoti />
-      </DrawerComponent> */}
       <DrawerComponent
         title="Create farming area"
         open={isOpenDrawerAddFarm}

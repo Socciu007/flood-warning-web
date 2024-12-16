@@ -9,6 +9,8 @@ const SearchComponent = () => {
     <div className="search-wrap">
       <img className="icon" src={searchIcon} alt="img-search" />
       <input
+        // value={search}
+        // onChange={handleSearch}
         className="search-content"
         placeholder={t("What are you looking for?")}
       ></input>

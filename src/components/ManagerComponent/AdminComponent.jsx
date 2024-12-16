@@ -397,6 +397,7 @@ const AdminComponent = ({ activeTab }) => {
       key: "nameArea",
       className: "table-cell",
       fieldProps: {
+        placeholder: t("Name"),
         style: {
           width: "100px",
         },
@@ -413,17 +414,24 @@ const AdminComponent = ({ activeTab }) => {
       },
       key: "typeArea",
       className: "table-cell",
+      fieldProps: {
+        placeholder: t("Type"),
+      },
     },
     {
-      title: t("Area"),
+      title: t("Area (ha)"),
       dataIndex: "area",
-      valueType: "text",
+      valueType: "number",
       key: "area",
       className: "table-cell",
       fieldProps: {
+        placeholder: t("Area (ha)"),
         style: {
           width: "100px",
         },
+      },
+      render: (_, record) => {
+        return <span>{record.area.split(" ")[0]}</span>;
       },
     },
     {
@@ -738,6 +746,7 @@ const AdminComponent = ({ activeTab }) => {
                     <ReloadOutlined />
                   </Tooltip>
                 ),
+                density: false,
                 densityIcon: (
                   <Tooltip title={t("Density")}>
                     <ColumnHeightOutlined />
@@ -773,6 +782,7 @@ const AdminComponent = ({ activeTab }) => {
                     <ReloadOutlined />
                   </Tooltip>
                 ),
+                density: false,
                 densityIcon: (
                   <Tooltip title={t("Density")}>
                     <ColumnHeightOutlined />
@@ -813,6 +823,7 @@ const AdminComponent = ({ activeTab }) => {
                     <ReloadOutlined />
                   </Tooltip>
                 ),
+                density: false,
                 densityIcon: (
                   <Tooltip title={t("Density")}>
                     <ColumnHeightOutlined />
@@ -867,6 +878,7 @@ const AdminComponent = ({ activeTab }) => {
                     <ReloadOutlined />
                   </Tooltip>
                 ),
+                density: false,
                 densityIcon: (
                   <Tooltip title={t("Density")}>
                     <ColumnHeightOutlined />
