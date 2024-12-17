@@ -183,7 +183,7 @@ const ManagerComponent = ({ activeTab }) => {
       className: "table-cell",
     },
     {
-      title: t("Type Farm"),
+      title: t("Type"),
       dataIndex: "typeFarm",
       className: "table-cell",
     },
@@ -346,7 +346,7 @@ const ManagerComponent = ({ activeTab }) => {
       },
     },
     {
-      title: t("Results Positive"),
+      title: t("Result"),
       dataIndex: "percentPos",
       className: "table-cell",
       render: (_, record) => {
@@ -355,26 +355,26 @@ const ManagerComponent = ({ activeTab }) => {
         );
       },
     },
-    {
-      title: t("Results Negative"),
-      dataIndex: "percentNeg",
-      className: "table-cell",
-      render: (_, record) => {
-        return (
-          <span>{record.percentNeg ? record.percentNeg.toFixed(2) : "-"}</span>
-        );
-      },
-    },
-    {
-      title: t("Results Neutral"),
-      dataIndex: "percentNeu",
-      className: "table-cell",
-      render: (_, record) => {
-        return (
-          <span>{record.percentNeu ? record.percentNeu.toFixed(2) : "-"}</span>
-        );
-      },
-    },
+    // {
+    //   title: t("Results Negative"),
+    //   dataIndex: "percentNeg",
+    //   className: "table-cell",
+    //   render: (_, record) => {
+    //     return (
+    //       <span>{record.percentNeg ? record.percentNeg.toFixed(2) : "-"}</span>
+    //     );
+    //   },
+    // },
+    // {
+    //   title: t("Results Neutral"),
+    //   dataIndex: "percentNeu",
+    //   className: "table-cell",
+    //   render: (_, record) => {
+    //     return (
+    //       <span>{record.percentNeu ? record.percentNeu.toFixed(2) : "-"}</span>
+    //     );
+    //   },
+    // },
     {
       title: t("Created At"),
       dataIndex: "createdAt",
@@ -407,7 +407,7 @@ const ManagerComponent = ({ activeTab }) => {
       },
     },
     {
-      title: t("Type Farm"),
+      title: t("Type"),
       dataIndex: "typeArea",
       valueType: "select",
       valueEnum: {
@@ -434,11 +434,11 @@ const ManagerComponent = ({ activeTab }) => {
         },
       },
       render: (_, record) => {
-        return <span>{record.area.split(" ")[0]}</span>;
+        return <span>{record?.area?.split(" ")[0]}</span>;
       },
     },
     {
-      title: t("Name Region"),
+      title: t("Region"),
       dataIndex: "nameRegion",
       key: "nameRegion",
       className: "table-cell",
@@ -741,9 +741,10 @@ const ManagerComponent = ({ activeTab }) => {
             config={{
               search: false,
               options: {
-                reload: async () => {
-                  await queryClient.refetchQueries(["notifications"]);
-                },
+                reload: false,
+                // reload: async () => {
+                //   await queryClient.refetchQueries(["notifications"]);
+                // },
                 reloadIcon: (
                   <Tooltip title={t("Refresh")}>
                     <ReloadOutlined />
@@ -756,13 +757,14 @@ const ManagerComponent = ({ activeTab }) => {
                   </Tooltip>
                 ),
                 // search: true
-                setting: {
-                  settingIcon: (
-                    <Tooltip title={t("Setting")}>
-                      <SettingOutlined />
-                    </Tooltip>
-                  ),
-                },
+                setting: false,
+                // setting: {
+                //   settingIcon: (
+                //     <Tooltip title={t("Setting")}>
+                //       <SettingOutlined />
+                //     </Tooltip>
+                //   ),
+                // },
               },
             }}
           />
@@ -777,9 +779,10 @@ const ManagerComponent = ({ activeTab }) => {
             config={{
               search: false,
               options: {
-                reload: async () => {
-                  await queryClient.refetchQueries(["listUserPreferred"]);
-                },
+                reload: false,
+                // reload: async () => {
+                //   await queryClient.refetchQueries(["listUserPreferred"]);
+                // },
                 reloadIcon: (
                   <Tooltip title={t("Refresh")}>
                     <ReloadOutlined />
@@ -792,13 +795,14 @@ const ManagerComponent = ({ activeTab }) => {
                   </Tooltip>
                 ),
                 // search: true
-                setting: {
-                  settingIcon: (
-                    <Tooltip title={t("Setting")}>
-                      <SettingOutlined />
-                    </Tooltip>
-                  ),
-                },
+                setting: false,
+                // setting: {
+                //   settingIcon: (
+                //     <Tooltip title={t("Setting")}>
+                //       <SettingOutlined />
+                //     </Tooltip>
+                //   ),
+                // },
               },
             }}
           />
@@ -819,9 +823,10 @@ const ManagerComponent = ({ activeTab }) => {
             config={{
               search: false,
               options: {
-                reload: async () => {
-                  await queryClient.refetchQueries(["examinations"]);
-                },
+                reload: false,
+                // reload: async () => {
+                //   await queryClient.refetchQueries(["examinations"]);
+                // },
                 reloadIcon: (
                   <Tooltip title={t("Refresh")}>
                     <ReloadOutlined />
@@ -834,13 +839,14 @@ const ManagerComponent = ({ activeTab }) => {
                   </Tooltip>
                 ),
                 // search: true
-                setting: {
-                  settingIcon: (
-                    <Tooltip title={t("Setting")}>
-                      <SettingOutlined />
-                    </Tooltip>
-                  ),
-                },
+                setting: false,
+                // setting: {
+                //   settingIcon: (
+                //     <Tooltip title={t("Setting")}>
+                //       <SettingOutlined />
+                //     </Tooltip>
+                //   ),
+                // },
               },
               toolBarRender: () => [
                 <Button
@@ -874,11 +880,12 @@ const ManagerComponent = ({ activeTab }) => {
                 actionRender: (_, __, dom) => [dom.save, dom.cancel],
               },
               options: {
-                reload: async () => {
-                  await queryClient.invalidateQueries({
-                    queryKey: ["areasTab"],
-                  });
-                },
+                reload: false,
+                // reload: async () => {
+                //   await queryClient.invalidateQueries({
+                //     queryKey: ["areasTab"],
+                //   });
+                // },
                 reloadIcon: (
                   <Tooltip title={t("Refresh")}>
                     <ReloadOutlined />
@@ -891,13 +898,14 @@ const ManagerComponent = ({ activeTab }) => {
                   </Tooltip>
                 ),
                 // search: true
-                setting: {
-                  settingIcon: (
-                    <Tooltip title={t("Setting")}>
-                      <SettingOutlined />
-                    </Tooltip>
-                  ),
-                },
+                setting: false,
+                // setting: {
+                //   settingIcon: (
+                //     <Tooltip title={t("Setting")}>
+                //       <SettingOutlined />
+                //     </Tooltip>
+                //   ),
+                // },
               },
               toolBarRender: () => [
                 <Button

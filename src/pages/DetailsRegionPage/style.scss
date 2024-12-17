@@ -15,7 +15,7 @@
       top: 0;
       bottom: 0;
       display: block;
-      overflow-y: auto;
+      // overflow-y: auto;
       width: 100%;
       max-width: 250px;
       padding-right: 1.5rem;
@@ -120,14 +120,32 @@
                 margin-bottom: 5px;
               }
               .forecast-data-scroll {
-                max-height: calc(100% - 300px);
+                max-height: 200px;
                 overflow-y: auto;
+                padding-right: 10px;
                 .forecast-title-detail {
                   font-size: 13px;
                   margin-left: 3px;
                   p {
                     margin-bottom: 5px;
                     line-height: 20px;
+                  }
+                }
+                &::-webkit-scrollbar {
+                  width: 6px;
+                }
+  
+                &::-webkit-scrollbar-track {
+                  background: #f1f1f1;
+                  border-radius: 3px;
+                }
+  
+                &::-webkit-scrollbar-thumb {
+                  background: #888;
+                  border-radius: 3px;
+  
+                  &:hover {
+                    background: #555;
                   }
                 }
               }

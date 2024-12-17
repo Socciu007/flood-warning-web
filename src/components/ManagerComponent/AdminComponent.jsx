@@ -1,9 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  ReloadOutlined,
+  // ReloadOutlined,
   ColumnHeightOutlined,
-  SettingOutlined,
+  // SettingOutlined,
   PlusOutlined,
   EditFilled,
   DeleteFilled,
@@ -19,12 +19,13 @@ import { getAllExam } from "../../services/serviceExam";
 import { getAllFarmAreas, deleteFarmArea, updateFarmArea } from "../../services/serviceFarmArea";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import { getAllUsers } from "../../services/serviceUser";
+import { getAllUsers, updateUserProfile, deleteUser, registerUser } from "../../services/serviceUser";
 import "./style.scss";
 import { formatDateTime, renderString } from "../../utils";
 import ModalFormComponent from "../ModalFormComponent/ModalFormComponent";
-// import DrawerComponent from "../DrawerComponent/DrawerComponent";
-// import FormFillNoti from "../ChildrenComponent/FormFillNoti";
+import DrawerComponent from "../DrawerComponent/DrawerComponent";
+import FormFillAddUser from "../ChildrenComponent/FormFillAddUser";
+import { getBase64 } from "../../utils";
 
 const AdminComponent = ({ activeTab }) => {
   const { t } = useTranslation();
@@ -35,6 +36,7 @@ const AdminComponent = ({ activeTab }) => {
   const [dataAreas, setDataAreas] = useState([]);
   const [dataSend, setDataSend] = useState([]);
   // const [isOpenDrawerNoti, setIsOpenDrawerNoti] = useState(false);
+  const [isOpenDrawerAddUser, setIsOpenDrawerAddUser] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const queryClient = useQueryClient();
 
@@ -180,7 +182,7 @@ const AdminComponent = ({ activeTab }) => {
       className: "table-cell",
     },
     {
-      title: t("Type Farm"),
+      title: t("Type"),
       dataIndex: "typeFarm",
       className: "table-cell",
     },
@@ -343,7 +345,7 @@ const AdminComponent = ({ activeTab }) => {
       },
     },
     {
-      title: t("Results Positive"),
+      title: t("Result"),
       dataIndex: "percentPos",
       className: "table-cell",
       render: (_, record) => {
@@ -352,26 +354,26 @@ const AdminComponent = ({ activeTab }) => {
         );
       },
     },
-    {
-      title: t("Results Negative"),
-      dataIndex: "percentNeg",
-      className: "table-cell",
-      render: (_, record) => {
-        return (
-          <span>{record.percentNeg ? record.percentNeg.toFixed(2) : "-"}</span>
-        );
-      },
-    },
-    {
-      title: t("Results Neutral"),
-      dataIndex: "percentNeu",
-      className: "table-cell",
-      render: (_, record) => {
-        return (
-          <span>{record.percentNeu ? record.percentNeu.toFixed(2) : "-"}</span>
-        );
-      },
-    },
+    // {
+    //   title: t("Results Negative"),
+    //   dataIndex: "percentNeg",
+    //   className: "table-cell",
+    //   render: (_, record) => {
+    //     return (
+    //       <span>{record.percentNeg ? record.percentNeg.toFixed(2) : "-"}</span>
+    //     );
+    //   },
+    // },
+    // {
+    //   title: t("Results Neutral"),
+    //   dataIndex: "percentNeu",
+    //   className: "table-cell",
+    //   render: (_, record) => {
+    //     return (
+    //       <span>{record.percentNeu ? record.percentNeu.toFixed(2) : "-"}</span>
+    //     );
+    //   },
+    // },
     {
       title: t("Created At"),
       dataIndex: "createdAt",
@@ -404,7 +406,7 @@ const AdminComponent = ({ activeTab }) => {
       },
     },
     {
-      title: t("Type Farm"),
+      title: t("Type"),
       dataIndex: "typeArea",
       valueType: "select",
       valueEnum: {
@@ -435,7 +437,7 @@ const AdminComponent = ({ activeTab }) => {
       },
     },
     {
-      title: t("Name Region"),
+      title: t("Region"),
       dataIndex: "nameRegion",
       key: "nameRegion",
       className: "table-cell",
@@ -503,7 +505,7 @@ const AdminComponent = ({ activeTab }) => {
 
   const columnsUsers = [
     {
-      title: "#",
+      title: "No",
       dataIndex: "index",
       valueType: "indexBorder",
       className: "table-cell",
@@ -567,6 +569,7 @@ const AdminComponent = ({ activeTab }) => {
         "manager": t("Manager"),
         "citizen": t("Citizen"),
       },
+      editable: false,
     },
     {
       title: t("Created At"),
@@ -581,14 +584,14 @@ const AdminComponent = ({ activeTab }) => {
     {
       title: t("Action"),
       valueType: "option",
-      // className: "table-cell",
-      width: 80,
+      className: "table-cell",
+      width: 60,
       key: "option",
       render: (_, record, __, action) => [
         <a
           key="editable"
           onClick={() => {
-            action?.startEditable?.(record.id);
+            action?.startEditable?.(record._id);
           }}
         >
           <Tooltip title={t("Edit")}>
@@ -615,7 +618,7 @@ const AdminComponent = ({ activeTab }) => {
             width: 450,
             wrapClassName: "delete-modal",
           }}
-          handleSubmitModal={() => handleDeleteFarm(record.id)}
+          handleSubmitModal={() => handleDeleteUser(record._id)}
         />,
       ],
     },
@@ -630,6 +633,18 @@ const AdminComponent = ({ activeTab }) => {
       queryClient.invalidateQueries({ queryKey: ["farmAreas"] });
     } else {
       message.error(t("Delete farm area failed!"));
+    }
+  };
+
+  // Handle delete user
+  const handleDeleteUser = async (id) => {
+    const res = await deleteUser(id);
+    if (res) {
+      // Refresh data
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      message.success(t("Delete user success!"));
+    } else {
+      message.error(t("Delete user failed!"));
     }
   };
 
@@ -785,13 +800,37 @@ const AdminComponent = ({ activeTab }) => {
 
   // Handle update user
   const handleUpdateUser = async (id, record) => {
-    console.log(id, record);
-    const res = await updateUserProfile(id, record);
+    const userUpdated = {
+      username: record.username,
+      email: record.email,
+      phone: record.phone,
+      address: record.address
+    };
+    const res = await updateUserProfile(id, userUpdated);
     if (res) {
+      // Refresh data
+      await queryClient.invalidateQueries({ queryKey: ["users"] });
       message.success(t("Update user profile success!"));
     } else {
       message.error(t("Update user profile failed!"));
     }
+  };
+
+  // Handle create user
+  const handleCreateUser = async (values) => {
+    values.avatar = values?.avatar
+      ? await getBase64(values?.avatar[0]?.originFileObj)
+      : null;
+    const res = await registerUser(values);
+    console.log(res);
+    if (res) {
+      // Refresh data
+      await queryClient.invalidateQueries({ queryKey: ["users"] });
+      message.success(t("Create user success!"));
+    } else {
+      message.error(t("Create user failed!"));
+    }
+    return true;
   };
 
   return (
@@ -816,54 +855,9 @@ const AdminComponent = ({ activeTab }) => {
             config={{
               search: false,
               options: {
-                reload: async () => {
-                  await queryClient.refetchQueries(["notifications"]);
-                },
-                reloadIcon: (
-                  <Tooltip title={t("Refresh")}>
-                    <ReloadOutlined />
-                  </Tooltip>
-                ),
-                density: false,
-                densityIcon: (
-                  <Tooltip title={t("Density")}>
-                    <ColumnHeightOutlined />
-                  </Tooltip>
-                ),
-                // search: true
-                setting: {
-                  settingIcon: (
-                    <Tooltip title={t("Setting")}>
-                      <SettingOutlined />
-                    </Tooltip>
-                  ),
-                },
-              },
-            }}
-          />
-        )}
-        {activeTab === "users" && (
-          <TableComponent
-            keyTable="table-users"
-            rowKey={(record) => record.id}
-            data={dataUsers}
-            columns={columnsUsers}
-            loading={isLoadingUsersData}
-            actionRef={actionRef}
-            config={{
-              search: false,
-              editable: {
-                saveText: t("Save"),
-                onSave: async (id, record) => {
-                  await handleUpdateUser(id, record);
-                },
-                cancelText: t("Cancel"),
-                actionRender: (_, __, dom) => [dom.save, dom.cancel],
-              },
-              options: {
                 reload: false,
                 // reload: async () => {
-                //   await queryClient.refetchQueries(["users"]);
+                //   await queryClient.refetchQueries(["notifications"]);
                 // },
                 // reloadIcon: (
                 //   <Tooltip title={t("Refresh")}>
@@ -889,6 +883,55 @@ const AdminComponent = ({ activeTab }) => {
             }}
           />
         )}
+        {activeTab === "users" && (
+          <TableComponent
+            keyTable="table-users"
+            data={dataUsers}
+            rowKey={(record) => record._id}
+            columns={columnsUsers}
+            loading={isLoadingUsersData}
+            actionRef={actionRef}
+            config={{
+              search: false,
+              editable: {
+                saveText: t("Save"),
+                onSave: async (id, record) => {
+                  await handleUpdateUser(id, record);
+                },
+                cancelText: t("Cancel"),
+                actionRender: (_, __, dom) => [dom.save, dom.cancel],
+              },
+              options: {
+                reload: false,
+                density: false,
+                densityIcon: (
+                  <Tooltip title={t("Density")}>
+                    <ColumnHeightOutlined />
+                  </Tooltip>
+                ),
+                // search: true
+                setting: false,
+                // setting: {
+                //   settingIcon: (
+                //     <Tooltip title={t("Setting")}>
+                //       <SettingOutlined />
+                //     </Tooltip>
+                //   ),
+                // },
+              },
+              toolBarRender: () => [
+                <Button
+                  key="button"
+                  icon={<PlusOutlined />}
+                  onClick={() => setIsOpenDrawerAddUser(true)}
+                  type="primary"
+                >
+                  {t("Add user")}
+                </Button>,
+              ],
+            }}
+          />
+        )}
         {activeTab === "examinations" && (
           <TableComponent
             keyTable="table-examinations"
@@ -905,14 +948,6 @@ const AdminComponent = ({ activeTab }) => {
               search: false,
               options: {
                 reload: false,
-                // reload: async () => {
-                //   await queryClient.refetchQueries(["examinations"]);
-                // },
-                // reloadIcon: (
-                //   <Tooltip title={t("Refresh")}>
-                //     <ReloadOutlined />
-                //   </Tooltip>
-                // ),
                 density: false,
                 densityIcon: (
                   <Tooltip title={t("Density")}>
@@ -986,41 +1021,41 @@ const AdminComponent = ({ activeTab }) => {
                 //   ),
                 // },
               },
-              toolBarRender: () => [
-                <Button
-                  key="button"
-                  icon={<PlusOutlined />}
-                  onClick={() => {
-                    actionRef.current?.reload();
-                  }}
-                  type="primary"
-                >
-                  {t("Add farm")}
-                </Button>,
-              ],
+              // toolBarRender: () => [
+              //   <Button
+              //     key="button"
+              //     icon={<PlusOutlined />}
+              //     onClick={() => {
+              //       actionRef.current?.reload();
+              //     }}
+              //     type="primary"
+              //   >
+              //     {t("Add farm")}
+              //   </Button>,
+              // ],
             }}
           />
         )}
         <div className="right-manager-component"></div>
       </div>
-      {/* <DrawerComponent
-        title="Send notice to area"
-        open={isOpenDrawerNoti}
-        onOpenChange={setIsOpenDrawerNoti}
+      <DrawerComponent
+        title="Create farming area"
+        open={isOpenDrawerAddUser}
+        onOpenChange={setIsOpenDrawerAddUser}
         submitter={{
           searchConfig: {
-            submitText: t("Send"),
+            submitText: t("Create"),
             resetText: t("Cancel"),
           },
         }}
-        onFinish={async (values) => handleSendNotice(values)}
+        onFinish={async (values) => handleCreateUser(values)}
         props={{
           width: "500px",
           wrapClassName: "exam-drawer",
         }}
       >
-        <FormFillNoti />
-      </DrawerComponent> */}
+        <FormFillAddUser />
+      </DrawerComponent>
     </div>
   );
 };

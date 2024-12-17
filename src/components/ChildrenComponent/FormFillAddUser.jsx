@@ -1,27 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ProForm,
-  ProFormDependency,
-  ProFormSelect,
   ProFormText,
-} from "@ant-design/pro-components";
-import {
-  UserOutlined,
-  MailOutlined,
-  PhoneOutlined,
-  LockOutlined,
-  HomeOutlined,
-} from "@ant-design/icons";
+  ProFormUploadButton,
+  ProFormSelect,
+  ProFormDependency,
+} from "@ant-design/pro-form";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import "./style.scss";
 import { getAllRegion } from "../../services/serviceArea";
-import { registerUser } from "../../services/serviceUser";
-import { message } from "antd";
+import "./style.scss";
 
-const RegisterPage = () => {
+const FormFillUser = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [regions, setRegions] = useState([]);
 
   // Get all regions
@@ -34,55 +24,31 @@ const RegisterPage = () => {
     fetchAllRegion();
   }, []);
 
-  const handleRegister = async (values) => {
-    const res = await registerUser(values);
-    if (res.data) {
-      message.success(t("Register account successfully!"));
-      navigate("/login");
-    } else {
-      message.error(t("Register account failed, please try again!"));
-    }
-  };
-
   return (
-    <div className="register-container">
-      <div className="register-box">
-        <h2>{t("REGISTER")}</h2>
-        <p>{t("Welcome to the AquaGuardian")}</p>
-        <ProForm
-          onFinish={handleRegister}
-          submitter={{
-            searchConfig: {
-              submitText: t("Register"),
-            },
-            submitButtonProps: { style: { width: "100%" } },
-            resetButtonProps: false,
+    <div className="user-form">
+      <ProForm.Group className="user-form">
+        <ProFormText
+        name="username"
+        placeholder={t("Username")}
+        label={t("Username")}
+        rules={[
+            { required: true, message: t("Please enter your username!") },
+        ]}
+        />
+          <ProFormUploadButton
+          name="avatar"
+          label={t("Avatar")}
+          title={t("Upload")}
+          max={1}
+          fieldProps={{
+            name: "file",
+            listType: "picture-circle",
+            defaultFileList: [],
           }}
-          initialValues={{
-            username: "",
-            email: "",
-            phone: "",
-            address: "",
-            password: "",
-            confirmPassword: "",
-            role: "",
-            province: "",
-            nameRegion: "",
-          }}
-        >
-          <ProFormText
-            name="username"
-            placeholder={t("Username")}
-            fieldProps={{ prefix: <UserOutlined /> }}
-            rules={[
-              { required: true, message: t("Please enter your username!") },
-            ]}
-          />
+        />
           <ProFormText
             name="email"
-            fieldProps={{
-              prefix: <MailOutlined />,
-            }}
+            label={t("Email")}
             placeholder={t("Email")}
             rules={[
               { required: true, message: t("Please enter your email!") },
@@ -91,9 +57,7 @@ const RegisterPage = () => {
           />
           <ProFormText
             name="phone"
-            fieldProps={{
-              prefix: <PhoneOutlined />,
-            }}
+            label={t("Phone")}
             placeholder={t("Phone number")}
             rules={[
               {
@@ -104,7 +68,7 @@ const RegisterPage = () => {
           />
           <ProFormText
             name="address"
-            fieldProps={{ prefix: <HomeOutlined /> }}
+            label={t("Address")}
             placeholder={t("Address")}
             rules={[
               { required: true, message: t("Please enter your address!") },
@@ -112,19 +76,15 @@ const RegisterPage = () => {
           />
           <ProFormText.Password
             name="password"
-            fieldProps={{
-              prefix: <LockOutlined />,
-            }}
+            label={t("Password")}
             placeholder={t("Password")}
             rules={[
               { required: true, message: t("Please enter your password!") },
             ]}
           />
-          <ProFormText.Password
+          {/* <ProFormText.Password
             name="confirmPassword"
-            fieldProps={{
-              prefix: <LockOutlined />,
-            }}
+            label={t("Confirm password")}
             placeholder={t("Confirm password")}
             dependencies={["password"]}
             rules={[
@@ -141,12 +101,14 @@ const RegisterPage = () => {
                 },
               }),
             ]}
-          />
+          /> */}
           <ProFormSelect
             name="role"
+            label={t("Role")}
             options={[
               { label: t("Citizen"), value: "citizen" },
               { label: t("Manager"), value: "manager" },
+              { label: t("Admin"), value: "admin" },
             ]}
             placeholder={t("Select role")}
             rules={[{ required: true, message: t("Please select your role!") }]}
@@ -164,6 +126,7 @@ const RegisterPage = () => {
                 return role === "manager" ? (
                   <ProFormSelect
                     name="province"
+                    label={t("Province")}
                     placeholder={t("Select province")}
                     options={options}
                   />
@@ -182,21 +145,17 @@ const RegisterPage = () => {
                 return role === "manager" ? (
                   <ProFormSelect
                     name="nameRegion"
-                    placeholder={t("Select management area")}
+                    label={t("Region")}
+                    placeholder={t("Select region")}
                     options={options}
                   />
                 ) : null;
               }}
             </ProFormDependency>
           </ProForm.Group>
-        </ProForm>
-        <div className="login-link">
-          {t("Already have an account?")}{" "}
-          <a onClick={() => navigate("/login")}>{t("Login")}</a>
-        </div>
-      </div>
+      </ProForm.Group>
     </div>
   );
 };
 
-export default RegisterPage;
+export default FormFillUser;

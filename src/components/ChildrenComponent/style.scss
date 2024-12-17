@@ -1,0 +1,24 @@
+.user-form {
+    .ant-pro-form-group-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+        .ant-row {
+            display: flex;
+            flex-direction: row !important;
+            gap: 10px;
+            flex-wrap: nowrap;
+            align-items: center;
+            .ant-form-item-label {
+                flex: 4;
+            }
+            .ant-form-item-control {
+                flex: 7;
+            }
+        }
+        .ant-space-item {
+            width: 100%;
+        }
+    }
+}

@@ -139,7 +139,7 @@ const DashboardComponent = () => {
         },
       },
       render: (_, record) => {
-        return <span>{record.area.split(" ")[0]}</span>;
+        return <span>{record?.area?.split(" ")[0]}</span>;
       },
     },
     {

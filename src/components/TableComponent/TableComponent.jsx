@@ -5,6 +5,7 @@ import { Empty } from "antd";
 import { useTranslation } from "react-i18next";
 
 const TableComponent = ({
+  title,
   keyTable,
   actionRef,
   columns,
@@ -18,6 +19,7 @@ const TableComponent = ({
   return (
     <div className="table-main">
       <ProTable
+        headerTitle={title}
         key={keyTable}
         pagination={{
           pageSize: 7,

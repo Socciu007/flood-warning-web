@@ -133,3 +133,15 @@ export const updateUserProfile = async (id, data) => {
     return false;
   }
 };
+
+// Delete user
+export const deleteUser = async (id) => {
+  try {
+    const res = await axios.delete(`${process.env.REACT_APP_API_KEY}/api/users/delete-user/${id}`);
+    return res.data;
+  } catch (error) {
+    console.log("Error deleting user: ", error);
+    return false;
+  }
+};
+

@@ -17,4 +17,7 @@
   .ant-table-thead .ant-table-cell.table-cell::before {
     display: none !important;
   }
+  .ant-pro-card .ant-pro-card-body {
+    padding-block-start: 12px !important;
+  }
 }

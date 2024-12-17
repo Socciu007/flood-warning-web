@@ -12,7 +12,7 @@ import {
   SettingOutlined,
   FileAddOutlined,
 } from "@ant-design/icons";
-import SearchComponent from "../SearchComponent/SearchComponent";
+// import SearchComponent from "../SearchComponent/SearchComponent";
 import TableComponent from "../TableComponent/TableComponent";
 import {
   getAllFarmAreas,
@@ -107,7 +107,7 @@ const DashboardAdminComponent = () => {
       },
     },
     {
-      title: t("Type Farm"),
+      title: t("Type"),
       dataIndex: "typeArea",
       valueType: "select",
       valueEnum: {
@@ -138,7 +138,7 @@ const DashboardAdminComponent = () => {
       },
     },
     {
-      title: t("Name Region"),
+      title: t("Region"),
       dataIndex: "nameRegion",
       key: "nameRegion",
       className: "table-cell",
@@ -152,7 +152,7 @@ const DashboardAdminComponent = () => {
       editable: false,
     },
     {
-      title: t("Results"),
+      title: t("Result"),
       dataIndex: "results",
       key: "results",
       className: "table-cell",
@@ -262,16 +262,16 @@ const DashboardAdminComponent = () => {
   };
 
   // Handle search
-  const handleSearchAdmin = (e) => {
-    setSearchAdmin(e.target.value);
-  };
+  // const handleSearchAdmin = (e) => {
+  //   setSearchAdmin(e.target.value);
+  // };
 
   return (
     <div className="dashboard-component">
       <div>
         <div className="dashboard-component-title">
           <h3>{t("Dashboard")}</h3>
-          <SearchComponent search={searchAdmin} handleSearch={handleSearchAdmin} />
+          {/* <SearchComponent search={searchAdmin} handleSearch={handleSearchAdmin} /> */}
         </div>
         <div className="dashboard-component-header">
           <CardComponent
@@ -312,9 +312,10 @@ const DashboardAdminComponent = () => {
               actionRender: (_, __, dom) => [dom.save, dom.cancel],
             },
             options: {
-              reload: () => {
-                queryClient.invalidateQueries({ queryKey: ["farmAreas"] });
-              },
+              reload: false,
+              // reload: () => {
+              //   queryClient.invalidateQueries({ queryKey: ["farmAreas"] });
+              // },
               reloadIcon: (
                 <Tooltip title={t("Refresh")}>
                   <ReloadOutlined />
@@ -327,13 +328,14 @@ const DashboardAdminComponent = () => {
               // ),
               density: false,
               // search: true
-              setting: {
-                settingIcon: (
-                  <Tooltip title={t("Setting")}>
-                    <SettingOutlined />
-                  </Tooltip>
-                ),
-              },
+              setting: false,
+              // setting: {
+              //   settingIcon: (
+              //     <Tooltip title={t("Setting")}>
+              //       <SettingOutlined />
+              //     </Tooltip>
+              //   ),
+              // },
             },
           }}
         />
