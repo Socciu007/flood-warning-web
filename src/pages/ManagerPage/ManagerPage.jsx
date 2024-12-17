@@ -4,7 +4,7 @@ import NavbarComponent from "../../components/NavbarComponent/NavbarComponent";
 import { useTranslation } from "react-i18next";
 import "./style.scss";
 import locationIcon from "../../assets/icons/icon-location.svg";
-import userIcon from "../../assets/icons/icon-user.svg";
+// import userIcon from "../../assets/icons/icon-user.svg";
 import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
 import ManagerComponent from "../../components/ManagerComponent/ManagerComponent";
 const ManagerPage = () => {
@@ -30,13 +30,13 @@ const ManagerPage = () => {
               <DashboardFilled />
               <span>{t("Dashboard")}</span>
             </li>
-            <li
+            {/* <li
               className={`navbar-item ${activeTab === "users" ? "active" : ""}`}
               onClick={() => handleTabClick("users")}
             >
               <img src={userIcon} alt="user" />
               <span>{t("Users")}</span>
-            </li>
+            </li> */}
             <li
               className={`navbar-item ${activeTab === "areas" ? "active" : ""}`}
               onClick={() => handleTabClick("areas")}

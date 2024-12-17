@@ -514,24 +514,40 @@ const AdminComponent = ({ activeTab }) => {
       dataIndex: "username",
       key: "username",
       className: "table-cell",
+      valueType: "text",
+      fieldProps: {
+        placeholder: t("Name"),
+      },
     },
     {
       title: t("Email"),
       dataIndex: "email",
       key: "email",
       className: "table-cell",
+      valueType: "text",
+      fieldProps: {
+        placeholder: t("Email"),
+      },
     },
     {
       title: t("Phone"),
       dataIndex: "phone",
       key: "phone",
       className: "table-cell",
+      valueType: "text",
+      fieldProps: {
+        placeholder: t("Phone"),
+      },
     },
     {
       title: t("Address"),
       dataIndex: "address",
       key: "address",
       className: "table-cell",
+      valueType: "text",
+      fieldProps: {
+        placeholder: t("Address"),
+      },
       width: 350,
       render: (_, record) => {
         return <span>{record.address}</span>;
@@ -542,6 +558,15 @@ const AdminComponent = ({ activeTab }) => {
       dataIndex: "role",
       key: "role",
       className: "table-cell",
+      fieldProps: {
+        placeholder: t("Role"),
+      },
+      valueType: "select",
+      valueEnum: {
+        "admin": t("Admin"),
+        "manager": t("Manager"),
+        "citizen": t("Citizen"),
+      },
     },
     {
       title: t("Created At"),
@@ -551,6 +576,48 @@ const AdminComponent = ({ activeTab }) => {
       render: (_, record) => {
         return <span>{formatDateTime(record.createdAt)}</span>;
       },
+      editable: false,
+    },
+    {
+      title: t("Action"),
+      valueType: "option",
+      // className: "table-cell",
+      width: 80,
+      key: "option",
+      render: (_, record, __, action) => [
+        <a
+          key="editable"
+          onClick={() => {
+            action?.startEditable?.(record.id);
+          }}
+        >
+          <Tooltip title={t("Edit")}>
+            <EditFilled style={{ color: "#1976D2" }} />
+          </Tooltip>
+        </a>,
+        <ModalFormComponent
+          key="delete"
+          title={t("Are you sure you want to delete this user?")}
+          trigger={
+            <a key="delete" onClick={() => {}}>
+              <Tooltip title={t("Delete")}>
+                <DeleteFilled style={{ color: "#FF6347" }} />
+              </Tooltip>
+            </a>
+          }
+          submitter={{
+            searchConfig: {
+              submitText: t("Confirm"),
+              resetText: t("Cancel"),
+            },
+          }}
+          props={{
+            width: 450,
+            wrapClassName: "delete-modal",
+          }}
+          handleSubmitModal={() => handleDeleteFarm(record.id)}
+        />,
+      ],
     },
   ];
 
@@ -716,6 +783,17 @@ const AdminComponent = ({ activeTab }) => {
     setDataSend(dataSend);
   };
 
+  // Handle update user
+  const handleUpdateUser = async (id, record) => {
+    console.log(id, record);
+    const res = await updateUserProfile(id, record);
+    if (res) {
+      message.success(t("Update user profile success!"));
+    } else {
+      message.error(t("Update user profile failed!"));
+    }
+  };
+
   return (
     <div className="manager-component">
       <div>
@@ -767,21 +845,31 @@ const AdminComponent = ({ activeTab }) => {
         {activeTab === "users" && (
           <TableComponent
             keyTable="table-users"
+            rowKey={(record) => record.id}
             data={dataUsers}
             columns={columnsUsers}
             loading={isLoadingUsersData}
             actionRef={actionRef}
             config={{
               search: false,
-              options: {
-                reload: async () => {
-                  await queryClient.refetchQueries(["users"]);
+              editable: {
+                saveText: t("Save"),
+                onSave: async (id, record) => {
+                  await handleUpdateUser(id, record);
                 },
-                reloadIcon: (
-                  <Tooltip title={t("Refresh")}>
-                    <ReloadOutlined />
-                  </Tooltip>
-                ),
+                cancelText: t("Cancel"),
+                actionRender: (_, __, dom) => [dom.save, dom.cancel],
+              },
+              options: {
+                reload: false,
+                // reload: async () => {
+                //   await queryClient.refetchQueries(["users"]);
+                // },
+                // reloadIcon: (
+                //   <Tooltip title={t("Refresh")}>
+                //     <ReloadOutlined />
+                //   </Tooltip>
+                // ),
                 density: false,
                 densityIcon: (
                   <Tooltip title={t("Density")}>
@@ -789,13 +877,14 @@ const AdminComponent = ({ activeTab }) => {
                   </Tooltip>
                 ),
                 // search: true
-                setting: {
-                  settingIcon: (
-                    <Tooltip title={t("Setting")}>
-                      <SettingOutlined />
-                    </Tooltip>
-                  ),
-                },
+                setting: false,
+                // setting: {
+                //   settingIcon: (
+                //     <Tooltip title={t("Setting")}>
+                //       <SettingOutlined />
+                //     </Tooltip>
+                //   ),
+                // },
               },
             }}
           />
@@ -815,14 +904,15 @@ const AdminComponent = ({ activeTab }) => {
             config={{
               search: false,
               options: {
-                reload: async () => {
-                  await queryClient.refetchQueries(["examinations"]);
-                },
-                reloadIcon: (
-                  <Tooltip title={t("Refresh")}>
-                    <ReloadOutlined />
-                  </Tooltip>
-                ),
+                reload: false,
+                // reload: async () => {
+                //   await queryClient.refetchQueries(["examinations"]);
+                // },
+                // reloadIcon: (
+                //   <Tooltip title={t("Refresh")}>
+                //     <ReloadOutlined />
+                //   </Tooltip>
+                // ),
                 density: false,
                 densityIcon: (
                   <Tooltip title={t("Density")}>
@@ -830,13 +920,14 @@ const AdminComponent = ({ activeTab }) => {
                   </Tooltip>
                 ),
                 // search: true
-                setting: {
-                  settingIcon: (
-                    <Tooltip title={t("Setting")}>
-                      <SettingOutlined />
-                    </Tooltip>
-                  ),
-                },
+                setting: false,
+                // setting: {
+                //   settingIcon: (
+                //     <Tooltip title={t("Setting")}>
+                //       <SettingOutlined />
+                //     </Tooltip>
+                //   ),
+                // },
               },
               toolBarRender: () => [
                 <Button
@@ -870,14 +961,15 @@ const AdminComponent = ({ activeTab }) => {
                 actionRender: (_, __, dom) => [dom.save, dom.cancel],
               },
               options: {
-                reload: async () => {
-                  await queryClient.refetchQueries(["farmAreas"]);
-                },
-                reloadIcon: (
-                  <Tooltip title={t("Refresh")}>
-                    <ReloadOutlined />
-                  </Tooltip>
-                ),
+                reload: false,
+                // reload: async () => {
+                //   await queryClient.refetchQueries(["farmAreas"]);
+                // },
+                // reloadIcon: (
+                //   <Tooltip title={t("Refresh")}>
+                //     <ReloadOutlined />
+                //   </Tooltip>
+                // ),
                 density: false,
                 densityIcon: (
                   <Tooltip title={t("Density")}>
@@ -885,13 +977,14 @@ const AdminComponent = ({ activeTab }) => {
                   </Tooltip>
                 ),
                 // search: true
-                setting: {
-                  settingIcon: (
-                    <Tooltip title={t("Setting")}>
-                      <SettingOutlined />
-                    </Tooltip>
-                  ),
-                },
+                setting: false,
+                // setting: {
+                //   settingIcon: (
+                //     <Tooltip title={t("Setting")}>
+                //       <SettingOutlined />
+                //     </Tooltip>
+                //   ),
+                // },
               },
               toolBarRender: () => [
                 <Button
