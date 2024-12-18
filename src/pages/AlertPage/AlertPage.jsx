@@ -95,7 +95,7 @@ const AlertPage = () => {
                               : "#FF0000",
                           }}
                         >
-                          {item?.title}
+                          {item?.title?.split("-")[1].trim().split(" ")[0]}
                         </Tag>
                       </div>
                     }

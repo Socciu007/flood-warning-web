@@ -88,10 +88,7 @@ const AdminComponent = ({ activeTab }) => {
       const formattedExaminations = examinations.map((exam) => ({
         ...exam,
         nameFarm: exam.farmAreaId.name,
-        typeFarm: exam.farmAreaId.type,
-        percentPos: exam.result.percentPos,
-        percentNeg: exam.result.percentNeg,
-        percentNeu: exam.result.percentNeu,
+        typeFarm: exam.farmAreaId.type
       }));
       setDataExaminations(formattedExaminations);
     }

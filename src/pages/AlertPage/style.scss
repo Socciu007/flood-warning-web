@@ -36,7 +36,11 @@
             // border-bottom: none;
             // border-radius: 4px;
             .avatar-icon {
-              width: 50px;
+              width: 72px;
+              .ant-tag {
+                width: 63px;
+                text-align: center;
+              }
             }
             .alert-item-container {
               display: flex;
