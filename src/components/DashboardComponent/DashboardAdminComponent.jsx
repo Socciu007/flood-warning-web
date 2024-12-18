@@ -12,6 +12,7 @@ import {
   SettingOutlined,
   FileAddOutlined,
 } from "@ant-design/icons";
+import { Tag } from "antd";
 // import SearchComponent from "../SearchComponent/SearchComponent";
 import TableComponent from "../TableComponent/TableComponent";
 import {
@@ -157,10 +158,19 @@ const DashboardAdminComponent = () => {
       key: "numberWarning",
       className: "table-cell",
       editable: false,
-      valueType: () => ({
-        type: "percent",
-        precision: 2,
-      }),
+      render: (_, record) => {
+        return record.numberWarning <= 4 ? (
+          <Tag color="green">{t("Low")}</Tag>
+        ) : record.numberWarning <= 8 ? (
+          <Tag color="yellow">{t("Moderate")}</Tag>
+        ) : record.numberWarning <= 13 ? (
+          <Tag color="volcano">{t("High")}</Tag>
+        ) : record.numberWarning <= 21 ? (
+          <Tag color="red">{t("Severe")}</Tag>
+        ) : (
+          "-"
+        );
+      },
     },
     {
       title: t("Action"),
