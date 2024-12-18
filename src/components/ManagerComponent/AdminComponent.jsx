@@ -688,11 +688,11 @@ const AdminComponent = ({ activeTab }) => {
   const handleSelectRow = (_, selectedRows) => {
     const dataSend = selectedRows.map((item) => {
       const levelWarning =
-        item.result.percentPos > 0.75
+        item.levelExam <= 4
           ? "Low Level"
-          : item.result.percentPos > 0.5
+          : item.levelExam <= 8
           ? "Moderate Level"
-          : item.result.percentPos > 0.25
+          : item.levelExam <= 13
           ? "High Level"
           : "Severe Level";
       const content = `Environmental Data:

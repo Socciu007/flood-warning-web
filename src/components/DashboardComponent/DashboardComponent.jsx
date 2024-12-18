@@ -14,6 +14,7 @@ import {
   FileAddOutlined,
 } from "@ant-design/icons";
 // import SearchComponent from "../SearchComponent/SearchComponent";
+import { Tag } from "antd";
 import TableComponent from "../TableComponent/TableComponent";
 import {
   getAllArea,
@@ -59,13 +60,13 @@ const DashboardComponent = () => {
   useEffect(() => {
     if (areas) {
       const formattedAreas = areas.map((area) => ({
-        id: area._id,
-        nameArea: area.name,
-        typeArea: area.type,
-        area: area.area,
-        nameRegion: area.regionId.name,
-        province: area.regionId.province,
-        results: area.exam.percentPos * 100 || null,
+        id: area?._id,
+        nameArea: area?.name,
+        typeArea: area?.type,
+        area: area?.area,
+        nameRegion: area?.regionId?.name,
+        province: area?.regionId?.province,
+        numberWarning: area?.examDetail?.numberWarning || 100,
       }));
       setDataAreas(formattedAreas);
     }
@@ -157,15 +158,24 @@ const DashboardComponent = () => {
       editable: false,
     },
     {
-      title: t("Result"),
-      dataIndex: "results",
-      key: "results",
+      title: t("Status"),
+      dataIndex: "numberWarning",
+      key: "numberWarning",
       className: "table-cell",
       editable: false,
-      valueType: () => ({
-        type: "percent",
-        precision: 2,
-      }),
+      render: (_, record) => {
+        return record.numberWarning <= 4 ? (
+          <Tag color="green">{t("Low")}</Tag>
+        ) : record.numberWarning <= 8 ? (
+          <Tag color="yellow">{t("Moderate")}</Tag>
+        ) : record.numberWarning <= 13 ? (
+          <Tag color="volcano">{t("High")}</Tag>
+        ) : record.numberWarning <= 21 ? (
+          <Tag color="red">{t("Severe")}</Tag>
+        ) : (
+          "-"
+        );
+      },
     },
     {
       title: t("Action"),

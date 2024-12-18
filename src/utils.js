@@ -41,6 +41,22 @@ export const isJsonString = (data) => {
   return true;
 }
 
+export const compareValue = (type, value, standardValue) => {
+  if (type === '1' && typeof standardValue === 'number') {
+    if (value >= standardValue) return 0;
+    return 1;
+  }
+  if (type === '2' && Array.isArray(standardValue)) {
+    if (value >= standardValue[0] && value <= standardValue[1]) return 0;
+    return 1;
+  }
+  if (type === '3' && typeof standardValue === 'number') {
+    if (value <= standardValue) return 0;
+    return 1;
+  }
+  return 1;
+}
+
 //
 export const renderString = (positive, name, value, note) => {
   return positive < 0.5 ? `${name}: ${value} (${note})` : `${name}: ${value} (Stability)`

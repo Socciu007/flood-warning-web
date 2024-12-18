@@ -24,7 +24,6 @@ const AlertPage = () => {
     queryKey: ["alerts"],
     queryFn: () => getAlerts(currentUser._id),
   });
-  console.log(alerts);
 
   // handle mark all alerts as viewed
   const handleMarkAllAlerts = async () => {
@@ -96,7 +95,7 @@ const AlertPage = () => {
                               : "#FF0000",
                           }}
                         >
-                          {item?.type}
+                          {item?.title}
                         </Tag>
                       </div>
                     }
