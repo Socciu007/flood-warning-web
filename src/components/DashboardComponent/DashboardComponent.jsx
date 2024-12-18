@@ -10,7 +10,6 @@ import {
   DeleteFilled,
   ReloadOutlined,
   ColumnHeightOutlined,
-  SettingOutlined,
   FileAddOutlined,
 } from "@ant-design/icons";
 // import SearchComponent from "../SearchComponent/SearchComponent";

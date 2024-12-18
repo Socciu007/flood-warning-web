@@ -10,7 +10,6 @@ import { setFarmAreaDetail } from "../../redux/slices/areaSlice.ts";
 import { message } from "antd";
 import { useTranslation } from "react-i18next";
 import { ProFormSelect, ProForm } from "@ant-design/pro-form";
-import { formatDateTime } from "../../utils";
 import { Tooltip as AntdTooltip } from "antd";
 import {
   CodepenOutlined,
@@ -153,27 +152,27 @@ const DetailsRegionPage = () => {
   };
 
   const position = [farmAreaDetail?.latitude, farmAreaDetail?.longitude];
-  const data = {
-    labels: examOfFarmArea
-      ?.slice()
-      ?.reverse()
-      ?.map((item) =>
-        formatDateTime(item?.updatedAt).split(" ")[1].slice(0, 5)
-      ), // Labels for chart
-    datasets: [
-      {
-        data: examOfFarmArea
-          ?.slice()
-          ?.reverse()
-          ?.map((item) => (item?.result?.percentPos * 1).toFixed(2)), // Data for chart
-        fill: false, // No fill color under the line
-        backgroundColor: "#1d8cf8",
-        borderColor: "#1d8cf8", // Color of the line
-        borderWidth: 1,
-        tension: 0.2, // Curve of the line
-      },
-    ],
-  };
+  // const data = {
+  //   labels: examOfFarmArea
+  //     ?.slice()
+  //     ?.reverse()
+  //     ?.map((item) =>
+  //       formatDateTime(item?.updatedAt).split(" ")[1].slice(0, 5)
+  //     ), // Labels for chart
+  //   datasets: [
+  //     {
+  //       data: examOfFarmArea
+  //         ?.slice()
+  //         ?.reverse()
+  //         ?.map((item) => (item?.result?.percentPos * 1).toFixed(2)), // Data for chart
+  //       fill: false, // No fill color under the line
+  //       backgroundColor: "#1d8cf8",
+  //       borderColor: "#1d8cf8", // Color of the line
+  //       borderWidth: 1,
+  //       tension: 0.2, // Curve of the line
+  //     },
+  //   ],
+  // };
 
   const config = {
     percent: Number(examOfFarmArea[0]?.result?.percentPos?.toFixed(2)),
@@ -188,42 +187,41 @@ const DetailsRegionPage = () => {
     className: "liquid-chart",
   };
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: (context) => `${context.parsed.y * 100}%`,
-        },
-      },
-    },
-    interaction: {},
-    scales: {
-      x: {
-        grid: { display: false },
-        ticks: {
-          font: {
-            size: 10,
-          },
-          color: "#525f7f",
-        },
-      },
-      y: {
-        min: 0,
-        max: 1,
-        ticks: {
-          stepSize: 0.25,
-          color: "#525f7f",
-          font: {
-            size: 10,
-          },
-        },
-        grid: { display: false },
-      },
-    },
-  };
-
+  // const options = {
+  //   responsive: true,
+  //   plugins: {
+  //     legend: { display: false },
+  //     tooltip: {
+  //       callbacks: {
+  //         label: (context) => `${context.parsed.y * 100}%`,
+  //       },
+  //     },
+  //   },
+  //   interaction: {},
+  //   scales: {
+  //     x: {
+  //       grid: { display: false },
+  //       ticks: {
+  //         font: {
+  //           size: 10,
+  //         },
+  //         color: "#525f7f",
+  //       },
+  //     },
+  //     y: {
+  //       min: 0,
+  //       max: 1,
+  //       ticks: {
+  //         stepSize: 0.25,
+  //         color: "#525f7f",
+  //         font: {
+  //           size: 10,
+  //         },
+  //       },
+  //       grid: { display: false },
+  //     },
+  //   },
+  // };
   return (
     <div className="details-region-page">
       <NavbarComponent />
@@ -286,13 +284,13 @@ const DetailsRegionPage = () => {
                         <span
                           style={{
                             backgroundColor:
-                              examOfFarmArea[0]?.result?.percentPos > 0.75
+                              examOfFarmArea[0]?.numberWarning?.level <= 4
                                 ? "#87d068"
-                                : examOfFarmArea[0]?.result?.percentPos > 0.5
+                                : examOfFarmArea[0]?.numberWarning?.level <= 8
                                 ? "#ffc107"
-                                : examOfFarmArea[0]?.result?.percentPos > 0.25
+                                : examOfFarmArea[0]?.numberWarning?.level <= 13
                                 ? "orange"
-                                : examOfFarmArea[0]?.result?.percentPos > 0
+                                : examOfFarmArea[0]?.numberWarning?.level <= 22
                                 ? "red"
                                 : "#fff",
                           }}
@@ -310,64 +308,108 @@ const DetailsRegionPage = () => {
                       <div className="forecast-data-scroll">
                         <div className="forecast-title-detail">
                           <p>
-                            {examOfFarmArea[0]?.posDO < 0.75 &&
+                            {examOfFarmArea[0]?.numberWarning?.isDO === 1 &&
                               `• DO: ${examOfFarmArea[0]?.DO}mg/l Low DO levels can reduce the ability of aquatic species to survive.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.posTemperature < 0.75 &&
+                            {examOfFarmArea[0]?.numberWarning?.isTemperature === 1 &&
                               `• Temperature: ${examOfFarmArea[0]?.temperature}°C This temperature condition disrupts the physiology, growth ability and reduces the reproductive ability of aquatic products.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.pospH < 0.75 &&
+                            {examOfFarmArea[0]?.numberWarning?.isPH === 1 &&
                               `• pH: ${examOfFarmArea[0]?.pH} Low pH levels can reduce the ability of plants and aquatic animals to absorb nutrients.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.posAlkalinity < 0.75 &&
+                            {examOfFarmArea[0]?.numberWarning?.isAlkalinity === 1 &&
                               `• Alkalinity: ${examOfFarmArea[0]?.alkalinity}mg/l Risk of water acidification.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.posAmmonia < 0.75 &&
+                            {examOfFarmArea[0]?.numberWarning?.isAmmonia === 1 &&
                               `• Ammonia: ${examOfFarmArea[0]?.ammonia}mg/l Ammonia levels reduce the quality of aquatic and plant habitats.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.posBOD5 < 0.75 &&
+                            {examOfFarmArea[0]?.numberWarning?.isBOD5 === 1 &&
                               `• BOD5: ${examOfFarmArea[0]?.BOD5}mg/l BOD5 levels reduce the amount of dissolved oxygen in water and are harmful to aquatic life.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.posCOD < 0.75 &&
+                            {examOfFarmArea[0]?.numberWarning?.isCOD === 1 &&
                               `• COD: ${examOfFarmArea[0]?.COD}mg/l COD levels reduce the amount of dissolved oxygen in water and are harmful to aquatic life.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.posClarity < 0.75 &&
+                            {examOfFarmArea[0]?.numberWarning?.isClarity === 1 &&
                               `• Clarity: ${examOfFarmArea[0]?.clarity}mg/l Sign of pollution, organic waste or bacteria in water, posing a risk of disease outbreak.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.posColiform < 0.75 &&
+                            {examOfFarmArea[0]?.numberWarning?.isColiform === 1 &&
                               `• Coliform: ${examOfFarmArea[0]?.coliform}CFU/100ml There is organic pollution in the aquatic environment.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.posSalinity < 0.75 &&
+                            {examOfFarmArea[0]?.numberWarning?.isSalinity === 1 &&
                               `• Salinity: ${examOfFarmArea[0]?.salinity}‰ Low salinity aquatic environments can affect the ability of aquatic species to sustain life. `}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.posPhotsPhat < 0.75 &&
+                            {examOfFarmArea[0]?.numberWarning?.isPhosPhat === 1 &&
                               `• Photsphat: ${examOfFarmArea[0]?.phosPhat}mg/l Pets showing signs of Phosphate toxicity and stress.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.posSuspendedSolids < 0.75 &&
+                            {examOfFarmArea[0]?.numberWarning?.isSuspendedSolids === 1 &&
                               `• TSS: ${examOfFarmArea[0]?.TSS}mg/l TSS levels can reduce water filtration and degrade water quality in aquatic habitats.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.posTotalCrom < 0.75 &&
+                            {examOfFarmArea[0]?.numberWarning?.isTotalCrom === 1 &&
                               `• Total Crom: ${examOfFarmArea[0]?.totalCrom}mg/l There is chromium contamination.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.posH2S < 0.75 &&
+                            {examOfFarmArea[0]?.numberWarning?.isH2S === 1 &&
                               `• H₂S: ${examOfFarmArea[0]?.H2S}mg/l This level of H₂S can lead to oxygen deficiency in the environment.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.posRainfall < 0.75 &&
-                              `• Rainfall: ${examOfFarmArea[0]?.rainfall}mm This rainfall can reduce the vitality of species.`}
+                            {examOfFarmArea[0]?.numberWarning?.isCN === 1 &&
+                              `• CN: ${examOfFarmArea[0]?.CN} This level of CN can lead to oxygen deficiency in the environment.`}
+                          </p>
+                          <p>
+                            {examOfFarmArea[0]?.numberWarning?.isAs === 1 &&
+                              `• As: ${examOfFarmArea[0]?.As}mg/l This level of As can lead to oxygen deficiency in the environment.`}
+                          </p>
+                          <p>
+                            {examOfFarmArea[0]?.numberWarning?.isCd === 1 &&
+                              `• Cd: ${examOfFarmArea[0]?.Cd}mg/l This level of Cd can lead to oxygen deficiency in the environment.`}
+                          </p>
+                          <p>
+                            {examOfFarmArea[0]?.numberWarning?.isPb === 1 &&
+                              `• Pb: ${examOfFarmArea[0]?.Pb}mg/l This level of Pb can lead to oxygen deficiency in the environment.`}
+                          </p>
+                          <p>
+                            {examOfFarmArea[0]?.numberWarning?.isCu === 1 &&
+                              `• Cu: ${examOfFarmArea[0]?.Cu}mg/l This level of Cu can lead to oxygen deficiency in the environment.`}
+                          </p>
+                          <p>
+                            {examOfFarmArea[0]?.numberWarning?.isZn === 1 &&
+                              `• Zn: ${examOfFarmArea[0]?.Zn}mg/l This level of Zn can lead to oxygen deficiency in the environment.`}
+                          </p>
+                          <p>
+                            {examOfFarmArea[0]?.numberWarning?.isHg === 1 &&
+                              `• Hg: ${examOfFarmArea[0]?.Hg}mg/l This level of Hg can lead to oxygen deficiency in the environment.`}
+                          </p>
+                          <p>
+                            {examOfFarmArea[0]?.numberWarning?.isMn === 1 &&
+                              `• Mn: ${examOfFarmArea[0]?.Mn}mg/l This level of Mn can lead to oxygen deficiency in the environment.`}
+                          </p>
+                          <p>
+                            {examOfFarmArea[0]?.numberWarning?.isFe === 1 &&
+                              `• Fe: ${examOfFarmArea[0]?.Fe}mg/l This level of Fe can lead to oxygen deficiency in the environment.`}
+                          </p>
+                          <p>
+                            {examOfFarmArea[0]?.numberWarning?.isCr6 === 1 &&
+                              `• Cr6+: ${examOfFarmArea[0]?.Cr6}mg/l This level of Cr6+ can lead to oxygen deficiency in the environment.`}
+                          </p>
+                          <p>
+                            {examOfFarmArea[0]?.numberWarning?.isF === 1 &&
+                              `• F-: ${examOfFarmArea[0]?.F}mg/l This level of F- can lead to oxygen deficiency in the environment.`}
+                          </p>
+                          <p>
+                            {examOfFarmArea[0]?.numberWarning?.isTotalPH === 1 &&
+                              `• Total petroleum hydrocarbons: ${examOfFarmArea[0]?.totalPH} This level of Total petroleum hydrocarbons can lead to oxygen deficiency in the environment.`}
                           </p>
                         </div>
                       </div>

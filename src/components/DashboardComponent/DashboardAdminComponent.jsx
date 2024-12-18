@@ -9,7 +9,6 @@ import {
   EditFilled,
   DeleteFilled,
   ReloadOutlined,
-  SettingOutlined,
   FileAddOutlined,
 } from "@ant-design/icons";
 import { Tag } from "antd";

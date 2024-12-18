@@ -12,7 +12,6 @@ import {
 import { useSelector } from "react-redux";
 import { formatDateTime } from "../../utils";
 import "./style.scss";
-import { color } from "chart.js/helpers";
 
 const AlertPage = () => {
   const { t } = useTranslation();

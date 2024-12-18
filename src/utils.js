@@ -59,7 +59,7 @@ export const compareValue = (type, value, standardValue) => {
 
 //
 export const renderString = (positive, name, value, note) => {
-  return positive < 0.5 ? `${name}: ${value} (${note})` : `${name}: ${value} (Stability)`
+  return positive === 1 ? `${name}: ${value} (${note})` : `${name}: ${value} (Stability)`
 };
 
 // Get base64 from image
