@@ -187,56 +187,52 @@ const AdminComponent = ({ activeTab }) => {
       className: "table-cell",
     },
     {
-      title: t("pH"),
-      dataIndex: "pospH",
+      title: t("DO"),
+      dataIndex: "DO",
       className: "table-cell",
       render: (_, record) => {
-        return <span>{record.pospH ? record.pospH.toFixed(2) : "-"}</span>;
+        return <span>{record.DO ? record.DO.toFixed(2) : "-"}</span>;
+      },
+    },
+    {
+      title: t("pH"),
+      dataIndex: "pH",
+      className: "table-cell",
+      render: (_, record) => {
+        return <span>{record?.pH ? record.pH.toFixed(2) : "-"}</span>;
       },
     },
     {
       title: t("Temperature"),
-      dataIndex: "posTemperature",
+      dataIndex: "temperature",
       className: "table-cell",
       render: (_, record) => {
         return (
           <span>
-            {record.posTemperature ? record.posTemperature.toFixed(2) : "-"}
-          </span>
-        );
-      },
-    },
-    {
-      title: t("Rainfall"),
-      dataIndex: "posRainfall",
-      className: "table-cell",
-      render: (_, record) => {
-        return (
-          <span>
-            {record.posRainfall ? record.posRainfall.toFixed(2) : "-"}
+            {record.temperature ? record.temperature.toFixed(2) : "-"}
           </span>
         );
       },
     },
     {
       title: t("NH₃"),
-      dataIndex: "posAmmonia",
+      dataIndex: "ammonia",
       className: "table-cell",
       render: (_, record) => {
         return (
-          <span>{record.posAmmonia ? record.posAmmonia.toFixed(2) : "-"}</span>
+          <span>{record.ammonia ? record.ammonia.toFixed(2) : "-"}</span>
         );
       },
     },
     {
       title: t("TSS"),
-      dataIndex: "posSuspendedSolids",
+      dataIndex: "suspendedSolids",
       className: "table-cell",
       render: (_, record) => {
         return (
           <span>
-            {record.posSuspendedSolids
-              ? record.posSuspendedSolids.toFixed(2)
+            {record.suspendedSolids
+              ? record.suspendedSolids.toFixed(2)
               : "-"}
           </span>
         );
@@ -244,136 +240,196 @@ const AdminComponent = ({ activeTab }) => {
     },
     {
       title: t("Salinity"),
-      dataIndex: "posSalinity",
+      dataIndex: "salinity",
       className: "table-cell",
       render: (_, record) => {
-        return (
-          <span>
-            {record.posSalinity ? record.posSalinity.toFixed(2) : "-"}
-          </span>
-        );
+        return <span>{record.salinity ? record.salinity.toFixed(2) : "-"}</span>;
       },
     },
     {
       title: t("Alkalinity"),
-      dataIndex: "posAlkalinity",
+      dataIndex: "alkalinity",
       className: "table-cell",
       render: (_, record) => {
         return (
-          <span>
-            {record.posAlkalinity ? record.posAlkalinity.toFixed(2) : "-"}
-          </span>
+          <span>{record.alkalinity ? record.alkalinity.toFixed(2) : "-"}</span>
         );
       },
     },
     {
       title: t("Clarity"),
-      dataIndex: "posClarity",
+      dataIndex: "clarity",
       className: "table-cell",
       render: (_, record) => {
-        return (
-          <span>{record.posClarity ? record.posClarity.toFixed(2) : "-"}</span>
-        );
-      },
-    },
-    {
-      title: t("DO"),
-      dataIndex: "posDO",
-      className: "table-cell",
-      render: (_, record) => {
-        return <span>{record.posDO ? record.posDO.toFixed(2) : "-"}</span>;
+        return <span>{record.clarity ? record.clarity.toFixed(2) : "-"}</span>;
       },
     },
     {
       title: t("Phosphat"),
-      dataIndex: "posPhotsPhat",
+      dataIndex: "phosphat",
       className: "table-cell",
       render: (_, record) => {
-        return (
-          <span>
-            {record.posPhotsPhat ? record.posPhotsPhat.toFixed(2) : "-"}
-          </span>
-        );
+        return <span>{record.phosphat ? record.phosphat.toFixed(2) : "-"}</span>;
       },
     },
     {
-      title: t("Total Crom"),
-      dataIndex: "posTotalCrom",
+      title: t("Rainfall"),
+      dataIndex: "rainfall",
       className: "table-cell",
       render: (_, record) => {
         return (
           <span>
-            {record.posTotalCrom ? record.posTotalCrom.toFixed(2) : "-"}
+            {record.rainfall ? record.rainfall.toFixed(2) : "-"}
           </span>
         );
       },
     },
     {
       title: t("H₂S"),
-      dataIndex: "posH2S",
+      dataIndex: "H2S",
       className: "table-cell",
       render: (_, record) => {
-        return <span>{record.posH2S ? record.posH2S.toFixed(2) : "-"}</span>;
+        return <span>{record.H2S ? record.H2S.toFixed(2) : "-"}</span>;
       },
     },
     {
       title: t("BOD₅"),
-      dataIndex: "posBOD5",
+      dataIndex: "BOD5",
       className: "table-cell",
       render: (_, record) => {
-        return <span>{record.posBOD5 ? record.posBOD5.toFixed(2) : "-"}</span>;
+        return <span>{record.BOD5 ? record.BOD5.toFixed(2) : "-"}</span>;
       },
     },
     {
       title: t("COD"),
-      dataIndex: "posCOD",
+      dataIndex: "COD",
       className: "table-cell",
       render: (_, record) => {
-        return <span>{record.posCOD ? record.posCOD.toFixed(2) : "-"}</span>;
+        return <span>{record.COD ? record.COD.toFixed(2) : "-"}</span>;
       },
     },
     {
       title: t("Coliform"),
-      dataIndex: "posColiform",
+      dataIndex: "coliform",
       className: "table-cell",
       render: (_, record) => {
         return (
-          <span>
-            {record.posColiform ? record.posColiform.toFixed(2) : "-"}
-          </span>
+          <span>{record.coliform ? record.coliform.toFixed(2) : "-"}</span>
         );
       },
     },
     {
-      title: t("Result"),
-      dataIndex: "percentPos",
+      title: "CN-",
+      dataIndex: "CN",
+      className: "table-cell",
+      render: (_, record) => {
+        return <span>{record.CN ? record.CN.toFixed(2) : "-"}</span>;
+      },
+    },
+    {
+      title: "As",
+      dataIndex: "As",
+      className: "table-cell",
+      render: (_, record) => {
+        return <span>{record.As ? record.As.toFixed(2) : "-"}</span>;
+      },
+    },
+    {
+      title: "Cd",
+      dataIndex: "Cd",
+      className: "table-cell",
+      render: (_, record) => {
+        return <span>{record.Cd ? record.Cd.toFixed(2) : "-"}</span>;
+      },
+    },
+    {
+      title: "Pb",
+      dataIndex: "Pb",
+      className: "table-cell",
+      render: (_, record) => {
+        return <span>{record.Pb ? record.Pb.toFixed(2) : "-"}</span>;
+      },
+    },
+    {
+      title: "Cu",
+      dataIndex: "Cu",
+      className: "table-cell",
+      render: (_, record) => {
+        return <span>{record.Cu ? record.Cu.toFixed(2) : "-"}</span>;
+      },
+    },
+    {
+      title: "Hg",
+      dataIndex: "Hg",
+      className: "table-cell",
+      render: (_, record) => {
+        return <span>{record.Hg ? record.Hg.toFixed(2) : "-"}</span>;
+      },
+    },
+    {
+      title: "Zn",
+      dataIndex: "Zn",
+      className: "table-cell",
+      render: (_, record) => {
+        return <span>{record.Zn ? record.Zn.toFixed(2) : "-"}</span>;
+      },
+    },
+    {
+      title: "Fe",
+      dataIndex: "Fe",
+      className: "table-cell",
+      render: (_, record) => {
+        return <span>{record.Fe ? record.Fe.toFixed(2) : "-"}</span>;
+      },
+    },
+    {
+      title: "Mn",
+      dataIndex: "Mn",
+      className: "table-cell",
+      render: (_, record) => {
+        return <span>{record.Mn ? record.Mn.toFixed(2) : "-"}</span>;
+      },
+    },
+    {
+      title: "F-",
+      dataIndex: "F",
+      className: "table-cell",
+      render: (_, record) => {
+        return <span>{record.F ? record.F.toFixed(2) : "-"}</span>;
+      },
+    },
+    { 
+      title: "Cr6+",
+      dataIndex: "Cr6",
+      className: "table-cell",
+      render: (_, record) => {
+        return <span>{record.Cr6 ? record.Cr6.toFixed(2) : "-"}</span>;
+      },
+    },
+    {
+      title: t("Total Crom"),
+      dataIndex: "totalCrom",
       className: "table-cell",
       render: (_, record) => {
         return (
-          <span>{record.percentPos ? record.percentPos.toFixed(2) : "-"}</span>
+          <span>{record.totalCrom ? record.totalCrom.toFixed(2) : "-"}</span>
         );
       },
     },
-    // {
-    //   title: t("Results Negative"),
-    //   dataIndex: "percentNeg",
-    //   className: "table-cell",
-    //   render: (_, record) => {
-    //     return (
-    //       <span>{record.percentNeg ? record.percentNeg.toFixed(2) : "-"}</span>
-    //     );
-    //   },
-    // },
-    // {
-    //   title: t("Results Neutral"),
-    //   dataIndex: "percentNeu",
-    //   className: "table-cell",
-    //   render: (_, record) => {
-    //     return (
-    //       <span>{record.percentNeu ? record.percentNeu.toFixed(2) : "-"}</span>
-    //     );
-    //   },
-    // },
+    {
+      title: t("Number of Warn"),
+      dataIndex: "level",
+      className: "table-cell",
+      render: (_, record) => {
+        return (
+          <span>
+            {record.numberWarning.level
+              ? record.numberWarning.level
+              : "-"}
+          </span>
+        );
+      },
+    },
     {
       title: t("Created At"),
       dataIndex: "createdAt",

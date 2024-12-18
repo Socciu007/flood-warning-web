@@ -66,11 +66,12 @@ const DashboardComponent = () => {
         area: area?.area,
         nameRegion: area?.regionId?.name,
         province: area?.regionId?.province,
-        numberWarning: area?.examDetail?.numberWarning || 100,
+        numberWarning: area?.examDetail?.numberWarning?.level || 100,
       }));
       setDataAreas(formattedAreas);
     }
   }, [areas]);
+  console.log(areas);
 
   // Handle submit modal test area
   const handleSubmitModal = async (values, farmAreaId) => {

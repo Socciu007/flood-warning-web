@@ -33,7 +33,7 @@ const DashboardAdminComponent = () => {
   const { t } = useTranslation();
   const actionRef = useRef();
   const [dataAreas, setDataAreas] = useState([]);
-  const [searchAdmin, setSearchAdmin] = useState("");
+  // const [searchAdmin, setSearchAdmin] = useState("");
   const { currentUser } = useSelector((state) => state.user);
 
   // Get all areas
@@ -54,13 +54,13 @@ const DashboardAdminComponent = () => {
   useEffect(() => {
     if (farmAreas) {
       const formattedAreas = farmAreas.data.map((area) => ({
-        id: area._id,
-        nameArea: area.name,
-        typeArea: area.type,
-        area: area.area,
-        nameRegion: area.regionId.name,
-        province: area.regionId.province,
-        results: area.exam.percentPos * 100 || null,
+        id: area?._id,
+        nameArea: area?.name,
+        typeArea: area?.type,
+        area: area?.area,
+        nameRegion: area?.regionId?.name,
+        province: area?.regionId?.province,
+        numberWarning: area?.examDetail?.numberWarning?.level || 100,
       }));
       setDataAreas(formattedAreas);
     }
@@ -152,9 +152,9 @@ const DashboardAdminComponent = () => {
       editable: false,
     },
     {
-      title: t("Result"),
-      dataIndex: "results",
-      key: "results",
+      title: t("Status"),
+      dataIndex: "numberWarning",
+      key: "numberWarning",
       className: "table-cell",
       editable: false,
       valueType: () => ({

@@ -17,7 +17,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("Dissolved oxygen")}
             min={0}
             fieldProps={{
-              precision: 2,
+              precision: 4,
               moneySymbol: false,
             }}
           />
@@ -35,7 +35,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("Temperature")}
             min={0}
             fieldProps={{
-              precision: 2,
+              precision: 4,
               moneySymbol: false,
             }}
           />
@@ -48,7 +48,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("Rainfall")}
             placeholder={false}
             fieldProps={{
-              precision: 2,
+              precision: 4,
               moneySymbol: false,
             }}
           />
@@ -60,7 +60,7 @@ const FormFillExam = ({ typeArea }) => {
           tooltip={t("pH")}
           placeholder={false}
           fieldProps={{
-            precision: 2,
+            precision: 4,
             moneySymbol: false,
           }}
         />
@@ -71,7 +71,7 @@ const FormFillExam = ({ typeArea }) => {
           tooltip={t("Salinity")}
           placeholder={false}
           fieldProps={{
-            precision: 2,
+            precision: 4,
             moneySymbol: false,
           }}
         />
@@ -83,7 +83,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("Alkalinity")}
             placeholder={false}
             fieldProps={{
-              precision: 2,
+              precision: 4,
               moneySymbol: false,
             }}
           />
@@ -96,7 +96,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("Clarity")}
             placeholder={false}
             fieldProps={{
-              precision: 2,
+              precision: 4,
               moneySymbol: false,
             }}
           />
@@ -108,7 +108,7 @@ const FormFillExam = ({ typeArea }) => {
           tooltip={t("Ammonia")}
           placeholder={false}
           fieldProps={{
-            precision: 2,
+            precision: 4,
             moneySymbol: false,
           }}
         />
@@ -120,7 +120,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("H2S")}
             placeholder={false}
             fieldProps={{
-              precision: 2,
+              precision: 4,
               moneySymbol: false,
             }}
           />
@@ -132,7 +132,7 @@ const FormFillExam = ({ typeArea }) => {
           tooltip={t("Temperature")}
           placeholder={false}
           fieldProps={{
-            precision: 2,
+            precision: 4,
             moneySymbol: false,
           }}
         />
@@ -144,7 +144,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("Photsphat")}
             placeholder={false}
             fieldProps={{
-              precision: 2,
+              precision: 4,
               moneySymbol: false,
             }}
           />
@@ -157,7 +157,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("BOD5")}
             placeholder={false}
             fieldProps={{
-              precision: 2,
+              precision: 4,
               moneySymbol: false,
             }}
           />
@@ -170,7 +170,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("COD")}
             placeholder={false}
             fieldProps={{
-              precision: 2,
+              precision: 4,
               moneySymbol: false,
             }}
           />
@@ -183,7 +183,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("Coliform")}
             placeholder={false}
             fieldProps={{
-              precision: 2,
+              precision: 4,
               moneySymbol: false,
             }}
           />
@@ -195,7 +195,7 @@ const FormFillExam = ({ typeArea }) => {
           tooltip={t("TSS")}
           placeholder={false}
           fieldProps={{
-            precision: 2,
+            precision: 4,
             moneySymbol: false,
           }}
         />
@@ -207,7 +207,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("CN-")}
             placeholder={false}
             fieldProps={{
-              precision: 2,
+              precision: 4,
               moneySymbol: false,
             }}
           />
@@ -219,7 +219,7 @@ const FormFillExam = ({ typeArea }) => {
           tooltip={t("As")}
           placeholder={false}
           fieldProps={{
-            precision: 2,
+            precision: 4,
             moneySymbol: false,
           }}
         />
@@ -230,7 +230,7 @@ const FormFillExam = ({ typeArea }) => {
           tooltip={t("Cd")}
           placeholder={false}
           fieldProps={{
-            precision: 2,
+            precision: 4,
             moneySymbol: false,
           }}
         />
@@ -241,7 +241,7 @@ const FormFillExam = ({ typeArea }) => {
           tooltip={t("Pb")}
           placeholder={false}
           fieldProps={{
-            precision: 2,
+            precision: 4,
             moneySymbol: false,
           }}
         />
@@ -252,7 +252,7 @@ const FormFillExam = ({ typeArea }) => {
           tooltip={t("Cu")}
           placeholder={false}
           fieldProps={{
-            precision: 2,
+            precision: 4,
             moneySymbol: false,
           }}
         />
@@ -264,7 +264,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("Hg")}
             placeholder={false}
             fieldProps={{
-              precision: 2,
+              precision: 4,
               moneySymbol: false,
             }}
           />
@@ -276,7 +276,7 @@ const FormFillExam = ({ typeArea }) => {
           tooltip={t("Zn")}
           placeholder={false}
           fieldProps={{
-            precision: 2,
+            precision: 4,
             moneySymbol: false,
           }}
         />
@@ -288,7 +288,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("F-")}
             placeholder={false}
             fieldProps={{
-              precision: 2,
+              precision: 4,
               moneySymbol: false,
             }}
           />
@@ -301,7 +301,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("Cr6+")}
             placeholder={false}
             fieldProps={{
-              precision: 2,
+              precision: 4,
               moneySymbol: false,
             }}
           />
@@ -314,7 +314,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("Mn")}
             placeholder={false}
             fieldProps={{
-              precision: 2,
+              precision: 4,
               moneySymbol: false,
             }}
           />
@@ -327,7 +327,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("Fe")}
             placeholder={false}
             fieldProps={{
-              precision: 2,
+              precision: 4,
               moneySymbol: false,
             }}
           />
@@ -340,7 +340,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("Total Crom")}
             placeholder={false}
             fieldProps={{
-              precision: 2,
+              precision: 4,
               moneySymbol: false,
             }}
           />
@@ -353,7 +353,7 @@ const FormFillExam = ({ typeArea }) => {
             tooltip={t("Total mineral oil and grease")}
             placeholder={false}
             fieldProps={{
-              precision: 2,
+              precision: 4,
               moneySymbol: false,
             }}
           />
