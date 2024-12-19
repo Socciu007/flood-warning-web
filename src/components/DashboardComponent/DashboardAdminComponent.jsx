@@ -86,7 +86,7 @@ const DashboardAdminComponent = () => {
   // Config columns table
   const columns = [
     {
-      title: "#",
+      title: "No",
       dataIndex: "index",
       valueType: "indexBorder",
       className: "table-cell",

@@ -10,7 +10,7 @@ import { setFarmAreaDetail } from "../../redux/slices/areaSlice.ts";
 import { message } from "antd";
 import { useTranslation } from "react-i18next";
 import { ProFormSelect, ProForm } from "@ant-design/pro-form";
-import { Tooltip as AntdTooltip } from "antd";
+import { Tooltip as AntdTooltip, Empty } from "antd";
 import {
   CodepenOutlined,
   AreaChartOutlined,
@@ -152,27 +152,6 @@ const DetailsRegionPage = () => {
   };
 
   const position = [farmAreaDetail?.latitude, farmAreaDetail?.longitude];
-  // const data = {
-  //   labels: examOfFarmArea
-  //     ?.slice()
-  //     ?.reverse()
-  //     ?.map((item) =>
-  //       formatDateTime(item?.updatedAt).split(" ")[1].slice(0, 5)
-  //     ), // Labels for chart
-  //   datasets: [
-  //     {
-  //       data: examOfFarmArea
-  //         ?.slice()
-  //         ?.reverse()
-  //         ?.map((item) => (item?.result?.percentPos * 1).toFixed(2)), // Data for chart
-  //       fill: false, // No fill color under the line
-  //       backgroundColor: "#1d8cf8",
-  //       borderColor: "#1d8cf8", // Color of the line
-  //       borderWidth: 1,
-  //       tension: 0.2, // Curve of the line
-  //     },
-  //   ],
-  // };
 
   const config = {
     percent: Number(examOfFarmArea[0]?.result?.percentPos?.toFixed(2)),
@@ -186,42 +165,6 @@ const DetailsRegionPage = () => {
     height: 180,
     className: "liquid-chart",
   };
-
-  // const options = {
-  //   responsive: true,
-  //   plugins: {
-  //     legend: { display: false },
-  //     tooltip: {
-  //       callbacks: {
-  //         label: (context) => `${context.parsed.y * 100}%`,
-  //       },
-  //     },
-  //   },
-  //   interaction: {},
-  //   scales: {
-  //     x: {
-  //       grid: { display: false },
-  //       ticks: {
-  //         font: {
-  //           size: 10,
-  //         },
-  //         color: "#525f7f",
-  //       },
-  //     },
-  //     y: {
-  //       min: 0,
-  //       max: 1,
-  //       ticks: {
-  //         stepSize: 0.25,
-  //         color: "#525f7f",
-  //         font: {
-  //           size: 10,
-  //         },
-  //       },
-  //       grid: { display: false },
-  //     },
-  //   },
-  // };
   return (
     <div className="details-region-page">
       <NavbarComponent />
@@ -275,7 +218,7 @@ const DetailsRegionPage = () => {
                       placeholder={t("Enter the farming area")}
                     />
                   </ProForm>
-                  {examOfFarmArea?.length > 0 && (
+                  {examOfFarmArea?.length > 0 ? (
                     <div className="forecast-chart">
                       <div className="forecast-chart-title">
                         <p>
@@ -312,7 +255,8 @@ const DetailsRegionPage = () => {
                               `• DO: ${examOfFarmArea[0]?.DO}mg/l Low DO levels can reduce the ability of aquatic species to survive.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.numberWarning?.isTemperature === 1 &&
+                            {examOfFarmArea[0]?.numberWarning?.isTemperature ===
+                              1 &&
                               `• Temperature: ${examOfFarmArea[0]?.temperature}°C This temperature condition disrupts the physiology, growth ability and reduces the reproductive ability of aquatic products.`}
                           </p>
                           <p>
@@ -320,11 +264,13 @@ const DetailsRegionPage = () => {
                               `• pH: ${examOfFarmArea[0]?.pH} Low pH levels can reduce the ability of plants and aquatic animals to absorb nutrients.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.numberWarning?.isAlkalinity === 1 &&
+                            {examOfFarmArea[0]?.numberWarning?.isAlkalinity ===
+                              1 &&
                               `• Alkalinity: ${examOfFarmArea[0]?.alkalinity}mg/l Risk of water acidification.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.numberWarning?.isAmmonia === 1 &&
+                            {examOfFarmArea[0]?.numberWarning?.isAmmonia ===
+                              1 &&
                               `• Ammonia: ${examOfFarmArea[0]?.ammonia}mg/l Ammonia levels reduce the quality of aquatic and plant habitats.`}
                           </p>
                           <p>
@@ -336,27 +282,33 @@ const DetailsRegionPage = () => {
                               `• COD: ${examOfFarmArea[0]?.COD}mg/l COD levels reduce the amount of dissolved oxygen in water and are harmful to aquatic life.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.numberWarning?.isClarity === 1 &&
+                            {examOfFarmArea[0]?.numberWarning?.isClarity ===
+                              1 &&
                               `• Clarity: ${examOfFarmArea[0]?.clarity}mg/l Sign of pollution, organic waste or bacteria in water, posing a risk of disease outbreak.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.numberWarning?.isColiform === 1 &&
+                            {examOfFarmArea[0]?.numberWarning?.isColiform ===
+                              1 &&
                               `• Coliform: ${examOfFarmArea[0]?.coliform}CFU/100ml There is organic pollution in the aquatic environment.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.numberWarning?.isSalinity === 1 &&
+                            {examOfFarmArea[0]?.numberWarning?.isSalinity ===
+                              1 &&
                               `• Salinity: ${examOfFarmArea[0]?.salinity}‰ Low salinity aquatic environments can affect the ability of aquatic species to sustain life. `}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.numberWarning?.isPhosPhat === 1 &&
+                            {examOfFarmArea[0]?.numberWarning?.isPhosPhat ===
+                              1 &&
                               `• Photsphat: ${examOfFarmArea[0]?.phosPhat}mg/l Pets showing signs of Phosphate toxicity and stress.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.numberWarning?.isSuspendedSolids === 1 &&
+                            {examOfFarmArea[0]?.numberWarning
+                              ?.isSuspendedSolids === 1 &&
                               `• TSS: ${examOfFarmArea[0]?.TSS}mg/l TSS levels can reduce water filtration and degrade water quality in aquatic habitats.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.numberWarning?.isTotalCrom === 1 &&
+                            {examOfFarmArea[0]?.numberWarning?.isTotalCrom ===
+                              1 &&
                               `• Total Crom: ${examOfFarmArea[0]?.totalCrom}mg/l There is chromium contamination.`}
                           </p>
                           <p>
@@ -408,13 +360,19 @@ const DetailsRegionPage = () => {
                               `• F-: ${examOfFarmArea[0]?.F}mg/l This level of F- can lead to oxygen deficiency in the environment.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.numberWarning?.isTotalPH === 1 &&
+                            {examOfFarmArea[0]?.numberWarning?.isTotalPH ===
+                              1 &&
                               `• Total petroleum hydrocarbons: ${examOfFarmArea[0]?.totalPH} This level of Total petroleum hydrocarbons can lead to oxygen deficiency in the environment.`}
                           </p>
                         </div>
                       </div>
                       {/* <Line data={data} options={options} /> */}
                     </div>
+                  ) : (
+                    <Empty
+                      image={Empty.PRESENTED_IMAGE_SIMPLE}
+                      description={t("Environment has no information!")}
+                    />
                   )}
                 </div>
               </div>
@@ -426,10 +384,12 @@ const DetailsRegionPage = () => {
                 </div>
                 <div className="information-farm-container">
                   {farmAreaDetail?.farmAreas.map((farm) => (
-                    <div className="information-farm-item" key={farm._id}>
+                    <div className="information-farm-item" key={farm?._id}>
                       <p className="information-farm-name">
-                        {farm.name},{" "}
-                        {farm?.area?.includes("ha")
+                        {farm?.name},{" "}
+                        {!farm?.area
+                          ? "unknown"
+                          : farm?.area?.includes("ha")
                           ? farm?.area
                           : `${farm?.area} ha`}
                       </p>

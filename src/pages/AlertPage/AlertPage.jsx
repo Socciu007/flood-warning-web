@@ -1,6 +1,6 @@
 import React from "react";
 import NavbarComponent from "../../components/NavbarComponent/NavbarComponent";
-import { Button, List, Tag } from "antd";
+import { Button, List, Tag, Empty } from "antd";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -54,6 +54,9 @@ const AlertPage = () => {
             <List
               className="content-list-item"
               itemLayout="horizontal"
+              locale={{
+                emptyText: <Empty description={t("No notification!")} />,
+              }}
               dataSource={alerts?.filter((item) => item?.type !== "email")}
               renderItem={(item) => (
                 <List.Item
@@ -77,16 +80,15 @@ const AlertPage = () => {
                               : "red"
                           }
                           style={{
-                            borderColor:
-                              item?.title.includes("Low")
-                                ? "green"
-                                  : item?.title.includes("Moderate")
-                                  ? "#FFFF00"
-                                  : item?.title.includes("High")
-                                  ? "#FF9900"
-                                  : "#FF0000",
+                            borderColor: item?.title.includes("Low")
+                              ? "green"
+                              : item?.title.includes("Moderate")
+                              ? "#FFFF00"
+                              : item?.title.includes("High")
+                              ? "#FF9900"
+                              : "#FF0000",
                             color: item?.title.includes("Low")
-                            ? "green"
+                              ? "green"
                               : item?.title.includes("Moderate")
                               ? "#a2bc33de"
                               : item?.title.includes("High")
@@ -99,9 +101,9 @@ const AlertPage = () => {
                       </div>
                     }
                     title={
-                        <div className="alert-item-container">
-                          <div className="alert-item-title">
-                            <span>
+                      <div className="alert-item-container">
+                        <div className="alert-item-title">
+                          <span>
                             <b>{item?.title}</b>: {item?.description}
                           </span>
                           <div>{formatDateTime(item?.createdAt)}</div>

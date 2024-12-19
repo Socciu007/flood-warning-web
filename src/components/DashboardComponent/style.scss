@@ -59,3 +59,41 @@
     }
   }
 }
+
+.content-detail-warning {
+  max-width: 480px;
+  .content-detail-warning-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h3 {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+  }
+  .content-detail-warning-content {
+    padding: 0 6px;
+    height: 230px;
+    overflow-y: auto;
+    p {
+      font-size: 14px;
+    }
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 3px;
+
+      &:hover {
+        background: #555;
+      }
+    }
+  }
+}

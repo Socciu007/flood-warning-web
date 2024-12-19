@@ -112,7 +112,7 @@ const AdminComponent = ({ activeTab }) => {
 
   const columnsNoti = [
     {
-      title: "#",
+      title: "No",
       dataIndex: "index",
       valueType: "indexBorder",
       className: "table-cell",
@@ -167,7 +167,7 @@ const AdminComponent = ({ activeTab }) => {
 
   const columnsExam = [
     {
-      title: "#",
+      title: "No",
       dataIndex: "index",
       valueType: "indexBorder",
       className: "table-cell",
@@ -972,6 +972,7 @@ const AdminComponent = ({ activeTab }) => {
           {activeTab === "users" && <h3>{t("Users")}</h3>}
           {activeTab === "areas" && <h3>{t("Areas List")}</h3>}
           {activeTab === "examinations" && <h3>{t("Examination List")}</h3>}
+          {activeTab === "settings" && <h3>{t("Settings")}</h3>}
           {/* <SearchComponent /> */}
         </div>
       </div>
@@ -1167,6 +1168,7 @@ const AdminComponent = ({ activeTab }) => {
             }}
           />
         )}
+        {activeTab === "settings" && <h3>{t("Settings")}</h3>}
         <div className="right-manager-component"></div>
       </div>
       <DrawerComponent

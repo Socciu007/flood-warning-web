@@ -3,6 +3,7 @@ import {
   DashboardFilled,
   UnorderedListOutlined,
   BellFilled,
+  SettingFilled,
 } from "@ant-design/icons";
 import NavbarComponent from "../../components/NavbarComponent/NavbarComponent";
 import { useTranslation } from "react-i18next";
@@ -65,6 +66,15 @@ const AdminPage = () => {
             >
               <BellFilled />
               <span>{t("Notification")}</span>
+            </li>
+            <li
+              className={`navbar-item ${
+                activeTab === "settings" ? "active" : ""
+              }`}
+              onClick={() => handleTabClick("settings")}
+            >
+              <SettingFilled />
+              <span>{t("Settings")}</span>
             </li>
           </ul>
         </div>
