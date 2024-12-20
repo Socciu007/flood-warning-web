@@ -37,3 +37,9 @@ export const getAllExam = async (accessToken) => {
   });
   return res.data;
 };
+
+// Get standard data
+export const getStandardData = async () => {
+  const res = await axios.get(`${process.env.REACT_APP_API_KEY}/api/standard-data`);
+  return res.data;
+};

@@ -117,5 +117,11 @@
   "Create farm area success!": "Tạo vùng nuôi thành công!",
   "Create farm area failed!": "Tạo vùng nuôi thất bại!",
   "Farm area name already exists in this region!": "Tên vùng nuôi đã tồn tại trong khu vực này!",
-  "Region not found!": "Khu vực không tồn tại!"
+  "Region not found!": "Khu vực không tồn tại!",
+  "Settings": "Cài đặt",
+  "Language": "Ngôn ngữ",
+  "Theme": "Chủ đề",
+  "Dark": "Tối",
+  "Light": "Sáng",
+  "System": "Hệ thống"
 }

@@ -1,24 +1,55 @@
 .user-form {
-    .ant-pro-form-group-container {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        gap: 10px;
-        .ant-row {
-            display: flex;
-            flex-direction: row !important;
-            gap: 10px;
-            flex-wrap: nowrap;
-            align-items: center;
-            .ant-form-item-label {
-                flex: 4;
-            }
-            .ant-form-item-control {
-                flex: 7;
-            }
-        }
-        .ant-space-item {
-            width: 100%;
-        }
+  .ant-pro-form-group-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+    .ant-row {
+      display: flex;
+      flex-direction: row !important;
+      gap: 10px;
+      flex-wrap: nowrap;
+      align-items: center;
+      .ant-form-item-label {
+        flex: 4;
+      }
+      .ant-form-item-control {
+        flex: 7;
+      }
     }
+    .ant-space-item {
+      width: 100%;
+    }
+  }
+}
+
+.proform-standard-data {
+  .ant-pro-form-group-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    .ant-row {
+      display: flex;
+      flex-direction: row !important;
+      gap: 10px;
+      flex-wrap: nowrap;
+      align-items: center;
+      .ant-form-item-label {
+        flex: 1;
+        text-align: justify;
+      }
+      .ant-form-item-control {
+        flex: 1;
+        .ant-input-number {
+          width: 55px;
+          input {
+            padding: 4px !important;
+            width: 55px !important;
+          }
+        }
+      }
+    }
+    .ant-space-item {
+      width: 100%;
+    }
+  }
 }

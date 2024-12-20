@@ -25,6 +25,7 @@ import { formatDateTime, renderString } from "../../utils";
 import ModalFormComponent from "../ModalFormComponent/ModalFormComponent";
 import DrawerComponent from "../DrawerComponent/DrawerComponent";
 import FormFillAddUser from "../ChildrenComponent/FormFillAddUser";
+import FormFillStandardData from "../ChildrenComponent/FormFillStandardData";
 import { getBase64 } from "../../utils";
 
 const AdminComponent = ({ activeTab }) => {
@@ -964,6 +965,11 @@ const AdminComponent = ({ activeTab }) => {
     return true;
   };
 
+  // Handle create standard data
+  const handleCreateStandardData = async (values) => {
+    console.log(values);
+  };
+
   return (
     <div className="manager-component">
       <div>
@@ -1168,7 +1174,13 @@ const AdminComponent = ({ activeTab }) => {
             }}
           />
         )}
-        {activeTab === "settings" && <h3>{t("Settings")}</h3>}
+        {activeTab === "settings" && (
+          <div className="settings-component">
+            <div className="settings-component-form">
+              <FormFillStandardData onFinish={handleCreateStandardData} />
+            </div>
+          </div>
+        )}
         <div className="right-manager-component"></div>
       </div>
       <DrawerComponent
