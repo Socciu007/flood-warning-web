@@ -954,7 +954,6 @@ const AdminComponent = ({ activeTab }) => {
       ? await getBase64(values?.avatar[0]?.originFileObj)
       : null;
     const res = await registerUser(values);
-    console.log(res);
     if (res) {
       // Refresh data
       await queryClient.invalidateQueries({ queryKey: ["users"] });
