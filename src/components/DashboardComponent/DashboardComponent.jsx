@@ -35,7 +35,8 @@ const DashboardComponent = () => {
   const { t } = useTranslation();
   const actionRef = useRef();
   const [dataAreas, setDataAreas] = useState([]);
-  const [dataDetailWarning, setDataDetailWarning] = useState(null);
+  const [dataDetailWarning, setDataDetailWarning] = useState({});
+  const [countWarning, setCountWarning] = useState(19)
   const [openDetailWarning, setOpenDetailWarning] = useState(false);
   // const [search, setSearch] = useState("");
   const { currentUser } = useSelector((state) => state.user);
@@ -78,6 +79,11 @@ const DashboardComponent = () => {
   // Handle submit modal test area
   const handleSubmitModal = async (values, farmAreaId) => {
     await waitTime(1000);
+    console.log('values', values);
+    if (!Object.keys(values).length) {
+      message.error(t("Please fill in the test indicators!"));
+      return false;
+    }
     const res = await testAreaFarm(
       { ...values, userId: currentUser._id, farmAreaId },
       currentUser.accessToken
@@ -167,7 +173,6 @@ const DashboardComponent = () => {
       className: "table-cell",
       editable: false,
       render: (_, record) => {
-        console.log(record.numberWarning);
         return record.numberWarning < 30 ? (
           <Popover
             key={record.id}
@@ -273,7 +278,7 @@ const DashboardComponent = () => {
     return (
       <div className="content-detail-warning">
         <div className="content-detail-warning-title">
-          <h3>{t("Warning level")}</h3>
+          <h3>{t("Detail of alert")} ({`${dataDetailWarning?.numberWarning}/${countWarning}`})</h3>
           <CloseOutlined onClick={() => setOpenDetailWarning(false)} />
         </div>
         <div className="content-detail-warning-content">
@@ -396,6 +401,7 @@ const DashboardComponent = () => {
   // Handle show detail warning
   const handleShowDetailWarning = (record) => {
     setDataDetailWarning(record);
+    setCountWarning(Object.keys(record?.detailWarning?.numberWarning).length - 1);
   };
 
   // Handle change open detail warning
@@ -431,7 +437,6 @@ const DashboardComponent = () => {
       message.error(t("Delete farm area failed!"));
     }
   };
-
   return (
     <div className="dashboard-component">
       <div>

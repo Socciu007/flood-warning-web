@@ -24,8 +24,8 @@ const FormFillStandardData = ({ onFinish }) => {
   // Set standard data list
   useEffect(() => {
     if (dataDb) {
-      const standardData = dataDb.find((item) => item.type === typeArea);
-      setStandardData(standardData);
+      const standardArrData = dataDb.find((item) => item.type === typeArea);
+      setStandardData(standardArrData);
     }
   }, [dataDb, typeArea]);
 
@@ -52,7 +52,38 @@ const FormFillStandardData = ({ onFinish }) => {
     <ProForm
       layout="horizontal"
       className="proform-standard-data"
-      // initialValues={standardData}
+      initialValues={
+        {
+          // DO: standardData?.DO ? standardData?.DO[0] : null,
+          // temperatureRight: standardData?.temperatureRight ? standardData?.temperatureRight[0] : null,
+          // rainfall: standardData?.rainfall ? standardData?.rainfall[0] : null,
+          // pH: standardData?.pH ? standardData?.pH[0] : null,
+          // salinity: standardData?.salinity ? standardData?.salinity[0] : null,
+          // alkalinity: standardData?.alkalinity ? standardData?.alkalinity[0] : null,
+          // clarity: standardData?.clarity ? standardData?.clarity[0] : null,
+          // ammonia: standardData?.ammonia ? standardData?.ammonia[0] : null,
+          // H2S: standardData?.H2S ? standardData?.H2S[0] : null,
+          // temperature: standardData?.temperature ? standardData?.temperature[0] : null,
+          // photsPhat: standardData?.photsPhat ? standardData?.photsPhat[0] : null,
+          // BOD5: standardData?.BOD5 ? standardData?.BOD5[0] : null,
+          // COD: standardData?.COD ? standardData?.COD[0] : null,
+          // coliform: standardData?.coliform ? standardData?.coliform[0] : null,
+          // suspendedSolids: standardData?.suspendedSolids ? standardData?.suspendedSolids[0] : null,
+          // CN: standardData?.CN ? standardData?.CN[0] : null,
+          // As: standardData?.As ? standardData?.As[0] : null,
+          // Cd: standardData?.Cd ? standardData?.Cd[0] : null,
+          // Pb: standardData?.Pb ? standardData?.Pb[0] : null,
+          // Cu: standardData?.Cu ? standardData?.Cu[0] : null,
+          // Hg: standardData?.Hg ? standardData?.Hg[0] : null,
+          // Zn: standardData?.Zn ? standardData?.Zn[0] : null,
+          // F: standardData?.F ? standardData?.F[0] : null,
+          // Cr6: standardData?.Cr6 ? standardData?.Cr6[0] : null,
+          // Mn: standardData?.Mn ? standardData?.Mn[0] : null,
+          // Fe: standardData?.Fe ? standardData?.Fe[0] : null,
+          // totalCrom: standardData?.totalCrom ? standardData?.totalCrom[0] : null,
+          // totalPH: standardData?.totalPH ? standardData?.totalPH[0] : null,
+        }
+      }
       submitter={{
         searchConfig: {
           submitText: t("Save"),
@@ -71,7 +102,7 @@ const FormFillStandardData = ({ onFinish }) => {
         options={optionsFarm}
         width="md"
         name="typeArea"
-        label="Type of farm"
+        label={t("Select the adjustment breeding area:")}
         placeholder={t("Select type")}
         onChange={handleChangeTypeArea}
       />
@@ -86,6 +117,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="DO"
                   label="DO(mg/l)"
                   placeholder={false}
+                  defaultValue={standardData?.DO[0] ? standardData?.DO[0] : 0}
                   min={0}
                   fieldProps={{
                     precision: 4,
@@ -113,11 +145,14 @@ const FormFillStandardData = ({ onFinish }) => {
                 />
               )}
               {typeArea === "Mangrove forest" && (
-                <ProFormDigit
+                <ProFormDigitRange
                   width="xs"
                   name="rainfall"
                   label="Rainfall(mm/year)"
-                  placeholder={false}
+                  separator="-"
+                  separatorWidth={5}
+                  placeholder={[false, false]}
+                  min={0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
@@ -127,11 +162,14 @@ const FormFillStandardData = ({ onFinish }) => {
               {(typeArea === "Mangrove forest" ||
                 typeArea === "Oyster farming" ||
                 typeArea === "Cobia farming") && (
-                <ProFormDigit
+                <ProFormDigitRange
                   width="xs"
                   name="pH"
                   label="pH"
-                  placeholder={false}
+                  separator="-"
+                  separatorWidth={5}
+                  placeholder={[false, false]}
+                  min={0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
@@ -141,11 +179,14 @@ const FormFillStandardData = ({ onFinish }) => {
               {(typeArea === "Mangrove forest" ||
                 typeArea === "Oyster farming" ||
                 typeArea === "Cobia farming") && (
-                <ProFormDigit
+                <ProFormDigitRange
                   width="xs"
                   name="salinity"
                   label="Salinity(‰)"
-                  placeholder={false}
+                  separator="-"
+                  separatorWidth={5}
+                  placeholder={[false, false]}
+                  min={0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
@@ -154,11 +195,14 @@ const FormFillStandardData = ({ onFinish }) => {
               )}
               {(typeArea === "Mangrove forest" ||
                 typeArea === "Oyster farming") && (
-                <ProFormDigit
+                <ProFormDigitRange
                   width="xs"
                   name="alkalinity"
                   label="Alkalinity(mg/l)"
-                  placeholder={false}
+                  separator="-"
+                  separatorWidth={5}
+                  placeholder={[false, false]}
+                  min={0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
@@ -166,11 +210,14 @@ const FormFillStandardData = ({ onFinish }) => {
                 />
               )}
               {typeArea === "Oyster farming" && (
-                <ProFormDigit
+                <ProFormDigitRange
                   width="xs"
                   name="clarity"
                   label="Clarity(cm)"
-                  placeholder={false}
+                  separator="-"
+                  separatorWidth={5}
+                  placeholder={[false, false]}
+                  min={0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
@@ -207,11 +254,14 @@ const FormFillStandardData = ({ onFinish }) => {
               {(typeArea === "Mangrove forest" ||
                 typeArea === "Oyster farming" ||
                 typeArea === "Cobia farming") && (
-                <ProFormDigit
+                <ProFormDigitRange
                   width="xs"
                   name="temperature"
                   label="Temperature(°C)"
-                  placeholder={false}
+                  separator="-"
+                  separatorWidth={5}
+                  placeholder={[false, false]}
+                  min={0}
                   fieldProps={{
                     precision: 4,
                     controls: false,

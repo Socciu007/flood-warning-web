@@ -65,11 +65,13 @@ const DetailsRegionPage = () => {
   const dispatch = useDispatch();
   const { farmAreaDetail } = useSelector((state) => state.farmArea);
   const [isFavorite, setIsFavorite] = useState([]);
+  const [countWarning, setCountWarning] = useState(19);
   const { currentUser } = useSelector((state) => state.user);
 
   // Get exam of farm area
   const getExamFarm = async (farmAreaId, accessToken) => {
     const res = await getExamOfFarmArea(farmAreaId, accessToken);
+    setCountWarning(Object.keys(res[0]?.numberWarning).length);
     setExamOfFarmArea(res);
   };
 
@@ -150,11 +152,11 @@ const DetailsRegionPage = () => {
   const handleGetExamFarm = async (values) => {
     await getExamFarm(values?.farmAreaId, currentUser?.accessToken);
   };
+  console.log('examOfFarmArea', countWarning);
 
   const position = [farmAreaDetail?.latitude, farmAreaDetail?.longitude];
-
   const config = {
-    percent: Number(examOfFarmArea[0]?.result?.percentPos?.toFixed(2)),
+    percent: Number(((examOfFarmArea[0]?.numberWarning?.level)/countWarning)?.toFixed(2)),
     style: {
       outlineBorder: 3,
       outlineDistance: 8,
@@ -215,7 +217,7 @@ const DetailsRegionPage = () => {
                         label: farm.name,
                       }))}
                       name="farmAreaId"
-                      placeholder={t("Enter the farming area")}
+                      placeholder={t("Choose one area")}
                     />
                   </ProForm>
                   {examOfFarmArea?.length > 0 ? (
@@ -240,7 +242,7 @@ const DetailsRegionPage = () => {
                         />
                       </div>
                       <p className="forecast-title">
-                        A. {t("Latest predictions")}
+                        A. {t("Recent status")}
                       </p>
                       {/* <AntdTooltip title={t(`Suitable growth rate of cultivated objects: ${Number(examOfFarmArea[0]?.result?.percentPos?.toFixed(2))}`)}>
                       </AntdTooltip> */}
@@ -371,7 +373,7 @@ const DetailsRegionPage = () => {
                   ) : (
                     <Empty
                       image={Empty.PRESENTED_IMAGE_SIMPLE}
-                      description={t("Environment has no information!")}
+                      description={t("This area has no information!")}
                     />
                   )}
                 </div>

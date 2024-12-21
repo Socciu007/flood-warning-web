@@ -48,6 +48,11 @@
     .ant-space-item {
       font-size: 14px;
       flex: 1;
+      width: 122px;
+      .ant-space {
+        width: 50px;
+        gap: 0;
+      }
       .ant-select {
         width: 90px !important;
         .ant-select-selector {

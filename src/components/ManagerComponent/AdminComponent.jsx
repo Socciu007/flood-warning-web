@@ -487,7 +487,7 @@ const AdminComponent = ({ activeTab }) => {
         },
       },
       render: (_, record) => {
-        return <span>{record.area.split(" ")[0]}</span>;
+        return <span>{record?.area?.split(" ")[0]}</span>;
       },
     },
     {
@@ -994,14 +994,6 @@ const AdminComponent = ({ activeTab }) => {
               search: false,
               options: {
                 reload: false,
-                // reload: async () => {
-                //   await queryClient.refetchQueries(["notifications"]);
-                // },
-                // reloadIcon: (
-                //   <Tooltip title={t("Refresh")}>
-                //     <ReloadOutlined />
-                //   </Tooltip>
-                // ),
                 density: false,
                 densityIcon: (
                   <Tooltip title={t("Density")}>

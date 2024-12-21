@@ -35,7 +35,7 @@ const RegisterPage = () => {
   }, []);
 
   const handleRegister = async (values) => {
-    const res = await registerUser(values);
+    const res = await registerUser({...values, role: "citizen"});
     if (res.data) {
       message.success(t("Register account successfully!"));
       navigate("/login");
@@ -65,9 +65,9 @@ const RegisterPage = () => {
             address: "",
             password: "",
             confirmPassword: "",
-            role: "",
-            province: "",
-            nameRegion: "",
+            // role: "citizen",
+            // province: "",
+            // nameRegion: "",
           }}
         >
           <ProFormText
@@ -126,23 +126,23 @@ const RegisterPage = () => {
               prefix: <LockOutlined />,
             }}
             placeholder={t("Confirm password")}
-            dependencies={["password"]}
+            // dependencies={["password"]}
             rules={[
               {
                 required: true,
                 message: t("Please enter your confirm password!"),
               },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue("password") === value) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(new Error(t("Passwords must match")));
-                },
-              }),
+              // ({ getFieldValue }) => ({
+              //   validator(_, value) {
+              //     if (!value || getFieldValue("password") === value) {
+              //       return Promise.resolve();
+              //     }
+              //     return Promise.reject(new Error(t("Passwords must match")));
+              //   },
+              // }),
             ]}
           />
-          <ProFormSelect
+          {/* <ProFormSelect
             name="role"
             options={[
               { label: t("Citizen"), value: "citizen" },
@@ -188,7 +188,7 @@ const RegisterPage = () => {
                 ) : null;
               }}
             </ProFormDependency>
-          </ProForm.Group>
+          </ProForm.Group> */}
         </ProForm>
         <div className="login-link">
           {t("Already have an account?")}{" "}

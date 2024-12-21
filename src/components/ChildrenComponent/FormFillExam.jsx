@@ -20,6 +20,7 @@ const FormFillExam = ({ typeArea }) => {
               precision: 4,
               moneySymbol: false,
             }}
+            rules={[{required: true, message:  ""}]}
           />
         )}
         {(typeArea === "Mangrove forest" || typeArea === "Oyster farming") && (
@@ -38,6 +39,7 @@ const FormFillExam = ({ typeArea }) => {
               precision: 4,
               moneySymbol: false,
             }}
+            rules={[{required: true, message:  ""}]}
           />
         )}
         {typeArea === "Mangrove forest" && (
@@ -51,6 +53,7 @@ const FormFillExam = ({ typeArea }) => {
               precision: 4,
               moneySymbol: false,
             }}
+            rules={[{required: true, message:  ""}]}
           />
         )}
         <ProFormMoney
@@ -63,6 +66,7 @@ const FormFillExam = ({ typeArea }) => {
             precision: 4,
             moneySymbol: false,
           }}
+          rules={[{required: true, message:  ""}]}
         />
         <ProFormMoney
           width="xs"
@@ -74,6 +78,7 @@ const FormFillExam = ({ typeArea }) => {
             precision: 4,
             moneySymbol: false,
           }}
+          rules={[{required: true, message:  ""}]}
         />
         {(typeArea === "Mangrove forest" || typeArea === "Oyster farming") && (
           <ProFormMoney
@@ -86,6 +91,7 @@ const FormFillExam = ({ typeArea }) => {
               precision: 4,
               moneySymbol: false,
             }}
+            rules={[{required: true, message:  ""}]}
           />
         )}
         {typeArea === "Oyster farming" && (
@@ -99,6 +105,7 @@ const FormFillExam = ({ typeArea }) => {
               precision: 4,
               moneySymbol: false,
             }}
+            rules={[{required: true, message:  ""}]}
           />
         )}
         <ProFormMoney
@@ -111,6 +118,7 @@ const FormFillExam = ({ typeArea }) => {
             precision: 4,
             moneySymbol: false,
           }}
+          rules={[{required: true, message:  ""}]}
         />
         {typeArea !== "Cobia farming" && (
           <ProFormMoney
@@ -123,6 +131,7 @@ const FormFillExam = ({ typeArea }) => {
               precision: 4,
               moneySymbol: false,
             }}
+            rules={[{required: true, message:  ""}]}
           />
         )}
         <ProFormMoney
@@ -135,6 +144,7 @@ const FormFillExam = ({ typeArea }) => {
             precision: 4,
             moneySymbol: false,
           }}
+          rules={[{required: true, message:  ""}]}
         />
         {typeArea === "Cobia farming" && (
           <ProFormMoney
@@ -147,6 +157,7 @@ const FormFillExam = ({ typeArea }) => {
               precision: 4,
               moneySymbol: false,
             }}
+            rules={[{required: true, message:  ""}]}
           />
         )}
         {(typeArea === "Mangrove forest" || typeArea === "Oyster farming") && (
@@ -160,6 +171,7 @@ const FormFillExam = ({ typeArea }) => {
               precision: 4,
               moneySymbol: false,
             }}
+            rules={[{required: true, message:  ""}]}
           />
         )}
         {(typeArea === "Mangrove forest" || typeArea === "Oyster farming") && (
@@ -173,6 +185,7 @@ const FormFillExam = ({ typeArea }) => {
               precision: 4,
               moneySymbol: false,
             }}
+            rules={[{required: true, message:  ""}]}
           />
         )}
         {typeArea === "Oyster farming" && (
@@ -186,6 +199,7 @@ const FormFillExam = ({ typeArea }) => {
               precision: 4,
               moneySymbol: false,
             }}
+            rules={[{required: true, message:  ""}]}
           />
         )}
         <ProFormMoney
@@ -198,6 +212,7 @@ const FormFillExam = ({ typeArea }) => {
             precision: 4,
             moneySymbol: false,
           }}
+          rules={[{required: true, message:  ""}]}
         />
         {typeArea !== "Mangrove forest" && (
           <ProFormMoney
@@ -210,6 +225,7 @@ const FormFillExam = ({ typeArea }) => {
               precision: 4,
               moneySymbol: false,
             }}
+            rules={[{required: true, message:  ""}]}
           />
         )}
         <ProFormMoney
@@ -222,6 +238,7 @@ const FormFillExam = ({ typeArea }) => {
             precision: 4,
             moneySymbol: false,
           }}
+          rules={[{required: true, message:  ""}]}
         />
         <ProFormMoney
           width="xs"
@@ -233,6 +250,7 @@ const FormFillExam = ({ typeArea }) => {
             precision: 4,
             moneySymbol: false,
           }}
+          rules={[{required: true, message:  ""}]}
         />
         <ProFormMoney
           width="xs"
@@ -244,6 +262,7 @@ const FormFillExam = ({ typeArea }) => {
             precision: 4,
             moneySymbol: false,
           }}
+          rules={[{required: true, message:  ""}]}
         />
         <ProFormMoney
           width="xs"
@@ -255,6 +274,7 @@ const FormFillExam = ({ typeArea }) => {
             precision: 4,
             moneySymbol: false,
           }}
+          rules={[{required: true, message:  ""}]}
         />
         {typeArea === "Oyster farming" && (
           <ProFormMoney
@@ -267,6 +287,7 @@ const FormFillExam = ({ typeArea }) => {
               precision: 4,
               moneySymbol: false,
             }}
+            rules={[{required: true, message:  ""}]}
           />
         )}
         <ProFormMoney
@@ -279,6 +300,7 @@ const FormFillExam = ({ typeArea }) => {
             precision: 4,
             moneySymbol: false,
           }}
+          rules={[{required: true, message:  ""}]}
         />
         {typeArea === "Cobia farming" && (
           <ProFormMoney
@@ -291,6 +313,7 @@ const FormFillExam = ({ typeArea }) => {
               precision: 4,
               moneySymbol: false,
             }}
+            rules={[{required: true, message:  ""}]}
           />
         )}
         {typeArea === "Cobia farming" && (
@@ -304,6 +327,7 @@ const FormFillExam = ({ typeArea }) => {
               precision: 4,
               moneySymbol: false,
             }}
+            rules={[{required: true, message:  ""}]}
           />
         )}
         {typeArea === "Cobia farming" && (
@@ -317,6 +341,7 @@ const FormFillExam = ({ typeArea }) => {
               precision: 4,
               moneySymbol: false,
             }}
+            rules={[{required: true, message:  ""}]}
           />
         )}
         {typeArea === "Cobia farming" && (
@@ -330,6 +355,7 @@ const FormFillExam = ({ typeArea }) => {
               precision: 4,
               moneySymbol: false,
             }}
+            rules={[{required: true, message:  ""}]}
           />
         )}
         {(typeArea === "Oyster farming" || typeArea === "Cobia farming") && (
@@ -343,6 +369,7 @@ const FormFillExam = ({ typeArea }) => {
               precision: 4,
               moneySymbol: false,
             }}
+            rules={[{required: true, message:  ""}]}
           />
         )}
         {typeArea === "Cobia farming" && (
@@ -356,6 +383,7 @@ const FormFillExam = ({ typeArea }) => {
               precision: 4,
               moneySymbol: false,
             }}
+            rules={[{required: true, message:  ""}]}
           />
         )}
       </ProForm.Group>

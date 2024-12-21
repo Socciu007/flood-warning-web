@@ -26,16 +26,17 @@
     display: flex;
     width: 100%;
     gap: 10px;
+    height: 520px;
     .table-main {
-      flex: 3;
+      flex: 7;
     }
 
     .right-dashboard-component {
-      flex: 1;
+      flex: 3;
+      height: 520px;
       background-color: #fff;
       padding: 20px;
       border-radius: 8px;
-
       &-title {
         h3 {
           margin: 0;
@@ -53,6 +54,27 @@
               font-size: 14px;
               font-weight: 500;
             }
+          }
+        }
+      }
+      .right-dashboard-component-list {
+        height: calc(100% - 60px);
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 3px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: #888;
+          border-radius: 3px;
+
+          &:hover {
+            background: #555;
           }
         }
       }

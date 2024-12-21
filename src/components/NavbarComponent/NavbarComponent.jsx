@@ -18,7 +18,7 @@ import i18n from "../../i18n";
 import viFlag from "../../assets/icons/icon-vietnam.png";
 import engFlag from "../../assets/icons/icon-usa.png";
 import alertIcon from "../../assets/icons/icon-alert.svg";
-import logoIcon from "../../assets/icons/icon-logo.svg";
+import logoIcon from "../../assets/icons/logo.png";
 import { logoutUser } from "../../services/serviceUser";
 import ModalFormComponent from "../ModalFormComponent/ModalFormComponent";
 import FormFillUser from "../ChildrenComponent/FormFillUser.jsx";
