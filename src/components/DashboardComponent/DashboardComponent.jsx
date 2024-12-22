@@ -36,6 +36,8 @@ const DashboardComponent = () => {
   const actionRef = useRef();
   const [dataAreas, setDataAreas] = useState([]);
   const [dataDetailWarning, setDataDetailWarning] = useState({});
+  const [dataDetail, setDataDetail] = useState({});
+  const [openModalDetailData, setOpenModalDetailData] = useState(false);
   const [countWarning, setCountWarning] = useState(19)
   const [openDetailWarning, setOpenDetailWarning] = useState(false);
   // const [search, setSearch] = useState("");
@@ -92,6 +94,8 @@ const DashboardComponent = () => {
       message.success(t("Successful regional forecasting!"));
       // Refresh data
       queryClient.invalidateQueries({ queryKey: ["areas"] });
+      setOpenModalDetailData(true);
+      setDataDetail(res);
     } else {
       message.error(t("Area forecast failed. Try again later!"));
     }
@@ -273,6 +277,8 @@ const DashboardComponent = () => {
       ],
     },
   ];
+  console.log('dataDetailWarning?.detailWarning', dataDetailWarning?.detailWarning);
+  
   // Render content detail warning
   const contentDetailWarning = () => {
     return (
@@ -292,7 +298,7 @@ const DashboardComponent = () => {
               `• Temperature: ${dataDetailWarning?.detailWarning?.temperature}°C This temperature condition disrupts the physiology, growth ability and reduces the reproductive ability of aquatic products.`}
           </p>
           <p>
-            {dataDetailWarning?.detailWarning?.numberWarning?.isPH === 1 &&
+            {dataDetailWarning?.detailWarning?.numberWarning?.ispH === 1 &&
               `• pH: ${dataDetailWarning?.detailWarning?.pH} Low pH levels can reduce the ability of plants and aquatic animals to absorb nutrients.`}
           </p>
           <p>
@@ -437,6 +443,7 @@ const DashboardComponent = () => {
       message.error(t("Delete farm area failed!"));
     }
   };
+  console.log('dataDetail', dataDetail);
   return (
     <div className="dashboard-component">
       <div>
@@ -551,6 +558,47 @@ const DashboardComponent = () => {
           </div>
         </div>
       </div>
+      <ModalFormComponent
+        title="Detail of alert"
+        open={openModalDetailData}
+        submitter={false}
+        onCancel={() => setOpenModalDetailData(false)}
+        props={{
+          width: "fit-content",
+          wrapClassName: "exam-modal",
+          onCancel: () => setOpenModalDetailData(false),
+        }}
+      >
+        <div className="content-detail-data-content">
+          {dataDetail?.DO && <span>DO: {dataDetail?.DO}(mg/l)</span>}
+          {dataDetail?.temperature && <span>Temperature: {dataDetail?.temperature}(°C)</span>}
+          {dataDetail?.pH && <span>pH: {dataDetail?.pH}(mg/l)</span>}
+          {dataDetail?.alkalinity && <span>Alkalinity: {dataDetail?.alkalinity}(mg/l)</span>}
+          {dataDetail?.ammonia && <span>Ammonia: {dataDetail?.ammonia}(mg/l)</span>}
+          {dataDetail?.BOD5 && <span>BOD5: {dataDetail?.BOD5}(mg/l)</span>}
+          {dataDetail?.COD && <span>COD: {dataDetail?.COD}(mg/l)</span>}
+          {dataDetail?.clarity && <span>Clarity: {dataDetail?.clarity}(mg/l)</span>}
+          {dataDetail?.coliform && <span>Coliform: {dataDetail?.coliform}(CFU/100ml)</span>}
+          {dataDetail?.salinity && <span>Salinity: {dataDetail?.salinity}(‰)</span>}
+          {dataDetail?.phosPhat && <span>PhosPhat: {dataDetail?.phosPhat}(mg/l)</span>}
+          {dataDetail?.suspendedSolids && <span>SuspendedSolids: {dataDetail?.suspendedSolids}(mg/l)</span>}
+          {dataDetail?.totalCrom && <span>TotalCrom: {dataDetail?.totalCrom}(mg/l)</span>}
+          {dataDetail?.H2S && <span>H2S: {dataDetail?.H2S}(mg/l)</span>}
+          {dataDetail?.CN && <span>CN: {dataDetail?.CN}(mg/l)</span>}
+          {dataDetail?.As && <span>As: {dataDetail?.As}(mg/l)</span>}
+          {dataDetail?.Cd && <span>Cd: {dataDetail?.Cd}(mg/l)</span>}
+          {dataDetail?.Pb && <span>Pb: {dataDetail?.Pb}(mg/l)</span>}
+          {dataDetail?.Cu && <span>Cu: {dataDetail?.Cu}(mg/l)</span>}
+          {dataDetail?.Zn && <span>Zn: {dataDetail?.Zn}(mg/l)</span>}
+          {dataDetail?.Hg && <span>Hg: {dataDetail?.Hg}(mg/l)</span>}
+          {dataDetail?.Mn && <span>Mn: {dataDetail?.Mn}(mg/l)</span>}
+          {dataDetail?.Fe && <span>Fe: {dataDetail?.Fe}(mg/l)</span>}
+          {dataDetail?.Cr6 && <span>Cr6+: {dataDetail?.Cr6}(mg/l)</span>}
+          {dataDetail?.F && <span>F-: {dataDetail?.F}(mg/l)</span>}
+          {dataDetail?.totalPH && <span>Total petroleum hydrocarbons: {dataDetail?.totalPH}(mg/l)</span>}
+          {dataDetail?.rainfall && <span>Rainfall: {dataDetail?.rainfall}(mm/year)</span>}
+        </div>
+      </ModalFormComponent>
     </div>
   );
 };

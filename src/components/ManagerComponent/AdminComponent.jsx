@@ -5,6 +5,7 @@ import {
   PlusOutlined,
   EditFilled,
   DeleteFilled,
+  MailOutlined,
 } from "@ant-design/icons";
 import { Tooltip, Button, Tag, message } from "antd";
 import TableComponent from "../TableComponent/TableComponent";
@@ -37,6 +38,7 @@ const AdminComponent = ({ activeTab }) => {
   const [dataUsers, setDataUsers] = useState([]);
   const [dataAreas, setDataAreas] = useState([]);
   const [dataSend, setDataSend] = useState([]);
+  const [dataRows, setDataRows] = useState([]);
   const [isOpenDrawerAddUser, setIsOpenDrawerAddUser] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const { standardData } = useSelector((state) => state.standardData);
@@ -721,26 +723,30 @@ const AdminComponent = ({ activeTab }) => {
   };
 
   // Handle send notice to area
-  const handleSendNotice = async (data) => {
+  const handleSendNotice = async (data, type) => { 
     if (data.length === 0) {
       message.warning(t("Please select at least one examination to send notice!"));
       return;
     }
-    const res = await sendManyNoticeToArea(data);
+    const res = await sendManyNoticeToArea({data, type: type});
+    
     if (res) {
       message.success(t("Send notice to area success!"));
       actionRef.current?.clearSelected?.();
       setDataSend([]);
+      setDataRows([]);
     } else {
       message.error(t("Send notice to area failed!"));
       actionRef.current?.clearSelected?.();
       setDataSend([]);
+      setDataRows([]);
     }
     return true;
   };
 
   // Handle select row in examination table
   const handleSelectRow = (_, selectedRows) => {
+    setDataRows(selectedRows);
     const dataSend = selectedRows.map((item) => {
       const levelWarning =
         item.numberWarning.level <= 4
@@ -979,7 +985,6 @@ const AdminComponent = ({ activeTab }) => {
     }
     return true;
   };
-  console.log('standardData', standardData);
 
   return (
     <div className="manager-component">
@@ -990,7 +995,6 @@ const AdminComponent = ({ activeTab }) => {
           {activeTab === "areas" && <h3>{t("Areas List")}</h3>}
           {activeTab === "examinations" && <h3>{t("Examination List")}</h3>}
           {activeTab === "settings" && <h3>{t("Settings")}</h3>}
-          {/* <SearchComponent /> */}
         </div>
       </div>
       <div className="manager-component-table">
@@ -1095,26 +1099,25 @@ const AdminComponent = ({ activeTab }) => {
                     <ColumnHeightOutlined />
                   </Tooltip>
                 ),
-                // search: true
                 setting: false,
-                // setting: {
-                //   settingIcon: (
-                //     <Tooltip title={t("Setting")}>
-                //       <SettingOutlined />
-                //     </Tooltip>
-                //   ),
-                // },
               },
               toolBarRender: () => [
                 <Button
                   key="button"
                   icon={<PlusOutlined />}
-                  // onClick={() => setIsOpenDrawerNoti(true)}
-                  onClick={() => handleSendNotice(dataSend)}
+                  onClick={() => handleSendNotice(dataSend, "notice")}
                   type="primary"
                 >
                   {t("Send notice")}
                 </Button>,
+                <Button
+                key="button"
+                icon={<MailOutlined />}
+                onClick={() => handleSendNotice(dataRows, "email")}
+                type="primary"
+              >
+                {t("Send email")}
+              </Button>,
               ],
             }}
           />

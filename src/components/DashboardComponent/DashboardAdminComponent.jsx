@@ -437,7 +437,6 @@ const DashboardAdminComponent = () => {
       <div>
         <div className="dashboard-component-title">
           <h3>{t("Dashboard")}</h3>
-          {/* <SearchComponent search={searchAdmin} handleSearch={handleSearchAdmin} /> */}
         </div>
         <div className="dashboard-component-header">
           <CardComponent

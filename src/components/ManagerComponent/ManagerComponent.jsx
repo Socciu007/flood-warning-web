@@ -6,6 +6,7 @@ import {
   PlusOutlined,
   EditFilled,
   DeleteFilled,
+  MailOutlined,
 } from "@ant-design/icons";
 import { Tooltip, Button, Tag, message } from "antd";
 // import SearchComponent from "../SearchComponent/SearchComponent";
@@ -35,6 +36,7 @@ const ManagerComponent = ({ activeTab }) => {
   const actionRef = useRef();
   const [dataNotification, setDataNotification] = useState([]);
   const [dataExaminations, setDataExaminations] = useState([]);
+  const [dataRows, setDataRows] = useState([]);
   const [dataWishlist, setDataWishlist] = useState([]);
   const [dataAreas, setDataAreas] = useState([]);
   const [dataSend, setDataSend] = useState([]);
@@ -620,28 +622,30 @@ const ManagerComponent = ({ activeTab }) => {
   };
 
   // Handle send notice to area
-  const handleSendNotice = async (data) => {
+  const handleSendNotice = async (data, type) => { 
     if (data.length === 0) {
-      message.warning(
-        t("Please select at least one examination to send notice!")
-      );
+      message.warning(t("Please select at least one examination to send notice!"));
       return;
     }
-    const res = await sendManyNoticeToArea(data);
+    const res = await sendManyNoticeToArea({data, type});
+    
     if (res) {
       message.success(t("Send notice to area success!"));
       actionRef.current?.clearSelected?.();
       setDataSend([]);
+      setDataRows([]);
     } else {
       message.error(t("Send notice to area failed!"));
       actionRef.current?.clearSelected?.();
       setDataSend([]);
+      setDataRows([]);
     }
     return true;
   };
 
   // Handle select row in examination table
   const handleSelectRow = (_, selectedRows) => {
+    setDataRows(selectedRows);
     const dataSend = selectedRows.map((item) => {
       const levelWarning =
         item.numberWarning.level <= 4
@@ -983,12 +987,19 @@ const ManagerComponent = ({ activeTab }) => {
                 <Button
                   key="button"
                   icon={<PlusOutlined />}
-                  // onClick={() => setIsOpenDrawerNoti(true)}
-                  onClick={() => handleSendNotice(dataSend)}
+                  onClick={() => handleSendNotice(dataSend, "notice")}
                   type="primary"
                 >
                   {t("Send notice")}
                 </Button>,
+                <Button
+                key="button"
+                icon={<MailOutlined />}
+                onClick={() => handleSendNotice(dataRows, "email")}
+                type="primary"
+              >
+                {t("Send email")}
+              </Button>,
               ],
             }}
           />
