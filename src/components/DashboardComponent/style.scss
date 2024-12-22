@@ -26,14 +26,14 @@
     display: flex;
     width: 100%;
     gap: 10px;
-    height: 520px;
+    height: calc(100% - 135px);
     .table-main {
-      flex: 7;
+      flex: 7.5;
     }
 
     .right-dashboard-component {
-      flex: 3;
-      height: 520px;
+      flex: 2.5;
+      height: 100%;
       background-color: #fff;
       padding: 20px;
       border-radius: 8px;
