@@ -1190,7 +1190,7 @@ const AdminComponent = ({ activeTab }) => {
         <div className="right-manager-component"></div>
       </div>
       <DrawerComponent
-        title="Create farming area"
+        title="Add new user"
         open={isOpenDrawerAddUser}
         onOpenChange={setIsOpenDrawerAddUser}
         submitter={{
