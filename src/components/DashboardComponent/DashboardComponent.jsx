@@ -40,7 +40,6 @@ const DashboardComponent = () => {
   const [openModalDetailData, setOpenModalDetailData] = useState(false);
   const [countWarning, setCountWarning] = useState(19)
   const [openDetailWarning, setOpenDetailWarning] = useState(false);
-  // const [search, setSearch] = useState("");
   const { currentUser } = useSelector((state) => state.user);
 
   // Get all areas
@@ -443,7 +442,7 @@ const DashboardComponent = () => {
       message.error(t("Delete farm area failed!"));
     }
   };
-  console.log('dataDetail', dataDetail);
+
   return (
     <div className="dashboard-component">
       <div>

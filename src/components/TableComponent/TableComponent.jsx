@@ -22,7 +22,7 @@ const TableComponent = ({
         headerTitle={title}
         key={keyTable}
         pagination={{
-          pageSize: 7,
+          pageSize: 5,
           showTotal: (total, range) =>
             `${range[0]}-${range[1]} of ${total} items`,
           showSizeChanger: false,
