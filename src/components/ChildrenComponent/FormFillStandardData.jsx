@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
+import { useSelector } from "react-redux";
 import {
   ProForm,
   ProFormDigit,
@@ -7,31 +8,24 @@ import {
   ProFormDigitRange,
 } from "@ant-design/pro-components";
 import { useTranslation } from "react-i18next";
-import { getStandardData } from "../../services/serviceExam";
-import { useQuery } from "@tanstack/react-query";
 
 const FormFillStandardData = ({ onFinish }) => {
   const { t } = useTranslation();
-  const [standardData, setStandardData] = useState({});
+  const { standardData } = useSelector((state) => state.standardData);
   const [typeArea, setTypeArea] = useState("");
+  const formRef = useRef(null);
 
-  // Query standard data
-  const { data: dataDb } = useQuery({
-    queryKey: ["dataDb"],
-    queryFn: () => getStandardData(),
-  });
-
-  // Set standard data list
-  useEffect(() => {
-    if (dataDb) {
-      const standardArrData = dataDb.find((item) => item.type === typeArea);
-      setStandardData(standardArrData);
-    }
-  }, [dataDb, typeArea]);
-
-  // Set standard data
-  const handleChangeTypeArea = async (value) => {
+  // Handle change type area
+  const handleChangeTypeArea = (value) => {
     setTypeArea(value);
+    // Get standard values default
+    const standardValues = standardData.find(item => item.type === value) || {};
+    
+    // Reset fields in form, keep typeArea value
+    formRef.current.setFieldsValue({
+      ...standardValues, // Update other fields
+      typeArea: value,   // Keep typeArea value
+    });
   };
 
   const optionsFarm = [
@@ -51,49 +45,28 @@ const FormFillStandardData = ({ onFinish }) => {
   return (
     <ProForm
       layout="horizontal"
+      formRef={formRef}
       className="proform-standard-data"
-      initialValues={
-        {
-          // DO: standardData?.DO ? standardData?.DO[0] : null,
-          // temperatureRight: standardData?.temperatureRight ? standardData?.temperatureRight[0] : null,
-          // rainfall: standardData?.rainfall ? standardData?.rainfall[0] : null,
-          // pH: standardData?.pH ? standardData?.pH[0] : null,
-          // salinity: standardData?.salinity ? standardData?.salinity[0] : null,
-          // alkalinity: standardData?.alkalinity ? standardData?.alkalinity[0] : null,
-          // clarity: standardData?.clarity ? standardData?.clarity[0] : null,
-          // ammonia: standardData?.ammonia ? standardData?.ammonia[0] : null,
-          // H2S: standardData?.H2S ? standardData?.H2S[0] : null,
-          // temperature: standardData?.temperature ? standardData?.temperature[0] : null,
-          // photsPhat: standardData?.photsPhat ? standardData?.photsPhat[0] : null,
-          // BOD5: standardData?.BOD5 ? standardData?.BOD5[0] : null,
-          // COD: standardData?.COD ? standardData?.COD[0] : null,
-          // coliform: standardData?.coliform ? standardData?.coliform[0] : null,
-          // suspendedSolids: standardData?.suspendedSolids ? standardData?.suspendedSolids[0] : null,
-          // CN: standardData?.CN ? standardData?.CN[0] : null,
-          // As: standardData?.As ? standardData?.As[0] : null,
-          // Cd: standardData?.Cd ? standardData?.Cd[0] : null,
-          // Pb: standardData?.Pb ? standardData?.Pb[0] : null,
-          // Cu: standardData?.Cu ? standardData?.Cu[0] : null,
-          // Hg: standardData?.Hg ? standardData?.Hg[0] : null,
-          // Zn: standardData?.Zn ? standardData?.Zn[0] : null,
-          // F: standardData?.F ? standardData?.F[0] : null,
-          // Cr6: standardData?.Cr6 ? standardData?.Cr6[0] : null,
-          // Mn: standardData?.Mn ? standardData?.Mn[0] : null,
-          // Fe: standardData?.Fe ? standardData?.Fe[0] : null,
-          // totalCrom: standardData?.totalCrom ? standardData?.totalCrom[0] : null,
-          // totalPH: standardData?.totalPH ? standardData?.totalPH[0] : null,
-        }
-      }
       submitter={{
+        render: (props, dom) => {
+          return (
+            <div className="proform-standard-data-submitter">
+              {dom}
+            </div>
+          );
+        },
         searchConfig: {
           submitText: t("Save"),
-          resetText: t("Reset"),
+          resetText: t("Back"),
         },
         submitButtonProps: {
-          style: { display: standardData ? "inline-block" : "none" },
+          style: { display: standardData?.find(item => item.type === typeArea) && Object.keys(standardData?.find(item => item.type === typeArea)).length > 0 ? "inline-block" : "none" },
         },
         resetButtonProps: {
-          style: { display: standardData ? "inline-block" : "none" },
+          style: { display: standardData?.find(item => item.type === typeArea) && Object.keys(standardData?.find(item => item.type === typeArea)).length > 0 ? "inline-block" : "none" },
+          onClick: () => {
+            setTypeArea("");
+          }
         },
       }}
       onFinish={onFinish}
@@ -102,12 +75,14 @@ const FormFillStandardData = ({ onFinish }) => {
         options={optionsFarm}
         width="md"
         name="typeArea"
-        label={t("Select the adjustment breeding area:")}
+        label={t("Choose the adjustment breeding area:")}
         placeholder={t("Select type")}
         onChange={handleChangeTypeArea}
       />
       <ProFormDependency name={["typeArea"]}>
         {({ typeArea }) => {
+          console.log('typeArea', typeArea);
+          console.log('standardData', standardData);
           return (
             <ProForm.Group>
               {(typeArea === "Oyster farming" ||
@@ -116,8 +91,8 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="DO"
                   label="DO(mg/l)"
+                  initialValue={standardData?.find(item => item.type === typeArea)?.DO?.[0] || 0}
                   placeholder={false}
-                  defaultValue={standardData?.DO[0] ? standardData?.DO[0] : 0}
                   min={0}
                   fieldProps={{
                     precision: 4,
@@ -134,8 +109,9 @@ const FormFillStandardData = ({ onFinish }) => {
                       : "Suitable temperature(°C)"
                   }
                   name="temperatureRight"
+                  initialValue={[standardData?.find(item => item.type === typeArea)?.temperatureRight?.[0] || 0, standardData?.find(item => item.type === typeArea)?.temperatureRight?.[1] || 0]}
                   separator="-"
-                  separatorWidth={5}
+                  separatorWidth={30}
                   placeholder={[false, false]}
                   min={0}
                   fieldProps={{
@@ -150,7 +126,8 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="rainfall"
                   label="Rainfall(mm/year)"
                   separator="-"
-                  separatorWidth={5}
+                  separatorWidth={30}
+                  initialValue={[standardData?.find(item => item.type === typeArea)?.rainfall?.[0] || 0, standardData?.find(item => item.type === typeArea)?.rainfall?.[1] || 0]}
                   placeholder={[false, false]}
                   min={0}
                   fieldProps={{
@@ -167,7 +144,8 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="pH"
                   label="pH"
                   separator="-"
-                  separatorWidth={5}
+                  separatorWidth={30}
+                  initialValue={[standardData?.find(item => item.type === typeArea)?.pH?.[0] || 0, standardData?.find(item => item.type === typeArea)?.pH?.[1] || 0]}
                   placeholder={[false, false]}
                   min={0}
                   fieldProps={{
@@ -184,7 +162,8 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="salinity"
                   label="Salinity(‰)"
                   separator="-"
-                  separatorWidth={5}
+                  separatorWidth={30}
+                  initialValue={[standardData?.find(item => item.type === typeArea)?.salinity?.[0] || 0, standardData?.find(item => item.type === typeArea)?.salinity?.[1] || 0]}
                   placeholder={[false, false]}
                   min={0}
                   fieldProps={{
@@ -200,7 +179,8 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="alkalinity"
                   label="Alkalinity(mg/l)"
                   separator="-"
-                  separatorWidth={5}
+                  separatorWidth={30}
+                  initialValue={[standardData?.find(item => item.type === typeArea)?.alkalinity?.[0] || 0, standardData?.find(item => item.type === typeArea)?.alkalinity?.[1] || 0]}
                   placeholder={[false, false]}
                   min={0}
                   fieldProps={{
@@ -215,7 +195,8 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="clarity"
                   label="Clarity(cm)"
                   separator="-"
-                  separatorWidth={5}
+                  separatorWidth={30}
+                  initialValue={[standardData?.find(item => item.type === typeArea)?.clarity?.[0] || 0, standardData?.find(item => item.type === typeArea)?.clarity?.[1] || 0]}
                   placeholder={[false, false]}
                   min={0}
                   fieldProps={{
@@ -231,6 +212,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="ammonia"
                   label="NH₃(mg/l)"
+                  initialValue={standardData?.find(item => item.type === typeArea)?.ammonia?.[0] || 0}
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
@@ -245,6 +227,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="H2S"
                   label="H₂S(mg/l)"
                   placeholder={false}
+                  initialValue={standardData?.find(item => item.type === typeArea)?.H2S?.[0] || 0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
@@ -259,7 +242,8 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="temperature"
                   label="Temperature(°C)"
                   separator="-"
-                  separatorWidth={5}
+                  separatorWidth={30}
+                  initialValue={[standardData?.find(item => item.type === typeArea)?.temperature?.[0] || 0, standardData?.find(item => item.type === typeArea)?.temperature?.[1] || 0]}
                   placeholder={[false, false]}
                   min={0}
                   fieldProps={{
@@ -274,6 +258,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="photsPhat"
                   label="Photsphat(mg/l)"
                   placeholder={false}
+                  initialValue={standardData?.find(item => item.type === typeArea)?.photsPhat?.[0] || 0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
@@ -284,8 +269,9 @@ const FormFillStandardData = ({ onFinish }) => {
                 typeArea === "Oyster farming") && (
                 <ProFormDigit
                   width="xs"
-                  name="BOD5"
+                  name="BOD30"
                   label="BOD₅(mg/l)"
+                  initialValue={standardData?.find(item => item.type === typeArea)?.BOD30?.[0] || 0}
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
@@ -299,6 +285,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="COD"
                   label="COD(mg/l)"
+                  initialValue={standardData?.find(item => item.type === typeArea)?.COD?.[0] || 0}
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
@@ -311,6 +298,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="coliform"
                   label="Coliform(MPN/100ml)"
+                  initialValue={standardData?.find(item => item.type === typeArea)?.coliform?.[0] || 0}
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
@@ -325,6 +313,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="suspendedSolids"
                   label="TSS(mg/l)"
+                  initialValue={standardData?.find(item => item.type === typeArea)?.suspendedSolids?.[0] || 0}
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
@@ -338,6 +327,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="CN"
                   label="CN-(mg/l)"
+                  initialValue={standardData?.find(item => item.type === typeArea)?.CN?.[0] || 0}
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
@@ -352,6 +342,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="As"
                   label="As(mg/l)"
+                  initialValue={standardData?.find(item => item.type === typeArea)?.As?.[0] || 0}
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
@@ -366,6 +357,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="Cd"
                   label="Cd(mg/l)"
+                  initialValue={standardData?.find(item => item.type === typeArea)?.Cd?.[0] || 0}
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
@@ -380,6 +372,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="Pb"
                   label="Pb(mg/l)"
+                  initialValue={standardData?.find(item => item.type === typeArea)?.Pb?.[0] || 0}
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
@@ -395,6 +388,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="Cu"
                   label="Cu(mg/l)"
                   placeholder={false}
+                  initialValue={standardData?.find(item => item.type === typeArea)?.Cu?.[0] || 0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
@@ -406,6 +400,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="Hg"
                   label="Hg(mg/l)"
+                  initialValue={standardData?.find(item => item.type === typeArea)?.Hg?.[0] || 0}
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
@@ -421,6 +416,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="Zn"
                   label="Zn(mg/l)"
                   placeholder={false}
+                  initialValue={standardData?.find(item => item.type === typeArea)?.Zn?.[0] || 0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
@@ -433,6 +429,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="F"
                   label="F-(mg/l)"
                   placeholder={false}
+                  initialValue={standardData?.find(item => item.type === typeArea)?.F?.[0] || 0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
@@ -445,6 +442,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="Cr6"
                   label="Cr6+(mg/l)"
                   placeholder={false}
+                  initialValue={standardData?.find(item => item.type === typeArea)?.Cr6?.[0] || 0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
@@ -457,6 +455,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="Mn"
                   label="Mn(mg/l)"
                   placeholder={false}
+                  initialValue={standardData?.find(item => item.type === typeArea)?.Mn?.[0] || 0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
@@ -469,6 +468,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="Fe"
                   label="Fe(mg/l)"
                   placeholder={false}
+                  initialValue={standardData?.find(item => item.type === typeArea)?.Fe?.[0] || 0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
@@ -481,6 +481,7 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="totalCrom"
                   label="Total Crom(mg/l)"
+                  initialValue={standardData?.find(item => item.type === typeArea)?.totalCrom?.[0] || 0}
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
@@ -492,6 +493,7 @@ const FormFillStandardData = ({ onFinish }) => {
                 <ProFormDigit
                   width="xs"
                   name="totalPH"
+                  initialValue={standardData?.find(item => item.type === typeArea)?.totalPH?.[0] || 0}
                   label="Total mineral oil and grease"
                   placeholder={false}
                   fieldProps={{

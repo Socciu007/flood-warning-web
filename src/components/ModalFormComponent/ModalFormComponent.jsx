@@ -10,13 +10,15 @@ const ModalFormComponent = ({
   submitter,
   handleSubmitModal,
   open,
-  props
+  props,
+  onOpenChange,
 }) => {
   const { t } = useTranslation();
   return (
     <ModalForm
       className="modal-form"
       open={open}
+      onOpenChange={onOpenChange}
       title={t(title)}
       trigger={trigger}
       submitter={submitter}

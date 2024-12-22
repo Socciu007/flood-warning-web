@@ -6,6 +6,8 @@ import { useSelector, useDispatch } from "react-redux";
 import storageService from "./services/storage.service";
 import { setUser } from "./redux/slices/userSlice.ts";
 import { getUserInfo, handleRefreshToken } from "./services/serviceUser.js";
+import { getStandardData } from "./services/serviceExam.js";
+import { setStandardData, resetStandardData } from "./redux/slices/standardDataSlice.ts";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import LoadingComponent from "./components/LoadingComponent/LoadingComponent.jsx";
@@ -25,6 +27,16 @@ function App() {
       }
       return { decodedUser, accessToken };
     };
+
+    // Fecth standard data
+    const fetchStandardData = async () => {
+      const res = await getStandardData();
+      if (res) {
+        dispatch(setStandardData(res));
+      } else {
+        dispatch(resetStandardData());
+      }
+    }
 
     // Fetch user info
     const fetchUserInfo = async (userId, accessToken) => {
@@ -46,6 +58,7 @@ function App() {
     // console.log("decodedUser", decodedUser);
     if (decodedUser?.id) {
       fetchUserInfo(decodedUser?.id, accessToken);
+      fetchStandardData();
     }
     setIsLoading(false);
   }, []);

@@ -24,6 +24,11 @@
 }
 
 .proform-standard-data {
+  .proform-standard-data-submitter {
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+  }
   .ant-pro-form-group-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

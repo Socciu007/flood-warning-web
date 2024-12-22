@@ -43,3 +43,9 @@ export const getStandardData = async () => {
   const res = await axios.get(`${process.env.REACT_APP_API_KEY}/api/standard-data`);
   return res.data;
 };
+
+// Update standard data
+export const updateStandardData = async (data, id) => {
+  const res = await axios.patch(`${process.env.REACT_APP_API_KEY}/api/standard-data/update/${id}`, data);
+  return res.data;
+};

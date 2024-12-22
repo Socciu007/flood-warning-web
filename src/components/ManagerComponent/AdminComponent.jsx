@@ -1,16 +1,14 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  // ReloadOutlined,
   ColumnHeightOutlined,
-  // SettingOutlined,
   PlusOutlined,
   EditFilled,
   DeleteFilled,
 } from "@ant-design/icons";
 import { Tooltip, Button, Tag, message } from "antd";
-// import SearchComponent from "../SearchComponent/SearchComponent";
 import TableComponent from "../TableComponent/TableComponent";
+import { useDispatch } from "react-redux";
 import {
   getAllNotifications,
   sendManyNoticeToArea,
@@ -22,6 +20,8 @@ import { useSelector } from "react-redux";
 import { getAllUsers, updateUserProfile, deleteUser, registerUser } from "../../services/serviceUser";
 import "./style.scss";
 import { formatDateTime, renderString } from "../../utils";
+import { updateStandardData, getStandardData } from "../../services/serviceExam";
+import { setStandardData } from "../../redux/slices/standardDataSlice.ts";
 import ModalFormComponent from "../ModalFormComponent/ModalFormComponent";
 import DrawerComponent from "../DrawerComponent/DrawerComponent";
 import FormFillAddUser from "../ChildrenComponent/FormFillAddUser";
@@ -31,14 +31,15 @@ import { getBase64 } from "../../utils";
 const AdminComponent = ({ activeTab }) => {
   const { t } = useTranslation();
   const actionRef = useRef();
+  const dispatch = useDispatch();
   const [dataNotification, setDataNotification] = useState([]);
   const [dataExaminations, setDataExaminations] = useState([]);
   const [dataUsers, setDataUsers] = useState([]);
   const [dataAreas, setDataAreas] = useState([]);
   const [dataSend, setDataSend] = useState([]);
-  // const [isOpenDrawerNoti, setIsOpenDrawerNoti] = useState(false);
   const [isOpenDrawerAddUser, setIsOpenDrawerAddUser] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
+  const { standardData } = useSelector((state) => state.standardData);
   const queryClient = useQueryClient();
 
   // Query notifications of manager
@@ -965,9 +966,20 @@ const AdminComponent = ({ activeTab }) => {
   };
 
   // Handle create standard data
-  const handleCreateStandardData = async (values) => {
-    console.log(values);
+  const handleUpdatedStandard = async (values) => {
+    const id = standardData.find(item => item.type === values.typeArea)._id;
+    const res = await updateStandardData(values, id);
+    const getStandard = await getStandardData();
+    
+    if (res) {
+      dispatch(setStandardData(getStandard));
+      message.success(t("Update standard data success!"));
+    } else {
+      message.error(t("Update standard data failed!"));
+    }
+    return true;
   };
+  console.log('standardData', standardData);
 
   return (
     <div className="manager-component">
@@ -1168,7 +1180,7 @@ const AdminComponent = ({ activeTab }) => {
         {activeTab === "settings" && (
           <div className="settings-component">
             <div className="settings-component-form">
-              <FormFillStandardData onFinish={handleCreateStandardData} />
+              <FormFillStandardData onFinish={handleUpdatedStandard} />
             </div>
           </div>
         )}

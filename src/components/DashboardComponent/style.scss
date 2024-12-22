@@ -119,3 +119,11 @@
     }
   }
 }
+.content-detail-data-content {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  span {
+    font-size: 14px;
+  }
+}

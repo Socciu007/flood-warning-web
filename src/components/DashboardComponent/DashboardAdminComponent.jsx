@@ -37,7 +37,8 @@ const DashboardAdminComponent = () => {
   const [openDetailWarning, setOpenDetailWarning] = useState(false);
   const [dataDetailWarning, setDataDetailWarning] = useState({});
   const [countWarning, setCountWarning] = useState(19);
-  // const [searchAdmin, setSearchAdmin] = useState("");
+  const [openModalDetailData, setOpenModalDetailData] = useState(false);
+  const [dataDetail, setDataDetail] = useState({});
   const { currentUser } = useSelector((state) => state.user);
 
   // Get all areas
@@ -82,6 +83,8 @@ const DashboardAdminComponent = () => {
       message.success(t("Successful regional forecasting!"));
       // Refresh data
       queryClient.invalidateQueries({ queryKey: ["farmAreas"] });
+      setDataDetail(res);
+      setOpenModalDetailData(true);
     } else {
       message.error(t("Area forecast failed. Try again later!"));
     }
@@ -429,11 +432,6 @@ const DashboardAdminComponent = () => {
     }
   };
 
-  // Handle search
-  // const handleSearchAdmin = (e) => {
-  //   setSearchAdmin(e.target.value);
-  // };
-
   return (
     <div className="dashboard-component">
       <div>
@@ -549,6 +547,47 @@ const DashboardAdminComponent = () => {
           </div>
         </div>
       </div>
+      <ModalFormComponent
+        title="Detail of alert"
+        open={openModalDetailData}
+        submitter={false}
+        onCancel={() => setOpenModalDetailData(false)}
+        props={{
+          width: "fit-content",
+          wrapClassName: "exam-modal",
+          onCancel: () => setOpenModalDetailData(false),
+        }}
+      >
+        <div className="content-detail-data-content">
+          {dataDetail?.DO && <span>DO: {dataDetail?.DO}(mg/l)</span>}
+          {dataDetail?.temperature && <span>Temperature: {dataDetail?.temperature}(°C)</span>}
+          {dataDetail?.pH && <span>pH: {dataDetail?.pH}(mg/l)</span>}
+          {dataDetail?.alkalinity && <span>Alkalinity: {dataDetail?.alkalinity}(mg/l)</span>}
+          {dataDetail?.ammonia && <span>Ammonia: {dataDetail?.ammonia}(mg/l)</span>}
+          {dataDetail?.BOD5 && <span>BOD5: {dataDetail?.BOD5}(mg/l)</span>}
+          {dataDetail?.COD && <span>COD: {dataDetail?.COD}(mg/l)</span>}
+          {dataDetail?.clarity && <span>Clarity: {dataDetail?.clarity}(mg/l)</span>}
+          {dataDetail?.coliform && <span>Coliform: {dataDetail?.coliform}(CFU/100ml)</span>}
+          {dataDetail?.salinity && <span>Salinity: {dataDetail?.salinity}(‰)</span>}
+          {dataDetail?.phosPhat && <span>PhosPhat: {dataDetail?.phosPhat}(mg/l)</span>}
+          {dataDetail?.suspendedSolids && <span>SuspendedSolids: {dataDetail?.suspendedSolids}(mg/l)</span>}
+          {dataDetail?.totalCrom && <span>TotalCrom: {dataDetail?.totalCrom}(mg/l)</span>}
+          {dataDetail?.H2S && <span>H2S: {dataDetail?.H2S}(mg/l)</span>}
+          {dataDetail?.CN && <span>CN: {dataDetail?.CN}(mg/l)</span>}
+          {dataDetail?.As && <span>As: {dataDetail?.As}(mg/l)</span>}
+          {dataDetail?.Cd && <span>Cd: {dataDetail?.Cd}(mg/l)</span>}
+          {dataDetail?.Pb && <span>Pb: {dataDetail?.Pb}(mg/l)</span>}
+          {dataDetail?.Cu && <span>Cu: {dataDetail?.Cu}(mg/l)</span>}
+          {dataDetail?.Zn && <span>Zn: {dataDetail?.Zn}(mg/l)</span>}
+          {dataDetail?.Hg && <span>Hg: {dataDetail?.Hg}(mg/l)</span>}
+          {dataDetail?.Mn && <span>Mn: {dataDetail?.Mn}(mg/l)</span>}
+          {dataDetail?.Fe && <span>Fe: {dataDetail?.Fe}(mg/l)</span>}
+          {dataDetail?.Cr6 && <span>Cr6+: {dataDetail?.Cr6}(mg/l)</span>}
+          {dataDetail?.F && <span>F-: {dataDetail?.F}(mg/l)</span>}
+          {dataDetail?.totalPH && <span>Total petroleum hydrocarbons: {dataDetail?.totalPH}(mg/l)</span>}
+          {dataDetail?.rainfall && <span>Rainfall: {dataDetail?.rainfall}(mm/year)</span>}
+        </div>
+      </ModalFormComponent>
     </div>
   );
 };
