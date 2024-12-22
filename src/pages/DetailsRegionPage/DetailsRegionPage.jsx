@@ -66,13 +66,16 @@ const DetailsRegionPage = () => {
   const { farmAreaDetail } = useSelector((state) => state.farmArea);
   const [isFavorite, setIsFavorite] = useState([]);
   const [countWarning, setCountWarning] = useState(19);
+  const [idFarmArea, setIdFarmArea] = useState("");
   const { currentUser } = useSelector((state) => state.user);
 
   // Get exam of farm area
   const getExamFarm = async (farmAreaId, accessToken) => {
     const res = await getExamOfFarmArea(farmAreaId, accessToken);
-    setCountWarning(Object.keys(res[0]?.numberWarning).length);
-    setExamOfFarmArea(res);
+    if (res.length > 0) {
+      setCountWarning(Object.keys(res[0]?.numberWarning)?.length);
+      setExamOfFarmArea(res);
+    }
   };
 
   useEffect(() => {
@@ -122,12 +125,12 @@ const DetailsRegionPage = () => {
       // Remove farmId from isFavorite
       updatedFavorites = isFavorite.filter((id) => id !== farmId);
       status = false;
-      message.info(t("Removed favorite area!"));
+      message.success(t("Removed favorite area!"));
     } else {
       // Add farmId to isFavorite
       updatedFavorites = [...isFavorite, farmId];
       status = true;
-      message.info(t("Added to favorites!"));
+      message.success(t("Added to favorites!"));
     }
     setIsFavorite(updatedFavorites);
 
@@ -150,9 +153,9 @@ const DetailsRegionPage = () => {
 
   // Handle get exam of farm area
   const handleGetExamFarm = async (values) => {
+    setIdFarmArea(values?.farmAreaId);
     await getExamFarm(values?.farmAreaId, currentUser?.accessToken);
   };
-  console.log('examOfFarmArea', countWarning);
 
   const position = [farmAreaDetail?.latitude, farmAreaDetail?.longitude];
   const config = {
@@ -167,6 +170,7 @@ const DetailsRegionPage = () => {
     height: 180,
     className: "liquid-chart",
   };
+
   return (
     <div className="details-region-page">
       <NavbarComponent />
@@ -220,7 +224,7 @@ const DetailsRegionPage = () => {
                       placeholder={t("Choose one area")}
                     />
                   </ProForm>
-                  {examOfFarmArea?.length > 0 ? (
+                  {idFarmArea === "" ? "" : (examOfFarmArea?.length > 0) ? (
                     <div className="forecast-chart">
                       <div className="forecast-chart-title">
                         <p>
