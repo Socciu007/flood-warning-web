@@ -55,7 +55,6 @@ const AdminComponent = ({ activeTab }) => {
   const [searchExam, setSearchExam] = useState("");
   const [searchUser, setSearchUser] = useState("");
   const [searchArea, setSearchArea] = useState("");
-  const [searchDashboardAdmin, setSearchDashboardAdmin] = useState("");
   const [isOpenDrawerAddUser, setIsOpenDrawerAddUser] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const { standardData } = useSelector((state) => state.standardData);

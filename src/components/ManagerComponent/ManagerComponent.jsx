@@ -84,12 +84,12 @@ const ManagerComponent = ({ activeTab }) => {
       if (searchUser === "") {
         setDataWishlist(cloneData);
       } else {
-        const cloneData = cloneData.filter((u) => {
-          return Object.values(u).some((field) =>
-            String(field).toLowerCase().includes(searchUser.toLowerCase())
+        const cloneDataFilter = cloneData.filter((u) => {
+          return Object?.values(u)?.some((field) =>
+            String(field)?.toLowerCase()?.includes(searchUser?.toLowerCase())
           );
         });
-        setDataWishlist(cloneData);
+        setDataWishlist(cloneDataFilter);
       }
     }
   }, [listUserPreferred, searchUser]);
@@ -100,10 +100,12 @@ const ManagerComponent = ({ activeTab }) => {
       if (searchNotice === "") {
         setDataNotification(notifications);
       } else {
-        const cloneData = notifications.filter((n) => {
-          return String(n.title).toLowerCase().includes(searchNotice.toLowerCase());
+        const notificationsFilter = notifications.filter((n) => {
+          return Object?.values(n)?.some((field) =>
+            String(field)?.toLowerCase()?.includes(searchNotice?.toLowerCase())
+          );
         });
-        setDataNotification(cloneData);
+        setDataNotification(notificationsFilter);
       }
     }
   }, [notifications, searchNotice]);
@@ -119,10 +121,12 @@ const ManagerComponent = ({ activeTab }) => {
       if (searchExam === "") {
         setDataExaminations(formattedExaminations);
       } else {
-        const cloneData = formattedExaminations.filter((exam) => {
-          return String(exam.nameFarm).toLowerCase().includes(searchExam.toLowerCase());
+        const examinationsFilter = formattedExaminations.filter((exam) => {
+          return Object?.values(exam)?.some((field) =>  
+            String(field)?.toLowerCase()?.includes(searchExam?.toLowerCase())
+          );
         });
-        setDataExaminations(cloneData);
+        setDataExaminations(examinationsFilter);
       }
     }
   }, [examinations, searchExam]);
@@ -131,20 +135,22 @@ const ManagerComponent = ({ activeTab }) => {
   useEffect(() => {
     if (areas) {
       const formattedAreas = areas.map((area) => ({
-        id: area._id,
-        nameArea: area.name,
-        typeArea: area.type,
-        area: area.area,
-        nameRegion: area.regionId.name,
-        province: area.regionId.province,
-        regionId: area.regionId._id,
-        createdAt: area.createdAt,
+        id: area?._id,
+        nameArea: area?.name,
+        typeArea: area?.type,
+        area: area?.area,
+        nameRegion: area?.regionId?.name,
+        province: area?.regionId?.province,
+        regionId: area?.regionId?._id,
+        createdAt: area?.createdAt,
       }));
       if (searchArea === "") {
         setDataAreas(formattedAreas);
       } else {
-        const cloneData = formattedAreas.filter((area) => {
-          return String(area.nameArea).toLowerCase().includes(searchArea.toLowerCase());
+        const cloneData = formattedAreas?.filter((area) => {
+          return Object?.values(area)?.some((field) =>
+            String(field)?.toLowerCase()?.includes(searchArea?.toLowerCase())
+          );
         });
         setDataAreas(cloneData);
       }

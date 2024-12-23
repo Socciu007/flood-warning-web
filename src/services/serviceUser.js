@@ -123,6 +123,20 @@ export const getListUserPreferred = async (body, accessToken) => {
   }
 };
 
+// Get wishlist by userID
+export const getWishlistByUserID = async (userId, accessToken) => {
+  try {
+    const res = await axios.get(`${process.env.REACT_APP_API_KEY}/api/users/get-wishlist/${userId}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    return false;
+  }
+};
+
 // Update user profile
 export const updateUserProfile = async (id, data) => {
   try {

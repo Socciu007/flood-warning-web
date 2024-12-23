@@ -102,6 +102,9 @@ const NavbarComponent = () => {
       >
         <FormFillUser />
       </ModalFormComponent>
+      <Link style={{ color: "#000"}} to="/wishlist">
+        <p>{t("My wishlist")}</p>
+      </Link>
       <p onClick={handleLogout}>{t("Logout")}</p>
     </div>
   );
@@ -167,13 +170,13 @@ const NavbarComponent = () => {
               content={content}
             >
               <Button type="link" icon={<UserOutlined />}>
-                {currentUser.username || currentUser.email.split("@")[0]}
+                {currentUser?.username || currentUser?.email?.split("@")[0]}
               </Button>
             </Popover>
           )}
 
           <Select
-            defaultValue={"eng"}
+            defaultValue={storageService.get("language") || "eng"}
             style={{ width: 120 }}
             onChange={handleChangeLanguage}
             options={[

@@ -79,13 +79,9 @@ const DashboardComponent = () => {
       } else {
         setDataAreas(
           formattedAreas.filter((area) => {
-            return (
-              area.nameArea.toLowerCase().includes(searchArea.toLowerCase()) ||
-              area.province.toLowerCase().includes(searchArea.toLowerCase()) ||
-              area.typeArea.toLowerCase().includes(searchArea.toLowerCase()) ||
-              area.area.toLowerCase().includes(searchArea.toLowerCase()) ||
-              area.nameRegion.toLowerCase().includes(searchArea.toLowerCase())
-            );
+              return Object?.values(area)?.some((field) =>
+                String(field)?.toLowerCase()?.includes(searchArea?.toLowerCase())
+              );
           })
         );
       }
@@ -290,10 +286,6 @@ const DashboardComponent = () => {
       ],
     },
   ];
-  console.log(
-    "dataDetailWarning?.detailWarning",
-    dataDetailWarning?.detailWarning
-  );
 
   // Render content detail warning
   const contentDetailWarning = () => {
@@ -524,7 +516,10 @@ const DashboardComponent = () => {
                   <ColumnHeightOutlined />
                 </Tooltip>
               ),
-              // search: true,
+              search: {
+                placeholder: t("Search"),
+                onSearch: (value) => setSearchArea(value),
+              },
               setting: false,
               // setting: {
               //   settingIcon: (
