@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   ProForm,
-  ProFormDependency,
-  ProFormSelect,
   ProFormText,
 } from "@ant-design/pro-components";
 import {
@@ -15,24 +13,24 @@ import {
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import "./style.scss";
-import { getAllRegion } from "../../services/serviceArea";
+// import { getAllRegion } from "../../services/serviceArea";
 import { registerUser } from "../../services/serviceUser";
 import { message } from "antd";
 
 const RegisterPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [regions, setRegions] = useState([]);
+  // const [regions, setRegions] = useState([]);
 
   // Get all regions
-  const fetchAllRegion = async () => {
-    const res = await getAllRegion();
-    setRegions(res.data);
-  };
+  // const fetchAllRegion = async () => {
+  //   const res = await getAllRegion();
+  //   setRegions(res.data);
+  // };
 
-  useEffect(() => {
-    fetchAllRegion();
-  }, []);
+  // useEffect(() => {
+  //   fetchAllRegion();
+  // }, []);
 
   const handleRegister = async (values) => {
     const res = await registerUser({...values, role: "citizen"});

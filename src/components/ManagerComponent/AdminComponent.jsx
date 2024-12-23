@@ -15,13 +15,25 @@ import {
   sendManyNoticeToArea,
 } from "../../services/serviceNotifications";
 import { getAllExam } from "../../services/serviceExam";
-import { getAllFarmAreas, deleteFarmArea, updateFarmArea } from "../../services/serviceFarmArea";
+import {
+  getAllFarmAreas,
+  deleteFarmArea,
+  updateFarmArea,
+} from "../../services/serviceFarmArea";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import { getAllUsers, updateUserProfile, deleteUser, registerUser } from "../../services/serviceUser";
+import {
+  getAllUsers,
+  updateUserProfile,
+  deleteUser,
+  registerUser,
+} from "../../services/serviceUser";
 import "./style.scss";
 import { formatDateTime, renderString } from "../../utils";
-import { updateStandardData, getStandardData } from "../../services/serviceExam";
+import {
+  updateStandardData,
+  getStandardData,
+} from "../../services/serviceExam";
 import { setStandardData } from "../../redux/slices/standardDataSlice.ts";
 import ModalFormComponent from "../ModalFormComponent/ModalFormComponent";
 import DrawerComponent from "../DrawerComponent/DrawerComponent";
@@ -39,6 +51,11 @@ const AdminComponent = ({ activeTab }) => {
   const [dataAreas, setDataAreas] = useState([]);
   const [dataSend, setDataSend] = useState([]);
   const [dataRows, setDataRows] = useState([]);
+  const [searchNotice, setSearchNotice] = useState("");
+  const [searchExam, setSearchExam] = useState("");
+  const [searchUser, setSearchUser] = useState("");
+  const [searchArea, setSearchArea] = useState("");
+  const [searchDashboardAdmin, setSearchDashboardAdmin] = useState("");
   const [isOpenDrawerAddUser, setIsOpenDrawerAddUser] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const { standardData } = useSelector((state) => state.standardData);
@@ -68,12 +85,21 @@ const AdminComponent = ({ activeTab }) => {
     queryFn: () => getAllUsers(),
   });
 
-  // Set data wishlist
+  // Set data users
   useEffect(() => {
     if (usersData) {
-      setDataUsers(usersData.data);
+      if (searchUser === "") {
+        setDataUsers(usersData.data);
+      } else {
+        const cloneUsers = usersData.data.filter((u) => {
+          return Object.values(u).some((field) =>
+            String(field).toLowerCase().includes(searchUser.toLowerCase())
+          );
+        });
+        setDataUsers(cloneUsers);
+      }
     }
-  }, [usersData]);
+  }, [usersData, searchUser]);
 
   // Set data notifications
   useEffect(() => {
@@ -82,9 +108,18 @@ const AdminComponent = ({ activeTab }) => {
         ...noti,
         sender: noti.userId.username,
       }));
-      setDataNotification(cloneNotifications);
+      if (searchNotice === "") {
+        setDataNotification(cloneNotifications);
+      } else {
+        const cloneNotificationsFilter = cloneNotifications.filter((noti) => {
+          return Object.values(noti).some((field) =>
+            String(field).toLowerCase().includes(searchNotice.toLowerCase())
+          );
+        });
+        setDataNotification(cloneNotificationsFilter);
+      }
     }
-  }, [notifications]);
+  }, [notifications, searchNotice]);
 
   // Set data examinations
   useEffect(() => {
@@ -92,11 +127,20 @@ const AdminComponent = ({ activeTab }) => {
       const formattedExaminations = examinations.map((exam) => ({
         ...exam,
         nameFarm: exam.farmAreaId.name,
-        typeFarm: exam.farmAreaId.type
+        typeFarm: exam.farmAreaId.type,
       }));
-      setDataExaminations(formattedExaminations);
+      if (searchExam === "") {
+        setDataExaminations(formattedExaminations);
+      } else {
+        const cloneExaminations = formattedExaminations.filter((exam) => {
+          return Object.values(exam).some((field) =>
+            String(field).toLowerCase().includes(searchExam.toLowerCase())
+          );
+        });
+        setDataExaminations(cloneExaminations);
+      }
     }
-  }, [examinations]);
+  }, [examinations, searchExam]);
 
   // Set data farm area
   useEffect(() => {
@@ -110,9 +154,18 @@ const AdminComponent = ({ activeTab }) => {
         province: area.regionId.province,
         createdAt: area.createdAt,
       }));
-      setDataAreas(formattedAreas);
+      if (searchArea === "") {
+        setDataAreas(formattedAreas);
+      } else {
+        const cloneAreas = formattedAreas.filter((area) => {
+          return Object.values(area).some((field) =>
+            String(field).toLowerCase().includes(searchArea.toLowerCase())
+          );
+        });
+        setDataAreas(cloneAreas);
+      }
     }
-  }, [farmAreas]);
+  }, [farmAreas, searchArea]);
 
   const columnsNoti = [
     {
@@ -125,13 +178,13 @@ const AdminComponent = ({ activeTab }) => {
     {
       title: t("Sender"),
       dataIndex: "sender",
-      className: "table-cell"
+      className: "table-cell",
     },
     {
       title: t("Title"),
       dataIndex: "title",
       className: "table-cell",
-      width: 240,
+      width: 250,
     },
     {
       title: t("Description"),
@@ -146,6 +199,15 @@ const AdminComponent = ({ activeTab }) => {
       copyable: true,
       ellipsis: true,
       width: 350,
+      render: (text) => (
+        <Tooltip
+          title={text}
+          overlayClassName="custom-tooltip"
+          overlayStyle={{ width: 300 }}
+        >
+          <span>{text}</span>
+        </Tooltip>
+      ),
     },
     {
       title: t("Type"),
@@ -220,9 +282,7 @@ const AdminComponent = ({ activeTab }) => {
       dataIndex: "ammonia",
       className: "table-cell",
       render: (_, record) => {
-        return (
-          <span>{record.ammonia ? record.ammonia.toFixed(2) : "-"}</span>
-        );
+        return <span>{record.ammonia ? record.ammonia.toFixed(2) : "-"}</span>;
       },
     },
     {
@@ -232,9 +292,7 @@ const AdminComponent = ({ activeTab }) => {
       render: (_, record) => {
         return (
           <span>
-            {record.suspendedSolids
-              ? record.suspendedSolids.toFixed(2)
-              : "-"}
+            {record.suspendedSolids ? record.suspendedSolids.toFixed(2) : "-"}
           </span>
         );
       },
@@ -244,7 +302,9 @@ const AdminComponent = ({ activeTab }) => {
       dataIndex: "salinity",
       className: "table-cell",
       render: (_, record) => {
-        return <span>{record.salinity ? record.salinity.toFixed(2) : "-"}</span>;
+        return (
+          <span>{record.salinity ? record.salinity.toFixed(2) : "-"}</span>
+        );
       },
     },
     {
@@ -270,7 +330,9 @@ const AdminComponent = ({ activeTab }) => {
       dataIndex: "phosphat",
       className: "table-cell",
       render: (_, record) => {
-        return <span>{record.phosphat ? record.phosphat.toFixed(2) : "-"}</span>;
+        return (
+          <span>{record.phosphat ? record.phosphat.toFixed(2) : "-"}</span>
+        );
       },
     },
     {
@@ -279,9 +341,7 @@ const AdminComponent = ({ activeTab }) => {
       className: "table-cell",
       render: (_, record) => {
         return (
-          <span>
-            {record.rainfall ? record.rainfall.toFixed(2) : "-"}
-          </span>
+          <span>{record.rainfall ? record.rainfall.toFixed(2) : "-"}</span>
         );
       },
     },
@@ -399,7 +459,7 @@ const AdminComponent = ({ activeTab }) => {
         return <span>{record.F ? record.F.toFixed(2) : "-"}</span>;
       },
     },
-    { 
+    {
       title: "Cr6+",
       dataIndex: "Cr6",
       className: "table-cell",
@@ -424,9 +484,7 @@ const AdminComponent = ({ activeTab }) => {
       render: (_, record) => {
         return (
           <span>
-            {record.numberWarning.level
-              ? record.numberWarning.level
-              : "-"}
+            {record.numberWarning.level ? record.numberWarning.level : "-"}
           </span>
         );
       },
@@ -622,9 +680,9 @@ const AdminComponent = ({ activeTab }) => {
       },
       valueType: "select",
       valueEnum: {
-        "admin": t("Admin"),
-        "manager": t("Manager"),
-        "citizen": t("Citizen"),
+        admin: t("Admin"),
+        manager: t("Manager"),
+        citizen: t("Citizen"),
       },
       editable: false,
     },
@@ -723,13 +781,15 @@ const AdminComponent = ({ activeTab }) => {
   };
 
   // Handle send notice to area
-  const handleSendNotice = async (data, type) => { 
+  const handleSendNotice = async (data, type) => {
     if (data.length === 0) {
-      message.warning(t("Please select at least one examination to send notice!"));
+      message.warning(
+        t("Please select at least one examination to send notice!")
+      );
       return;
     }
-    const res = await sendManyNoticeToArea({data, type: type});
-    
+    const res = await sendManyNoticeToArea({ data, type: type });
+
     if (res) {
       message.success(t("Send notice to area success!"));
       actionRef.current?.clearSelected?.();
@@ -943,7 +1003,7 @@ const AdminComponent = ({ activeTab }) => {
       username: record.username,
       email: record.email,
       phone: record.phone,
-      address: record.address
+      address: record.address,
     };
     const res = await updateUserProfile(id, userUpdated);
     if (res) {
@@ -973,10 +1033,10 @@ const AdminComponent = ({ activeTab }) => {
 
   // Handle create standard data
   const handleUpdatedStandard = async (values) => {
-    const id = standardData.find(item => item.type === values.typeArea)._id;
+    const id = standardData.find((item) => item.type === values.typeArea)._id;
     const res = await updateStandardData(values, id);
     const getStandard = await getStandardData();
-    
+
     if (res) {
       dispatch(setStandardData(getStandard));
       message.success(t("Update standard data success!"));
@@ -1015,15 +1075,14 @@ const AdminComponent = ({ activeTab }) => {
                     <ColumnHeightOutlined />
                   </Tooltip>
                 ),
-                // search: true
+                search: {
+                  placeholder: t("Search"),
+                  collapseRender: (_, props) => {
+                    return props.searchText;
+                  },
+                  onSearch: (value) => setSearchNotice(value),
+                },
                 setting: false,
-                // setting: {
-                //   settingIcon: (
-                //     <Tooltip title={t("Setting")}>
-                //       <SettingOutlined />
-                //     </Tooltip>
-                //   ),
-                // },
               },
             }}
           />
@@ -1054,15 +1113,14 @@ const AdminComponent = ({ activeTab }) => {
                     <ColumnHeightOutlined />
                   </Tooltip>
                 ),
-                // search: true
+                search: {
+                  placeholder: t("Search"),
+                  collapseRender: (_, props) => {
+                    return props.searchText;
+                  },
+                  onSearch: (value) => setSearchUser(value),
+                },
                 setting: false,
-                // setting: {
-                //   settingIcon: (
-                //     <Tooltip title={t("Setting")}>
-                //       <SettingOutlined />
-                //     </Tooltip>
-                //   ),
-                // },
               },
               toolBarRender: () => [
                 <Button
@@ -1099,6 +1157,13 @@ const AdminComponent = ({ activeTab }) => {
                     <ColumnHeightOutlined />
                   </Tooltip>
                 ),
+                search: {
+                  placeholder: t("Search"),
+                  collapseRender: (_, props) => {
+                    return props.searchText;
+                  },
+                  onSearch: (value) => setSearchExam(value),
+                },
                 setting: false,
               },
               toolBarRender: () => [
@@ -1111,13 +1176,13 @@ const AdminComponent = ({ activeTab }) => {
                   {t("Send notice")}
                 </Button>,
                 <Button
-                key="button"
-                icon={<MailOutlined />}
-                onClick={() => handleSendNotice(dataRows, "email")}
-                type="primary"
-              >
-                {t("Send email")}
-              </Button>,
+                  key="button"
+                  icon={<MailOutlined />}
+                  onClick={() => handleSendNotice(dataRows, "email")}
+                  type="primary"
+                >
+                  {t("Send email")}
+                </Button>,
               ],
             }}
           />
@@ -1155,7 +1220,13 @@ const AdminComponent = ({ activeTab }) => {
                     <ColumnHeightOutlined />
                   </Tooltip>
                 ),
-                // search: true
+                search: {
+                  placeholder: t("Search"),
+                  collapseRender: (_, props) => {
+                    return props.searchText;
+                  },
+                  onSearch: (value) => setSearchArea(value),
+                },
                 setting: false,
                 // setting: {
                 //   settingIcon: (

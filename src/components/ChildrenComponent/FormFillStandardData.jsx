@@ -91,12 +91,18 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="DO"
                   label="DO(mg/l)"
-                  initialValue={standardData?.find(item => item.type === typeArea)?.DO?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.DO?.[0] || 0
+                  }
                   placeholder={false}
                   min={0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -109,7 +115,12 @@ const FormFillStandardData = ({ onFinish }) => {
                       : "Suitable temperature(°C)"
                   }
                   name="temperatureRight"
-                  initialValue={[standardData?.find(item => item.type === typeArea)?.temperatureRight?.[0] || 0, standardData?.find(item => item.type === typeArea)?.temperatureRight?.[1] || 0]}
+                  initialValue={[
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.temperatureRight?.[0] || 0,
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.temperatureRight?.[1] || 0,
+                  ]}
                   separator="-"
                   separatorWidth={30}
                   placeholder={[false, false]}
@@ -117,6 +128,9 @@ const FormFillStandardData = ({ onFinish }) => {
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -127,12 +141,20 @@ const FormFillStandardData = ({ onFinish }) => {
                   label="Rainfall(mm/year)"
                   separator="-"
                   separatorWidth={30}
-                  initialValue={[standardData?.find(item => item.type === typeArea)?.rainfall?.[0] || 0, standardData?.find(item => item.type === typeArea)?.rainfall?.[1] || 0]}
+                  initialValue={[
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.rainfall?.[0] || 0,
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.rainfall?.[1] || 0,
+                  ]}
                   placeholder={[false, false]}
                   min={0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -145,12 +167,20 @@ const FormFillStandardData = ({ onFinish }) => {
                   label="pH"
                   separator="-"
                   separatorWidth={30}
-                  initialValue={[standardData?.find(item => item.type === typeArea)?.pH?.[0] || 0, standardData?.find(item => item.type === typeArea)?.pH?.[1] || 0]}
+                  initialValue={[
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.pH?.[0] || 0,
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.pH?.[1] || 0,
+                  ]}
                   placeholder={[false, false]}
                   min={0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -163,12 +193,20 @@ const FormFillStandardData = ({ onFinish }) => {
                   label="Salinity(‰)"
                   separator="-"
                   separatorWidth={30}
-                  initialValue={[standardData?.find(item => item.type === typeArea)?.salinity?.[0] || 0, standardData?.find(item => item.type === typeArea)?.salinity?.[1] || 0]}
+                  initialValue={[
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.salinity?.[0] || 0,
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.salinity?.[1] || 0,
+                  ]}
                   placeholder={[false, false]}
                   min={0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -180,12 +218,20 @@ const FormFillStandardData = ({ onFinish }) => {
                   label="Alkalinity(mg/l)"
                   separator="-"
                   separatorWidth={30}
-                  initialValue={[standardData?.find(item => item.type === typeArea)?.alkalinity?.[0] || 0, standardData?.find(item => item.type === typeArea)?.alkalinity?.[1] || 0]}
+                  initialValue={[
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.alkalinity?.[0] || 0,
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.alkalinity?.[1] || 0,
+                  ]}
                   placeholder={[false, false]}
                   min={0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -196,12 +242,20 @@ const FormFillStandardData = ({ onFinish }) => {
                   label="Clarity(cm)"
                   separator="-"
                   separatorWidth={30}
-                  initialValue={[standardData?.find(item => item.type === typeArea)?.clarity?.[0] || 0, standardData?.find(item => item.type === typeArea)?.clarity?.[1] || 0]}
+                  initialValue={[
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.clarity?.[0] || 0,
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.clarity?.[1] || 0,
+                  ]}
                   placeholder={[false, false]}
                   min={0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -212,11 +266,17 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="ammonia"
                   label="NH₃(mg/l)"
-                  initialValue={standardData?.find(item => item.type === typeArea)?.ammonia?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.ammonia?.[0] || 0
+                  }
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -227,10 +287,16 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="H2S"
                   label="H₂S(mg/l)"
                   placeholder={false}
-                  initialValue={standardData?.find(item => item.type === typeArea)?.H2S?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.H2S?.[0] || 0
+                  }
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -243,12 +309,20 @@ const FormFillStandardData = ({ onFinish }) => {
                   label="Temperature(°C)"
                   separator="-"
                   separatorWidth={30}
-                  initialValue={[standardData?.find(item => item.type === typeArea)?.temperature?.[0] || 0, standardData?.find(item => item.type === typeArea)?.temperature?.[1] || 0]}
+                  initialValue={[
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.temperature?.[0] || 0,
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.temperature?.[1] || 0,
+                  ]}
                   placeholder={[false, false]}
                   min={0}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -258,10 +332,16 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="photsPhat"
                   label="Photsphat(mg/l)"
                   placeholder={false}
-                  initialValue={standardData?.find(item => item.type === typeArea)?.photsPhat?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.photsPhat?.[0] || 0
+                  }
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -271,11 +351,17 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="BOD30"
                   label="BOD₅(mg/l)"
-                  initialValue={standardData?.find(item => item.type === typeArea)?.BOD30?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.BOD30?.[0] || 0
+                  }
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -285,11 +371,17 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="COD"
                   label="COD(mg/l)"
-                  initialValue={standardData?.find(item => item.type === typeArea)?.COD?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.COD?.[0] || 0
+                  }
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -298,11 +390,17 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="coliform"
                   label="Coliform(MPN/100ml)"
-                  initialValue={standardData?.find(item => item.type === typeArea)?.coliform?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.coliform?.[0] || 0
+                  }
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -313,11 +411,17 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="suspendedSolids"
                   label="TSS(mg/l)"
-                  initialValue={standardData?.find(item => item.type === typeArea)?.suspendedSolids?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.suspendedSolids?.[0] || 0
+                  }
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -327,11 +431,17 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="CN"
                   label="CN-(mg/l)"
-                  initialValue={standardData?.find(item => item.type === typeArea)?.CN?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.CN?.[0] || 0
+                  }
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -342,11 +452,17 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="As"
                   label="As(mg/l)"
-                  initialValue={standardData?.find(item => item.type === typeArea)?.As?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.As?.[0] || 0
+                  }
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -357,11 +473,17 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="Cd"
                   label="Cd(mg/l)"
-                  initialValue={standardData?.find(item => item.type === typeArea)?.Cd?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.Cd?.[0] || 0
+                  }
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -372,11 +494,17 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="Pb"
                   label="Pb(mg/l)"
-                  initialValue={standardData?.find(item => item.type === typeArea)?.Pb?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.Pb?.[0] || 0
+                  }
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -388,10 +516,16 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="Cu"
                   label="Cu(mg/l)"
                   placeholder={false}
-                  initialValue={standardData?.find(item => item.type === typeArea)?.Cu?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.Cu?.[0] || 0
+                  }
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -400,11 +534,17 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="Hg"
                   label="Hg(mg/l)"
-                  initialValue={standardData?.find(item => item.type === typeArea)?.Hg?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.Hg?.[0] || 0
+                  }
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -416,10 +556,16 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="Zn"
                   label="Zn(mg/l)"
                   placeholder={false}
-                  initialValue={standardData?.find(item => item.type === typeArea)?.Zn?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.Zn?.[0] || 0
+                  }
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -429,10 +575,16 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="F"
                   label="F-(mg/l)"
                   placeholder={false}
-                  initialValue={standardData?.find(item => item.type === typeArea)?.F?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.F?.[0] || 0
+                  }
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -442,10 +594,16 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="Cr6"
                   label="Cr6+(mg/l)"
                   placeholder={false}
-                  initialValue={standardData?.find(item => item.type === typeArea)?.Cr6?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.Cr6?.[0] || 0
+                  }
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -455,10 +613,16 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="Mn"
                   label="Mn(mg/l)"
                   placeholder={false}
-                  initialValue={standardData?.find(item => item.type === typeArea)?.Mn?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.Mn?.[0] || 0
+                  }
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -468,10 +632,16 @@ const FormFillStandardData = ({ onFinish }) => {
                   name="Fe"
                   label="Fe(mg/l)"
                   placeholder={false}
-                  initialValue={standardData?.find(item => item.type === typeArea)?.Fe?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.Fe?.[0] || 0
+                  }
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -481,11 +651,17 @@ const FormFillStandardData = ({ onFinish }) => {
                   width="xs"
                   name="totalCrom"
                   label="Total Crom(mg/l)"
-                  initialValue={standardData?.find(item => item.type === typeArea)?.totalCrom?.[0] || 0}
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.totalCrom?.[0] || 0
+                  }
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}
@@ -493,12 +669,18 @@ const FormFillStandardData = ({ onFinish }) => {
                 <ProFormDigit
                   width="xs"
                   name="totalPH"
-                  initialValue={standardData?.find(item => item.type === typeArea)?.totalPH?.[0] || 0}
-                  label="Total mineral oil and grease"
+                  initialValue={
+                    standardData?.find((item) => item.type === typeArea)
+                      ?.totalPH?.[0] || 0
+                  }
+                  label="Total oil and grease(mg/l)"
                   placeholder={false}
                   fieldProps={{
                     precision: 4,
                     controls: false,
+                    formatter: (value) => {
+                      return value ? parseFloat(value).toString() : "";
+                    },
                   }}
                 />
               )}

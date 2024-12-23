@@ -40,6 +40,10 @@ const ManagerComponent = ({ activeTab }) => {
   const [dataWishlist, setDataWishlist] = useState([]);
   const [dataAreas, setDataAreas] = useState([]);
   const [dataSend, setDataSend] = useState([]);
+  const [searchNotice, setSearchNotice] = useState("");
+  const [searchExam, setSearchExam] = useState("");
+  const [searchArea, setSearchArea] = useState("");
+  const [searchUser, setSearchUser] = useState("");
   const [isOpenDrawerAddFarm, setIsOpenDrawerAddFarm] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const queryClient = useQueryClient();
@@ -77,16 +81,32 @@ const ManagerComponent = ({ activeTab }) => {
   useEffect(() => {
     if (listUserPreferred) {
       const cloneData = listUserPreferred?.data?.map((u) => u.userInfo);
-      setDataWishlist(cloneData);
+      if (searchUser === "") {
+        setDataWishlist(cloneData);
+      } else {
+        const cloneData = cloneData.filter((u) => {
+          return Object.values(u).some((field) =>
+            String(field).toLowerCase().includes(searchUser.toLowerCase())
+          );
+        });
+        setDataWishlist(cloneData);
+      }
     }
-  }, [listUserPreferred]);
+  }, [listUserPreferred, searchUser]);
 
   // Set data notifications
   useEffect(() => {
     if (notifications) {
-      setDataNotification(notifications);
+      if (searchNotice === "") {
+        setDataNotification(notifications);
+      } else {
+        const cloneData = notifications.filter((n) => {
+          return String(n.title).toLowerCase().includes(searchNotice.toLowerCase());
+        });
+        setDataNotification(cloneData);
+      }
     }
-  }, [notifications]);
+  }, [notifications, searchNotice]);
 
   // Set data examinations
   useEffect(() => {
@@ -96,9 +116,16 @@ const ManagerComponent = ({ activeTab }) => {
         nameFarm: exam?.farmAreaId?.name,
         typeFarm: exam?.farmAreaId?.type
       }));
-      setDataExaminations(formattedExaminations);
+      if (searchExam === "") {
+        setDataExaminations(formattedExaminations);
+      } else {
+        const cloneData = formattedExaminations.filter((exam) => {
+          return String(exam.nameFarm).toLowerCase().includes(searchExam.toLowerCase());
+        });
+        setDataExaminations(cloneData);
+      }
     }
-  }, [examinations]);
+  }, [examinations, searchExam]);
 
   // Set data farm area
   useEffect(() => {
@@ -113,9 +140,16 @@ const ManagerComponent = ({ activeTab }) => {
         regionId: area.regionId._id,
         createdAt: area.createdAt,
       }));
-      setDataAreas(formattedAreas);
+      if (searchArea === "") {
+        setDataAreas(formattedAreas);
+      } else {
+        const cloneData = formattedAreas.filter((area) => {
+          return String(area.nameArea).toLowerCase().includes(searchArea.toLowerCase());
+        });
+        setDataAreas(cloneData);
+      }
     }
-  }, [areas]);
+  }, [areas, searchArea]);
 
   const columnsNoti = [
     {
@@ -129,7 +163,7 @@ const ManagerComponent = ({ activeTab }) => {
       title: t("Title"),
       dataIndex: "title",
       className: "table-cell",
-      width: 240,
+      width: 250,
     },
     {
       title: t("Description"),
@@ -891,15 +925,14 @@ const ManagerComponent = ({ activeTab }) => {
                     <ColumnHeightOutlined />
                   </Tooltip>
                 ),
-                // search: true
+                search: {
+                  placeholder: t("Search"),
+                  collapseRender: (_, props) => {
+                    return props.searchText;
+                  },
+                  onSearch: (value) => setSearchNotice(value),
+                },
                 setting: false,
-                // setting: {
-                //   settingIcon: (
-                //     <Tooltip title={t("Setting")}>
-                //       <SettingOutlined />
-                //     </Tooltip>
-                //   ),
-                // },
               },
             }}
           />
@@ -929,7 +962,13 @@ const ManagerComponent = ({ activeTab }) => {
                     <ColumnHeightOutlined />
                   </Tooltip>
                 ),
-                // search: true
+                search: {
+                  placeholder: t("Search"),
+                  collapseRender: (_, props) => {
+                    return props.searchText;
+                  },
+                  onSearch: (value) => setSearchUser(value),
+                },
                 setting: false,
                 // setting: {
                 //   settingIcon: (
@@ -973,7 +1012,13 @@ const ManagerComponent = ({ activeTab }) => {
                     <ColumnHeightOutlined />
                   </Tooltip>
                 ),
-                // search: true
+                search: {
+                  placeholder: t("Search"),
+                  collapseRender: (_, props) => {
+                    return props.searchText;
+                  },
+                  onSearch: (value) => setSearchExam(value),
+                },
                 setting: false,
                 // setting: {
                 //   settingIcon: (
@@ -1023,11 +1068,6 @@ const ManagerComponent = ({ activeTab }) => {
               },
               options: {
                 reload: false,
-                // reload: async () => {
-                //   await queryClient.invalidateQueries({
-                //     queryKey: ["areasTab"],
-                //   });
-                // },
                 reloadIcon: (
                   <Tooltip title={t("Refresh")}>
                     <ReloadOutlined />
@@ -1039,15 +1079,14 @@ const ManagerComponent = ({ activeTab }) => {
                     <ColumnHeightOutlined />
                   </Tooltip>
                 ),
-                // search: true
+                search: {
+                  placeholder: t("Search"),
+                  collapseRender: (_, props) => {
+                    return props.searchText;
+                  },
+                  onSearch: (value) => setSearchArea(value),
+                },
                 setting: false,
-                // setting: {
-                //   settingIcon: (
-                //     <Tooltip title={t("Setting")}>
-                //       <SettingOutlined />
-                //     </Tooltip>
-                //   ),
-                // },
               },
               toolBarRender: () => [
                 <Button
