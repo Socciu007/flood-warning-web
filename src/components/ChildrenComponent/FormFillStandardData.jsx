@@ -19,12 +19,13 @@ const FormFillStandardData = ({ onFinish }) => {
   const handleChangeTypeArea = (value) => {
     setTypeArea(value);
     // Get standard values default
-    const standardValues = standardData.find(item => item.type === value) || {};
-    
+    const standardValues =
+      standardData.find((item) => item.type === value) || {};
+
     // Reset fields in form, keep typeArea value
     formRef.current.setFieldsValue({
       ...standardValues, // Update other fields
-      typeArea: value,   // Keep typeArea value
+      typeArea: value, // Keep typeArea value
     });
   };
 
@@ -49,24 +50,34 @@ const FormFillStandardData = ({ onFinish }) => {
       className="proform-standard-data"
       submitter={{
         render: (props, dom) => {
-          return (
-            <div className="proform-standard-data-submitter">
-              {dom}
-            </div>
-          );
+          return <div className="proform-standard-data-submitter">{dom}</div>;
         },
         searchConfig: {
           submitText: t("Save"),
           resetText: t("Back"),
         },
         submitButtonProps: {
-          style: { display: standardData?.find(item => item.type === typeArea) && Object.keys(standardData?.find(item => item.type === typeArea)).length > 0 ? "inline-block" : "none" },
+          style: {
+            display:
+              standardData?.find((item) => item.type === typeArea) &&
+              Object.keys(standardData?.find((item) => item.type === typeArea))
+                .length > 0
+                ? "inline-block"
+                : "none",
+          },
         },
         resetButtonProps: {
-          style: { display: standardData?.find(item => item.type === typeArea) && Object.keys(standardData?.find(item => item.type === typeArea)).length > 0 ? "inline-block" : "none" },
+          style: {
+            display:
+              standardData?.find((item) => item.type === typeArea) &&
+              Object.keys(standardData?.find((item) => item.type === typeArea))
+                .length > 0
+                ? "inline-block"
+                : "none",
+          },
           onClick: () => {
             setTypeArea("");
-          }
+          },
         },
       }}
       onFinish={onFinish}
@@ -81,8 +92,8 @@ const FormFillStandardData = ({ onFinish }) => {
       />
       <ProFormDependency name={["typeArea"]}>
         {({ typeArea }) => {
-          console.log('typeArea', typeArea);
-          console.log('standardData', standardData);
+          console.log("typeArea", typeArea);
+          console.log("standardData", standardData);
           return (
             <ProForm.Group>
               {(typeArea === "Oyster farming" ||
@@ -349,11 +360,11 @@ const FormFillStandardData = ({ onFinish }) => {
                 typeArea === "Oyster farming") && (
                 <ProFormDigit
                   width="xs"
-                  name="BOD30"
+                  name="BOD5"
                   label="BOD₅(mg/l)"
                   initialValue={
                     standardData?.find((item) => item.type === typeArea)
-                      ?.BOD30?.[0] || 0
+                      ?.BOD5?.[0] || 0
                   }
                   placeholder={false}
                   fieldProps={{
@@ -451,7 +462,9 @@ const FormFillStandardData = ({ onFinish }) => {
                 <ProFormDigit
                   width="xs"
                   name="As"
-                  label="As(mg/l)"
+                  label={`${
+                    typeArea === "Mangrove forest" ? "As(mg/kg)" : "As(mg/l)"
+                  }`}
                   initialValue={
                     standardData?.find((item) => item.type === typeArea)
                       ?.As?.[0] || 0
@@ -472,7 +485,9 @@ const FormFillStandardData = ({ onFinish }) => {
                 <ProFormDigit
                   width="xs"
                   name="Cd"
-                  label="Cd(mg/l)"
+                  label={`${
+                    typeArea === "Mangrove forest" ? "Cd(mg/kg)" : "Cd(mg/l)"
+                  }`}
                   initialValue={
                     standardData?.find((item) => item.type === typeArea)
                       ?.Cd?.[0] || 0
@@ -493,7 +508,9 @@ const FormFillStandardData = ({ onFinish }) => {
                 <ProFormDigit
                   width="xs"
                   name="Pb"
-                  label="Pb(mg/l)"
+                  label={`${
+                    typeArea === "Mangrove forest" ? "Pb(mg/kg)" : "Pb(mg/l)"
+                  }`}
                   initialValue={
                     standardData?.find((item) => item.type === typeArea)
                       ?.Pb?.[0] || 0
@@ -514,7 +531,9 @@ const FormFillStandardData = ({ onFinish }) => {
                 <ProFormDigit
                   width="xs"
                   name="Cu"
-                  label="Cu(mg/l)"
+                  label={`${
+                    typeArea === "Mangrove forest" ? "Cu(mg/kg)" : "Cu(mg/l)"
+                  }`}
                   placeholder={false}
                   initialValue={
                     standardData?.find((item) => item.type === typeArea)
@@ -554,7 +573,9 @@ const FormFillStandardData = ({ onFinish }) => {
                 <ProFormDigit
                   width="xs"
                   name="Zn"
-                  label="Zn(mg/l)"
+                  label={`${
+                    typeArea === "Mangrove forest" ? "Zn(mg/kg)" : "Zn(mg/l)"
+                  }`}
                   placeholder={false}
                   initialValue={
                     standardData?.find((item) => item.type === typeArea)

@@ -231,7 +231,7 @@ const FormFillExam = ({ typeArea }) => {
         <ProFormMoney
           width="xs"
           name="As"
-          label="As(mg/l)"
+          label={`${typeArea === "Mangrove forest" ? "As(mg/kg)" : "As(mg/l)"}`}
           tooltip={t("As")}
           placeholder={false}
           fieldProps={{
@@ -243,7 +243,7 @@ const FormFillExam = ({ typeArea }) => {
         <ProFormMoney
           width="xs"
           name="Cd"
-          label="Cd(mg/l)"
+          label={`${typeArea === "Mangrove forest" ? "Cd(mg/kg)" : "Cd(mg/l)"}`}
           tooltip={t("Cd")}
           placeholder={false}
           fieldProps={{
@@ -255,7 +255,7 @@ const FormFillExam = ({ typeArea }) => {
         <ProFormMoney
           width="xs"
           name="Pb"
-          label="Pb(mg/l)"
+          label={`${typeArea === "Mangrove forest" ? "Pb(mg/kg)" : "Pb(mg/l)"}`}
           tooltip={t("Pb")}
           placeholder={false}
           fieldProps={{
@@ -267,7 +267,7 @@ const FormFillExam = ({ typeArea }) => {
         <ProFormMoney
           width="xs"
           name="Cu"
-          label="Cu(mg/l)"
+          label={`${typeArea === "Mangrove forest" ? "Cu(mg/kg)" : "Cu(mg/l)"}`}
           tooltip={t("Cu")}
           placeholder={false}
           fieldProps={{
@@ -293,7 +293,7 @@ const FormFillExam = ({ typeArea }) => {
         <ProFormMoney
           width="xs"
           name="Zn"
-          label="Zn(mg/l)"
+          label={`${typeArea === "Mangrove forest" ? "Zn(mg/kg)" : "Zn(mg/l)"}`}
           tooltip={t("Zn")}
           placeholder={false}
           fieldProps={{
