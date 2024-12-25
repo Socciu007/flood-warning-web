@@ -21,6 +21,8 @@ const DetailsAlertPage = () => {
     fetchDetailAlert();
   }, [id]);
 
+  console.log("detailAlert", detailAlert?.content);
+
   return (
     <div className="details-alert-page">
       <NavbarComponent />
@@ -46,7 +48,7 @@ const DetailsAlertPage = () => {
             </div>
             <div className="content-detail-content">
               {detailAlert !== null &&
-                detailAlert?.content.map((item, index) => (
+                detailAlert?.content?.filter((item) => item !== "      ").map((item, index) => (
                   <p
                     key={index}
                     style={{ marginLeft: index === 0 ? "0" : "1em" }}
