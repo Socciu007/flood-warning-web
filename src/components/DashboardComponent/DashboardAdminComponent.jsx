@@ -10,8 +10,10 @@ import {
   DeleteFilled,
   ReloadOutlined,
   FileAddOutlined,
+  FileExcelOutlined,
+  FileWordOutlined,
 } from "@ant-design/icons";
-import { Tag, Popover } from "antd";
+import { Tag, Popover, Button } from "antd";
 // import SearchComponent from "../SearchComponent/SearchComponent";
 import TableComponent from "../TableComponent/TableComponent";
 import {
@@ -30,6 +32,9 @@ import { testAreaFarm } from "../../services/serviceExam";
 import ContentDetailAlert from "../ContentComponent/ContentDetailAlert";
 import FormFillExam from "../ChildrenComponent/FormFillExam";
 import ContentDetailDataImport from "../ContentComponent/ContentDetailDataImport";
+import ContentExport from "../ContentComponent/ContentExport";
+import * as XLSX from "xlsx";
+import { Document, Packer, Paragraph, TextRun } from "docx";
 
 const DashboardAdminComponent = () => {
   const { t } = useTranslation();
@@ -340,6 +345,65 @@ const DashboardAdminComponent = () => {
     }
   };
 
+  // Handle export alert to excel
+  const handleExportAlertToExcel = () => {
+    const data = ContentExport(dataDetail);
+    const stringArray = data?.split("\n")?.filter((item) => item !== "false");
+    const worksheetData = stringArray.map((item) => [item]);
+    const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.writeFile(
+      workbook,
+      `alert_${dataDetail?.name
+        ?.split("-")[0]
+        ?.trim()
+        ?.replace(/\s+/g, "_")}.xlsx`
+    );
+  };
+
+  // Handle export alert to word
+  const handleExportAlertToWord = () => {
+    const data = ContentExport(dataDetail);
+    const stringArray = data.split("\n").filter((item) => item !== "false");
+    // Add text from stringArray to document
+    const paragraphs = stringArray.map((item, index) => {
+      const isFirstLine = index === 0;
+      return new Paragraph({
+        children: [
+          new TextRun({
+            text: item,
+            bold: isFirstLine, // In đậm nếu là dòng đầu tiên
+            size: 26, // Kích thước phông chữ (13px tương đương với 26 half-points)
+          }),
+        ],
+      });
+    });
+
+    // Create new document
+    const doc = new Document({
+      sections: [
+        {
+          properties: {},
+          children: paragraphs,
+        },
+      ],
+    });
+
+    // Export file .docx
+    Packer.toBlob(doc).then((blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `alert_${dataDetail?.name
+        ?.split("-")[0]
+        ?.trim()
+        ?.replace(/\s+/g, "_")}.docx`;
+      link.click();
+      window.URL.revokeObjectURL(url);
+    });
+  };
+
   return (
     <div className="dashboard-component">
       <div>
@@ -459,6 +523,19 @@ const DashboardAdminComponent = () => {
           onCancel: () => setOpenModalDetailData(false),
         }}
       >
+        <div className="right-dashboard-component-feature">
+          <p>{t("Export")}:</p>
+          <Tooltip title={t("Export to excel")} style={{ zIndex: 9999 }}>
+            <Button type="button" onClick={handleExportAlertToExcel}>
+              <FileExcelOutlined style={{ color: "#217346" }} />
+            </Button>
+          </Tooltip>
+          <Tooltip title={t("Export to word")}>
+            <Button type="button" onClick={handleExportAlertToWord}>
+              <FileWordOutlined style={{ color: "#2B579A" }} />
+            </Button>
+          </Tooltip>
+        </div>
         <ContentDetailDataImport dataDetail={dataDetail} />
       </ModalFormComponent>
     </div>

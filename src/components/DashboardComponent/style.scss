@@ -127,3 +127,13 @@
     font-size: 14px;
   }
 }
+
+.right-dashboard-component-feature {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  .ant-btn {
+    padding: 4px !important;
+  }
+}
