@@ -5,6 +5,7 @@ import {
   PlusOutlined,
   EditFilled,
   DeleteFilled,
+  FileExcelOutlined,
   MailOutlined,
 } from "@ant-design/icons";
 import { Tooltip, Button, Tag, message } from "antd";
@@ -41,6 +42,7 @@ import DrawerComponent from "../DrawerComponent/DrawerComponent";
 import FormFillAddUser from "../ChildrenComponent/FormFillAddUser";
 import FormFillStandardData from "../ChildrenComponent/FormFillStandardData";
 import { getBase64 } from "../../utils";
+import * as XLSX from "xlsx";
 
 const AdminComponent = ({ activeTab }) => {
   const { t } = useTranslation();
@@ -88,7 +90,6 @@ const AdminComponent = ({ activeTab }) => {
   // Set data users
   useEffect(() => {
     if (usersData) {
-      console.log(usersData.data);
       const cloneUsers = usersData.data.map((user) => ({
         ...user,
         region: user?.regionId?.name,
@@ -906,6 +907,21 @@ const AdminComponent = ({ activeTab }) => {
     return true;
   };
 
+  // Handle export examinations
+  const handleExportExaminations = () => {
+    const data = dataExaminations.map((item) => {
+      return {
+        ...item,
+        numberWarning: item.numberWarning.level,
+        farmAreaId: item.farmAreaId._id,
+      };
+    });
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.writeFile(workbook, "examinations.xlsx");
+  };
+
   return (
     <div className="manager-component">
       <div>
@@ -1043,6 +1059,14 @@ const AdminComponent = ({ activeTab }) => {
                 >
                   {t("Send email")}
                 </Button>,
+                <Button
+                key="button"
+                icon={<FileExcelOutlined />}
+                onClick={handleExportExaminations}
+                type="primary"
+              >
+                {t("Export Excel")}
+              </Button>,
               ],
             }}
           />

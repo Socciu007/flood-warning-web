@@ -7,6 +7,7 @@ const ContentDetailAlert = ({
   countWarning,
   handleOpenDetailWarning,
 }) => {
+  console.log(dataDetailWarning);
   const { t } = useTranslation();
   return (
     <div className="content-detail-warning">
@@ -135,6 +136,10 @@ const ContentDetailAlert = ({
         <p>
           {dataDetailWarning?.detailWarning?.numberWarning?.isTotalPH === 1 &&
             `• Total petroleum hydrocarbons: ${dataDetailWarning?.detailWarning?.totalPH} This level of Total petroleum hydrocarbons can lead to oxygen deficiency in the environment.`}
+        </p>
+        <p>
+          {dataDetailWarning?.detailWarning?.numberWarning?.isRainfall === 1 &&
+            `• Rainfall: ${dataDetailWarning?.detailWarning?.rainfall}mm/year This level of rainfall can lead to oxygen deficiency in the environment.`}
         </p>
       </div>
     </div>
