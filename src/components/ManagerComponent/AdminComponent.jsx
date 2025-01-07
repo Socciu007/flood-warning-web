@@ -36,10 +36,12 @@ import {
   updateStandardData,
   getStandardData,
 } from "../../services/serviceExam";
+import { createFarmArea } from "../../services/serviceFarmArea";
 import { setStandardData } from "../../redux/slices/standardDataSlice.ts";
 import ModalFormComponent from "../ModalFormComponent/ModalFormComponent";
 import DrawerComponent from "../DrawerComponent/DrawerComponent";
 import FormFillAddUser from "../ChildrenComponent/FormFillAddUser";
+import FormFillAddFarm from "../ChildrenComponent/FormFillFarm";
 import FormFillStandardData from "../ChildrenComponent/FormFillStandardData";
 import { getBase64 } from "../../utils";
 import * as XLSX from "xlsx";
@@ -59,6 +61,7 @@ const AdminComponent = ({ activeTab }) => {
   const [searchUser, setSearchUser] = useState("");
   const [searchArea, setSearchArea] = useState("");
   const [isOpenDrawerAddUser, setIsOpenDrawerAddUser] = useState(false);
+  const [isOpenDrawerAddFarm, setIsOpenDrawerAddFarm] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const { standardData } = useSelector((state) => state.standardData);
   const queryClient = useQueryClient();
@@ -892,6 +895,17 @@ const AdminComponent = ({ activeTab }) => {
     return true;
   };
 
+  // Handle create farm
+  const handleCreateFarm = async (values) => {
+    console.log('values', values);
+    // const res = await createFarmArea(values);
+    // if (res) {
+    //   message.success(t("Create area success!"));
+    // } else {
+    //   message.error(t("Create area failed!"));
+    // }
+  };
+
   // Handle create standard data
   const handleUpdatedStandard = async (values) => {
     const id = standardData.find((item) => item.type === values.typeArea)._id;
@@ -1090,14 +1104,6 @@ const AdminComponent = ({ activeTab }) => {
               },
               options: {
                 reload: false,
-                // reload: async () => {
-                //   await queryClient.refetchQueries(["farmAreas"]);
-                // },
-                // reloadIcon: (
-                //   <Tooltip title={t("Refresh")}>
-                //     <ReloadOutlined />
-                //   </Tooltip>
-                // ),
                 density: false,
                 densityIcon: (
                   <Tooltip title={t("Density")}>
@@ -1112,26 +1118,17 @@ const AdminComponent = ({ activeTab }) => {
                   onSearch: (value) => setSearchArea(value),
                 },
                 setting: false,
-                // setting: {
-                //   settingIcon: (
-                //     <Tooltip title={t("Setting")}>
-                //       <SettingOutlined />
-                //     </Tooltip>
-                //   ),
-                // },
               },
-              // toolBarRender: () => [
-              //   <Button
-              //     key="button"
-              //     icon={<PlusOutlined />}
-              //     onClick={() => {
-              //       actionRef.current?.reload();
-              //     }}
-              //     type="primary"
-              //   >
-              //     {t("Add farm")}
-              //   </Button>,
-              // ],
+              toolBarRender: () => [
+                <Button
+                  key="button"
+                  icon={<PlusOutlined />}
+                  onClick={() => setIsOpenDrawerAddFarm(true)}
+                  type="primary"
+                >
+                  {t("Add farm")}
+                </Button>,
+              ],
             }}
           />
         )}
@@ -1161,6 +1158,24 @@ const AdminComponent = ({ activeTab }) => {
         }}
       >
         <FormFillAddUser />
+      </DrawerComponent>
+      <DrawerComponent
+        title="Add new farm"
+        open={isOpenDrawerAddFarm}
+        onOpenChange={setIsOpenDrawerAddFarm}
+        submitter={{
+          searchConfig: {
+            submitText: t("Create"),
+            resetText: t("Cancel"),
+          },
+        }}
+        onFinish={async (values) => handleCreateFarm(values)}
+        props={{
+          width: "500px",
+          wrapClassName: "exam-drawer",
+        }}
+      >
+        <FormFillAddFarm />
       </DrawerComponent>
     </div>
   );
