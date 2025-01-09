@@ -36,7 +36,8 @@ import {
   updateStandardData,
   getStandardData,
 } from "../../services/serviceExam";
-import { createFarmArea } from "../../services/serviceFarmArea";
+import { createFarmAreaByAdmin } from "../../services/serviceFarmArea";
+import { createArea } from "../../services/serviceArea";
 import { setStandardData } from "../../redux/slices/standardDataSlice.ts";
 import ModalFormComponent from "../ModalFormComponent/ModalFormComponent";
 import DrawerComponent from "../DrawerComponent/DrawerComponent";
@@ -45,10 +46,12 @@ import FormFillAddFarm from "../ChildrenComponent/FormFillFarm";
 import FormFillStandardData from "../ChildrenComponent/FormFillStandardData";
 import { getBase64 } from "../../utils";
 import * as XLSX from "xlsx";
+import FormFillArea from "../ChildrenComponent/FormFillArea.jsx";
 
 const AdminComponent = ({ activeTab }) => {
   const { t } = useTranslation();
   const actionRef = useRef();
+  const formRef = useRef();
   const dispatch = useDispatch();
   const [dataNotification, setDataNotification] = useState([]);
   const [dataExaminations, setDataExaminations] = useState([]);
@@ -62,6 +65,7 @@ const AdminComponent = ({ activeTab }) => {
   const [searchArea, setSearchArea] = useState("");
   const [isOpenDrawerAddUser, setIsOpenDrawerAddUser] = useState(false);
   const [isOpenDrawerAddFarm, setIsOpenDrawerAddFarm] = useState(false);
+  const [isOpenDrawerAddArea, setIsOpenDrawerAddArea] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const { standardData } = useSelector((state) => state.standardData);
   const queryClient = useQueryClient();
@@ -897,13 +901,28 @@ const AdminComponent = ({ activeTab }) => {
 
   // Handle create farm
   const handleCreateFarm = async (values) => {
-    console.log('values', values);
-    // const res = await createFarmArea(values);
-    // if (res) {
-    //   message.success(t("Create area success!"));
-    // } else {
-    //   message.error(t("Create area failed!"));
-    // }
+    const res = await createFarmAreaByAdmin(values);
+    if (res.status) {
+      // Refresh data
+      await queryClient.invalidateQueries({ queryKey: ["farmAreas"] });
+      message.success(t("Create farm area success!"));
+    } else {
+      message.error(t("Create farm area failed!"));
+    }
+    return true;
+  };
+
+  //Handel create area
+  const handleCreateArea = async (values) => {
+    const res = await createArea(values);
+    if (res.data) {
+      // Refresh data
+      await queryClient.invalidateQueries({ queryKey: ["farmAreas"] });
+      message.success(t("Create area success!"));
+    } else {
+      message.error(t("Create area failed!"));
+    }
+    return true;
   };
 
   // Handle create standard data
@@ -1071,16 +1090,16 @@ const AdminComponent = ({ activeTab }) => {
                   onClick={() => handleSendNotice(dataRows, "email")}
                   type="primary"
                 >
-                  {t("Send email")}
+                  {t("Send Email")}
                 </Button>,
                 <Button
-                key="button"
-                icon={<FileExcelOutlined />}
-                onClick={handleExportExaminations}
-                type="primary"
-              >
-                {t("Export Excel")}
-              </Button>,
+                  key="button"
+                  icon={<FileExcelOutlined />}
+                  onClick={handleExportExaminations}
+                  type="primary"
+                >
+                  {t("Export Excel")}
+                </Button>,
               ],
             }}
           />
@@ -1128,6 +1147,14 @@ const AdminComponent = ({ activeTab }) => {
                 >
                   {t("Add farm")}
                 </Button>,
+                <Button
+                  key="button"
+                  icon={<PlusOutlined />}
+                  onClick={() => setIsOpenDrawerAddArea(true)}
+                  type="primary"
+                >
+                  {t("Add area")}
+                </Button>,
               ],
             }}
           />
@@ -1174,8 +1201,27 @@ const AdminComponent = ({ activeTab }) => {
           width: "500px",
           wrapClassName: "exam-drawer",
         }}
+        formRef={formRef}
       >
-        <FormFillAddFarm />
+        <FormFillAddFarm formRef={formRef} />
+      </DrawerComponent>
+      <DrawerComponent
+        title="Add new area"
+        open={isOpenDrawerAddArea}
+        onOpenChange={setIsOpenDrawerAddArea}
+        submitter={{
+          searchConfig: {
+            submitText: t("Create"),
+            resetText: t("Cancel"),
+          },
+        }}
+        onFinish={async (values) => handleCreateArea(values)}
+        props={{
+          width: "500px",
+          wrapClassName: "exam-drawer",
+        }}
+      >
+        <FormFillArea />
       </DrawerComponent>
     </div>
   );

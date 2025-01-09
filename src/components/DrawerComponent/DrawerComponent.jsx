@@ -10,6 +10,7 @@ const DrawerComponent = ({
   submitter,
   children,
   props,
+  formRef
 }) => {
   const { t } = useTranslation();
   return (
@@ -20,6 +21,7 @@ const DrawerComponent = ({
       onFinish={onFinish}
       submitter={submitter}
       drawerProps={{ ...props }}
+      formRef={formRef}
     >
       {children}
     </DrawerForm>

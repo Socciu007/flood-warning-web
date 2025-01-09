@@ -29,3 +29,9 @@ export const createFarmArea = async (regionId, data) => {
   const res = await axios.post(`${process.env.REACT_APP_API_KEY}/api/farm-areas/create-area/${regionId}`, data);
   return res.data;
 };
+
+// Create farm area
+export const createFarmAreaByAdmin = async (data) => {
+  const res = await axios.post(`${process.env.REACT_APP_API_KEY}/api/farm-areas/add-area-by-admin`, data);
+  return res.data;
+};
