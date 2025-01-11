@@ -694,7 +694,8 @@ const FormFillStandardData = ({ onFinish }) => {
                     standardData?.find((item) => item.type === typeArea)
                       ?.totalPH?.[0] || 0
                   }
-                  label="Total oil and grease(mg/l)"
+                  label="TOG(mg/l)"
+                  tooltip={t("Total oil and grease")}
                   placeholder={false}
                   fieldProps={{
                     precision: 4,

@@ -70,17 +70,18 @@ const WishlistPage = () => {
               >
                 {t("Favorite area")}
               </div>
-              <div
+              {/* <div
                 className={`wishlist-container-list-nav-title ${
                   activeTab === "formerly" ? "active" : ""
                 }`}
                 onClick={() => handleTabClick("formerly")}
               >
                 {t("Formerly favorite area")}
-              </div>
+              </div> */}
             </div>
             <div className="wishlist-container-list-content">
               {favoriteList?.map((item) => {
+                console.log("item", item);
                 return item?.status && activeTab === "favorite" ? (
                   <div
                     key={item?._id}
@@ -88,14 +89,14 @@ const WishlistPage = () => {
                   >
                     <div
                       className="wishlist-container-list-content-item-name"
-                      onClick={() => handleChooseItem(item._id)}
+                      // onClick={() => handleChooseItem(item._id)}
                     >
                       {`${item?.farmAreaId?.name}, ${item?.region?.name}, ${item?.region?.province}`}
-                      {selectedItem.includes(item?._id) ? (
+                      {/* {selectedItem.includes(item?._id) ? (
                         <CaretDownOutlined />
                       ) : (
                         <CaretRightOutlined />
-                      )}
+                      )} */}
                     </div>
                     {/* Infomation of favourite area */}
                     {selectedItem.includes(item?._id) && (

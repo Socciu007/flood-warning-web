@@ -222,6 +222,7 @@ const DetailsRegionPage = () => {
                       }))}
                       name="farmAreaId"
                       placeholder={t("Choose one area")}
+                      value={idFarmArea}
                     />
                   </ProForm>
                   {idFarmArea === "" ? "" : (examOfFarmArea?.length > 0) ? (
@@ -422,7 +423,7 @@ const DetailsRegionPage = () => {
             )}
           </div>
         </div>
-        <div className="details-region-map">
+        <div className="details-region-map" key={farmAreaDetail?._id}>
           {farmAreaDetail && (
             <MapContainer
               center={position}
