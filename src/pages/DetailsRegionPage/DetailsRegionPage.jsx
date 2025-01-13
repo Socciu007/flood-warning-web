@@ -262,12 +262,22 @@ const DetailsRegionPage = () => {
                               `• DO: ${examOfFarmArea[0]?.DO}mg/l Low DO levels can reduce the ability of aquatic species to survive.`}
                           </p>
                           <p>
+                            {examOfFarmArea[0]?.numberWarning?.isTemperatureRight === 1 &&
+                              `• ${
+                                examOfFarmArea[0]?.type === "Oyster farming"
+                                  ? "Suitable temperature"
+                                  : "Air temperature"
+                              } : ${
+                                examOfFarmArea[0]?.numberWarning?.temperatureRight
+                              }°C This temperature condition disrupts the physiology, growth ability and reduces the reproductive ability of aquatic products.`}
+                          </p>
+                          <p>
                             {examOfFarmArea[0]?.numberWarning?.isTemperature ===
                               1 &&
                               `• Temperature: ${examOfFarmArea[0]?.temperature}°C This temperature condition disrupts the physiology, growth ability and reduces the reproductive ability of aquatic products.`}
                           </p>
                           <p>
-                            {examOfFarmArea[0]?.numberWarning?.isPH === 1 &&
+                            {examOfFarmArea[0]?.numberWarning?.ispH === 1 &&
                               `• pH: ${examOfFarmArea[0]?.pH} Low pH levels can reduce the ability of plants and aquatic animals to absorb nutrients.`}
                           </p>
                           <p>
@@ -311,7 +321,7 @@ const DetailsRegionPage = () => {
                           <p>
                             {examOfFarmArea[0]?.numberWarning
                               ?.isSuspendedSolids === 1 &&
-                              `• TSS: ${examOfFarmArea[0]?.TSS}mg/l TSS levels can reduce water filtration and degrade water quality in aquatic habitats.`}
+                              `• TSS: ${examOfFarmArea[0]?.suspendedSolids}mg/l TSS levels can reduce water filtration and degrade water quality in aquatic habitats.`}
                           </p>
                           <p>
                             {examOfFarmArea[0]?.numberWarning?.isTotalCrom ===
@@ -370,6 +380,11 @@ const DetailsRegionPage = () => {
                             {examOfFarmArea[0]?.numberWarning?.isTotalPH ===
                               1 &&
                               `• Total petroleum hydrocarbons: ${examOfFarmArea[0]?.totalPH} This level of Total petroleum hydrocarbons can lead to oxygen deficiency in the environment.`}
+                          </p>
+                          <p>
+                            {examOfFarmArea[0]?.numberWarning
+                              ?.isRainfall === 1 &&
+                              `• Rainfall: ${examOfFarmArea[0]?.rainfall}mm This level of rainfall can lead to oxygen deficiency in the environment.`}
                           </p>
                         </div>
                       </div>

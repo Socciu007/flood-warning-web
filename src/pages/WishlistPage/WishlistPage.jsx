@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import NavbarComponent from "../../components/NavbarComponent/NavbarComponent";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import "./style.scss";
 import { Link } from "react-router-dom";
 import {
@@ -18,9 +19,10 @@ const WishlistPage = () => {
   const [favoriteList, setFavoriteList] = useState([]);
   const [selectedItem, setSelectedItem] = useState([]);
   const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   const { data: wishlist } = useQuery({
-    queryKey: ["wishlist", currentUser?.id],
+    queryKey: ["wishlist", currentUser?._id],
     queryFn: () =>
       getWishlistByUserID(currentUser?._id, currentUser?.accessToken),
   });
@@ -46,9 +48,6 @@ const WishlistPage = () => {
       setSelectedItem((o) => [...o, itemId]);
     }
   };
-
-  console.log("favoriteList", favoriteList);
-
   return (
     <div className="wishlist-page">
       <NavbarComponent />
@@ -81,11 +80,11 @@ const WishlistPage = () => {
             </div>
             <div className="wishlist-container-list-content">
               {favoriteList?.map((item) => {
-                console.log("item", item);
                 return item?.status && activeTab === "favorite" ? (
                   <div
                     key={item?._id}
                     className="wishlist-container-list-content-item"
+                    onClick={() => navigate(`/wishlist/${item?.farmAreaId?._id}`)}
                   >
                     <div
                       className="wishlist-container-list-content-item-name"

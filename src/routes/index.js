@@ -8,6 +8,7 @@ import AlertPage from "../pages/AlertPage/AlertPage";
 import DetailsAlertPage from "../pages/DetailsAlertPage/DetailsAlertPage";
 import AdminPage from "../pages/AdminPage/AdminPage";
 import WishlistPage from "../pages/WishlistPage/WishlistPage";
+import DetailsWishlistPage from "../pages/DetailsRegionPage/DetailsWishlistPage";
 
 // Define routes for the application. Each route should have a path, a page component, and an optional isShowHeader property.
 export const route = [
@@ -55,5 +56,9 @@ export const route = [
   {
     path: "/wishlist",
     page: WishlistPage,
+  },
+  {
+    path: "/wishlist/:id",
+    page: DetailsWishlistPage,
   },
 ];

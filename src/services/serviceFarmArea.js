@@ -35,3 +35,10 @@ export const createFarmAreaByAdmin = async (data) => {
   const res = await axios.post(`${process.env.REACT_APP_API_KEY}/api/farm-areas/add-area-by-admin`, data);
   return res.data;
 };
+
+// Get farm area wishlist by farm area id
+export const getFarmAreaWishlist = async (farmAreaId) => {
+  const res = await axios.get(`${process.env.REACT_APP_API_KEY}/api/farm-areas/wishlist/${farmAreaId}`);
+  return res.data;
+};
+
