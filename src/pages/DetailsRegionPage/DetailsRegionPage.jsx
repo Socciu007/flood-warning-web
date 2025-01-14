@@ -75,6 +75,8 @@ const DetailsRegionPage = () => {
     if (res.length > 0) {
       setCountWarning(Object.keys(res[0]?.numberWarning)?.length);
       setExamOfFarmArea(res);
+    } else {
+      setExamOfFarmArea([]);
     }
   };
 
@@ -222,7 +224,7 @@ const DetailsRegionPage = () => {
                       }))}
                       name="farmAreaId"
                       placeholder={t("Choose one area")}
-                      value={idFarmArea}
+                      // value={idFarmArea}
                     />
                   </ProForm>
                   {idFarmArea === "" ? "" : (examOfFarmArea?.length > 0) ? (
