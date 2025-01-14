@@ -92,8 +92,6 @@ const FormFillStandardData = ({ onFinish }) => {
       />
       <ProFormDependency name={["typeArea"]}>
         {({ typeArea }) => {
-          console.log("typeArea", typeArea);
-          console.log("standardData", standardData);
           return (
             <ProForm.Group>
               {(typeArea === "Oyster farming" ||

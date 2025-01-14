@@ -120,7 +120,7 @@ const AdminComponent = ({ activeTab }) => {
     if (notifications) {
       const cloneNotifications = notifications.map((noti) => ({
         ...noti,
-        sender: noti.userId.username,
+        sender: noti?.userId?.username || noti?.userId?.email?.split("@")[0],
       }));
       if (searchNotice === "") {
         setDataNotification(cloneNotifications);
