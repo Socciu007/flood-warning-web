@@ -21,8 +21,6 @@ const DetailsAlertPage = () => {
     fetchDetailAlert();
   }, [id]);
 
-  console.log("detailAlert", detailAlert?.content);
-
   return (
     <div className="details-alert-page">
       <NavbarComponent />

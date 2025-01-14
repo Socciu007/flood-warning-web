@@ -4,7 +4,7 @@ import { route } from "./routes";
 import DefaultComponent from "./components/DefaultComponent/DefaultComponent";
 import { useSelector, useDispatch } from "react-redux";
 import storageService from "./services/storage.service";
-import { setUser } from "./redux/slices/userSlice.ts";
+import { setUser, clearUser } from "./redux/slices/userSlice.ts";
 import { getUserInfo, handleRefreshToken } from "./services/serviceUser.js";
 import { getStandardData } from "./services/serviceExam.js";
 import { setStandardData, resetStandardData } from "./redux/slices/standardDataSlice.ts";
@@ -15,7 +15,7 @@ import LoadingComponent from "./components/LoadingComponent/LoadingComponent.jsx
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, isAuthenticated } = useSelector((state) => state?.user);
 
   useEffect(() => {
     // Handle decoded user from token
@@ -55,7 +55,6 @@ function App() {
 
     setIsLoading(true);
     const { accessToken, decodedUser } = handleDecodedUser();
-    // console.log("decodedUser", decodedUser);
     if (decodedUser?.id) {
       fetchUserInfo(decodedUser?.id, accessToken);
       fetchStandardData();
@@ -64,20 +63,21 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const axiosInstance = axios.create();
+    // const axiosInstance = axios.create();
 
-    axiosInstance.interceptors.request.use(
+    axios.interceptors.request.use(
       async (config) => {
         try {
           const currentTime = new Date();
           const accessToken = storageService.get("accessToken");
           const refreshToken = storageService.get("refreshToken");
 
-          if (accessToken) {
+          if (accessToken && accessToken !== null) {
             const decodedToken = jwtDecode(accessToken);
 
+            // Check if access token is expired
             if (decodedToken.exp < currentTime.getTime() / 1000) {
-              if (refreshToken) {
+              if (refreshToken && refreshToken !== null) {
                 const decodedRefreshToken = jwtDecode(refreshToken);
 
                 if (decodedRefreshToken.exp > currentTime.getTime() / 1000) {
@@ -87,7 +87,7 @@ function App() {
                     config.headers["token"] = `Bearer ${response.accessToken}`;
                   }
                 } else {
-                  handleLogout();
+                  dispatch(clearUser());
                 }
               }
             }
@@ -104,8 +104,10 @@ function App() {
       }
     );
 
-    axiosInstance.interceptors.response.use(
-      (response) => response,
+    axios.interceptors.response.use(
+      (response) => {
+        return response;
+      },
       async (error) => {
         if (error.message === 'Network Error') {
           console.log("error", error);
@@ -116,8 +118,6 @@ function App() {
 
   }, []);
 
-  // console.log("isAuthenticated", isAuthenticated);
-  // console.log("currentUser", currentUser);
   return (
     <div style={{ height: "100vh" }}>
       <LoadingComponent isLoading={isLoading} >
@@ -125,11 +125,11 @@ function App() {
           <Routes>
             {route.map((route) => {
               const Page = route.page;
-              // const isCheckAuth = !route.isPrivate ||
-              //   (isAuthenticated && currentUser?.role === route.role);
+              // Check auth for private route
+              const isCheckAuth = !route.isPrivate || (isAuthenticated && currentUser?.role === route.role);
               const Layout = route.isShowHeader ? DefaultComponent : Fragment;
               return (
-                <Route
+                isCheckAuth && <Route
                   key={route.path}
                   path={route.path}
                   element={
