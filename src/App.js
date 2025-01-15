@@ -63,9 +63,9 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // const axiosInstance = axios.create();
+    const axiosInstance = axios.create();
 
-    axios.interceptors.request.use(
+    axiosInstance.interceptors.request.use(
       async (config) => {
         try {
           const currentTime = new Date();
@@ -104,7 +104,7 @@ function App() {
       }
     );
 
-    axios.interceptors.response.use(
+    axiosInstance.interceptors.response.use(
       (response) => {
         return response;
       },
